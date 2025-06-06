@@ -1,4 +1,3 @@
-// src/pages/AdminPage.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import '../styles/AdminPage.css';
@@ -39,13 +38,13 @@ const AdminPage = () => {
                 <th>Score</th>
                 <th>Result</th>
                 <th>Submission Date</th>
-                <th>Time Taken</th>
+                {/* Time Taken column removed here */}
               </tr>
             </thead>
             <tbody>
               {results.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="no-submissions">
+                  <td colSpan="6" className="no-submissions">
                     No submissions found.
                   </td>
                 </tr>
@@ -55,18 +54,18 @@ const AdminPage = () => {
                     <td>{user.name}</td>
                     <td>{user.email}</td>
                     <td>{user.company}</td>
-                    <td>{user.score}</td>
+                    <td>{user.totalScore}/100</td>
                     <td>
                       <span
                         className={`result-badge ${
-                          user.score >= 50 ? "result-pass" : "result-fail"
+                          user.totalScore >= 50 ? "result-pass" : "result-fail"
                         }`}
                       >
-                        {user.score >= 50 ? "Passed" : "Failed"}
+                        {user.totalScore >= 50 ? "Passed" : "Failed"}
                       </span>
                     </td>
-                    <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                    <td>{user.timeTaken || "—"}</td>
+                    <td>{new Date(user.submittedAt).toLocaleDateString()}</td>
+                    {/* Time Taken column removed here */}
                   </tr>
                 ))
               )}

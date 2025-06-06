@@ -8,17 +8,28 @@ const AnswerSchema = new mongoose.Schema({
 });
 
 const UserTestSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  company: String,
-  answers: [AnswerSchema],
+  userId: { type: String, required: true },  // User ka ID
+  name: { type: String, required: true },    // User ka naam
+  email: { type: String, required: true },   // User ka email
+  company: { type: String, required: true }, // User ki company
+
+  // ✅ Section-wise scores
   sectionScores: {
-    English: Number,
-    MathsReasoning: Number,
-    Aptitude: Number
+    English: { type: Number, default: 0 },
+    MathsReasoning: { type: Number, default: 0 },
+    Aptitude: { type: Number, default: 0 }
   },
-  totalScore: Number,
-  submittedAt: Date
+
+  totalScore: { type: Number, default: 0 },   // ✅ Total score
+  result: { type: String, default: "" },      // ✅ Passed/Failed
+
+  answers: [AnswerSchema],                    // ✅ Array of answers
+
+  timeTaken: { type: String, default: "" },   // ✅ Duration
+  submittedAt: {
+    type: Date,
+    default: Date.now                         // ✅ Timestamp
+  }
 });
 
 module.exports = mongoose.model('UserTest', UserTestSchema);

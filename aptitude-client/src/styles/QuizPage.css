@@ -223,6 +223,10 @@
   */
 
 /* Wrapper */
+
+
+
+
 .quiz-wrapper {
     display: flex;
     height: 100vh;
@@ -451,4 +455,42 @@
   .submit-button.ready:hover {
     background-color: #218838;
   }
-  
+  /* */
+
+
+  .option-button {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  width: 100%;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.option-button.selected {
+  border-color: #007bff;
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.option-button.correct {
+  background-color: #d4edda;  /* light green */
+  border-color: #28a745;
+  color: #155724;
+  cursor: default;
+}
+
+.option-button.incorrect {
+  background-color: #f8d7da; /* light red */
+  border-color: #dc3545;
+  color: #721c24;
+  cursor: default;
+}
+
+.option-button:disabled {
+  cursor: default;
+}

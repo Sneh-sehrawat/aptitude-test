@@ -13,6 +13,7 @@ function QuizPage() {
   const reviewMode = localStorage.getItem('reviewMode') === 'true';
 
   useEffect(() => {
+    console.log("Review Mode from localStorage:", localStorage.getItem('reviewMode'));
     const q = JSON.parse(localStorage.getItem("questions"));
     const a = JSON.parse(localStorage.getItem("answers")) || {};
     const f = JSON.parse(localStorage.getItem("flagged")) || [];
@@ -60,7 +61,11 @@ function QuizPage() {
   const handleOptionClick = (selected) => {
     if (reviewMode) return;
     const id = questions[currentIndex]._id;
-    setAnswers(prev => ({ ...prev, [id]: selected }));
+    setAnswers(prev => {
+      const updated = { ...prev, [id]: selected };
+      localStorage.setItem("answers", JSON.stringify(updated));
+      return updated;
+    });
     if (skipped.includes(currentIndex)) {
       setSkipped(skipped.filter(i => i !== currentIndex));
     }
@@ -101,7 +106,7 @@ function QuizPage() {
 
   if (!questions.length) return <div>Loading...</div>;
   const currentQ = questions[currentIndex];
-  const selectedAnswer = answers[currentQ._id];
+  const selectedAnswer = answers[currentQ._id] || "";
 
   return (
     <>
@@ -145,14 +150,16 @@ function QuizPage() {
           <div className="options">
             {currentQ.options.map((opt, idx) => {
               let resultClass = "";
+
               if (reviewMode) {
                 if (opt === currentQ.correctAnswer) {
-                  resultClass = "correct";
-                } else if (selectedAnswer === opt && opt !== currentQ.correctAnswer) {
-                  resultClass = "incorrect";
+                  resultClass = "correct";  // Green for correct answer
+                }
+                if (selectedAnswer === opt && opt !== currentQ.correctAnswer) {
+                  resultClass = "incorrect"; // Red for wrong user selected answer
                 }
               } else if (selectedAnswer === opt) {
-                resultClass = "selected";
+                resultClass = "selected";  // Blue highlight in normal mode
               }
 
               return (
@@ -179,19 +186,19 @@ function QuizPage() {
             >
               🚩 {flagged.includes(currentIndex) ? 'Flagged' : 'Mark Flag'}
             </button>
-            {reviewMode && currentIndex === questions.length - 1 && (
-  <button
-    className="submit-button ready"
-    onClick={() => {
-      localStorage.removeItem("reviewMode");
-      navigate("/result");
-    }}
-    style={{ marginTop: '10px' }}
-  >
-    Finish Review
-  </button>
-)}
 
+            {reviewMode && currentIndex === questions.length - 1 && (
+              <button
+                className="submit-button ready"
+                onClick={() => {
+                  localStorage.removeItem("reviewMode");
+                  navigate("/result");
+                }}
+                style={{ marginTop: '10px' }}
+              >
+                Finish Review
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -200,3 +207,4 @@ function QuizPage() {
 }
 
 export default QuizPage;
+ 
