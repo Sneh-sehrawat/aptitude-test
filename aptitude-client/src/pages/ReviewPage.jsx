@@ -38,95 +38,101 @@ function ReviewPage() {
   const skippedCount = questions.length - answeredCount;
 
   const handleFinalSubmit = async () => {
-  // Pehle initialize karo userInfo
-  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-  console.log("User Info:", userInfo);
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+    const name = userInfo.name || "";
+    const email = userInfo.email || "";
+    const company = userInfo.company || "";
+    const startTime = localStorage.getItem("startTime");
+    const endTime = Date.now();
+    const timeTaken = startTime ? Math.floor((endTime - parseInt(startTime, 10)) / 1000) : null;
+    const token = localStorage.getItem("token");
 
-  if (answeredCount !== questions.length) {
-    alert("Please answer all questions before submitting.");
-    return;
-  }
-
-  const name = userInfo.name || "";
-  const email = userInfo.email || "";
-  const company = userInfo.company || "";
-  const startTime = localStorage.getItem("startTime");
-  const endTime = Date.now();
-  const timeTaken = startTime ? Math.floor((endTime - parseInt(startTime, 10)) / 1000) : null; // seconds
-  const token = localStorage.getItem("token");
-
-  try {
-    const resQuestions = await fetch("http://localhost:5050/api/questions/full", {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
-
-    if (!resQuestions.ok) {
-      throw new Error("Failed to fetch questions");
+    if (answeredCount !== questions.length) {
+      alert("Please answer all questions before submitting.");
+      return;
     }
 
-    const fullQuestions = await resQuestions.json();
+    try {
+      const resQuestions = await fetch("http://localhost:5050/api/questions/full", {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
 
-    const scoreData = {
-      English: 0,
-      MathsReasoning: 0,
-      Aptitude: 0,
-      total: 0,
-    };
-
-    fullQuestions.forEach((q) => {
-      const userAnswer = answers[q._id];
-      if (userAnswer !== undefined) {
-        const isCorrect = userAnswer === q.correctAnswer;
-        const score = isCorrect ? 2 : -1;
-        scoreData[q.section] += score;
-        scoreData.total += score;
+      if (!resQuestions.ok) {
+        throw new Error("Failed to fetch questions");
       }
-    });
 
-    // Negative score avoid karna
-    scoreData.English = Math.max(0, scoreData.English);
-    scoreData.MathsReasoning = Math.max(0, scoreData.MathsReasoning);
-    scoreData.Aptitude = Math.max(0, scoreData.Aptitude);
-    scoreData.total = Math.max(0, scoreData.total);
+      const fullQuestions = await resQuestions.json();
 
-    localStorage.setItem("score", JSON.stringify(scoreData));
+      console.log("✅ Full questions received from backend:", fullQuestions);
+      console.log("Answers from localStorage:", answers);
 
-    const res = await fetch("http://localhost:5050/api/submit-test", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        company,
-        answers,
-        sectionScores: {
-          English: scoreData.English,
-          MathsReasoning: scoreData.MathsReasoning,
-          Aptitude: scoreData.Aptitude,
+      const scoreData = {
+        English: 0,
+        MathsReasoning: 0,
+        Aptitude: 0,
+        total: 0,
+      };
+
+      fullQuestions.forEach((q) => {
+        // Convert _id to string for consistent key matching
+        const qid = String(q._id);
+        console.log(`QID: ${qid}, correctAnswer: ${q.correctAnswer}`);
+        const userAnswer = answers[qid];
+
+        console.log("User's answer:", userAnswer);
+
+        if (userAnswer !== undefined) {
+          const isCorrect = userAnswer === q.correctAnswer;
+          const score = isCorrect ? 2 : -1;
+          scoreData[q.section] += score;
+          scoreData.total += score;
+        }
+      });
+
+      // Ensure no negative scores
+      scoreData.English = Math.max(0, scoreData.English);
+      scoreData.MathsReasoning = Math.max(0, scoreData.MathsReasoning);
+      scoreData.Aptitude = Math.max(0, scoreData.Aptitude);
+      scoreData.total = Math.max(0, scoreData.total);
+
+      localStorage.setItem("score", JSON.stringify(scoreData));
+
+      const res = await fetch("http://localhost:5050/api/submit-test", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        totalScore: scoreData.total,
-        result: scoreData.total >= 50 ? "Passed" : "Failed",
-        timeTaken,
-        submissionDate: new Date().toISOString(),
-      }),
-    });
+        body: JSON.stringify({
+          name,
+          email,
+          company,
+          answers,
+          sectionScores: {
+            English: scoreData.English,
+            MathsReasoning: scoreData.MathsReasoning,
+            Aptitude: scoreData.Aptitude,
+          },
+          totalScore: scoreData.total,
+          result: scoreData.total >= 50 ? "Passed" : "Failed",
+          timeTaken,
+          submissionDate: new Date().toISOString(),
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(data.message || "Failed to submit test");
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to submit test");
+      }
+
+      console.log("✅ Test submitted:", data);
+      navigate("/result");
+    } catch (error) {
+      console.error("❌ Error submitting test:", error);
+      alert("Failed to submit test. Please try again.");
     }
-
-    console.log("✅ Test submitted:", data);
-    navigate("/result");
-  } catch (error) {
-    console.error("❌ Error submitting test:", error);
-    alert("Failed to submit test. Please try again.");
-  }
-};
+  };
 
   const jumpToQuestion = (index) => {
     localStorage.setItem("jumpTo", index);

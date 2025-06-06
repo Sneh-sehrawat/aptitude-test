@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/QuizPage.css';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/QuizPage.css";
 
 function QuizPage() {
   const navigate = useNavigate();
@@ -10,37 +10,49 @@ function QuizPage() {
   const [skipped, setSkipped] = useState([]);
   const [flagged, setFlagged] = useState([]);
   const [timeLeft, setTimeLeft] = useState(90 * 60);
-  const reviewMode = localStorage.getItem('reviewMode') === 'true';
+  const reviewMode = localStorage.getItem("reviewMode") === "true";
 
+  // === Updated: Fetch full questions from backend here on mount ===
   useEffect(() => {
-    console.log("Review Mode from localStorage:", localStorage.getItem('reviewMode'));
-    const q = JSON.parse(localStorage.getItem("questions"));
-    const a = JSON.parse(localStorage.getItem("answers")) || {};
-    const f = JSON.parse(localStorage.getItem("flagged")) || [];
-    const jumpIndex = parseInt(localStorage.getItem("jumpTo"), 10);
-    const shouldReturn = localStorage.getItem("returnToReview") === "true";
+    async function fetchQuestions() {
+      try {
+        const res = await fetch("http://localhost:5050/api/questions/full");
+        if (!res.ok) throw new Error("Failed to fetch questions");
 
-    if (!q || !q.length) return navigate("/");
+        const fullQuestions = await res.json();
+        setQuestions(fullQuestions);
+        localStorage.setItem("questions", JSON.stringify(fullQuestions));
 
-    setQuestions(q);
-    setAnswers(a);
-    setFlagged(f);
+        const savedAnswers = JSON.parse(localStorage.getItem("answers")) || {};
+        setAnswers(savedAnswers);
 
-    if (!isNaN(jumpIndex)) {
-      setCurrentIndex(jumpIndex);
-      localStorage.removeItem("jumpTo");
+        const savedFlagged = JSON.parse(localStorage.getItem("flagged")) || [];
+        setFlagged(savedFlagged);
+
+        const jumpIndex = parseInt(localStorage.getItem("jumpTo"), 10);
+        if (!isNaN(jumpIndex)) {
+          setCurrentIndex(jumpIndex);
+          localStorage.removeItem("jumpTo");
+        }
+
+        const shouldReturn = localStorage.getItem("returnToReview") === "true";
+        if (shouldReturn) {
+          localStorage.removeItem("returnToReview");
+          localStorage.setItem("canReview", "true");
+        }
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+        navigate("/");
+      }
     }
 
-    if (shouldReturn) {
-      localStorage.removeItem("returnToReview");
-      localStorage.setItem("canReview", "true");
-    }
+    fetchQuestions();
   }, [navigate]);
 
   useEffect(() => {
     if (reviewMode) return;
     const timer = setInterval(() => {
-      setTimeLeft(prev => {
+      setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
           handleReview();
@@ -55,19 +67,19 @@ function QuizPage() {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
   const handleOptionClick = (selected) => {
     if (reviewMode) return;
     const id = questions[currentIndex]._id;
-    setAnswers(prev => {
+    setAnswers((prev) => {
       const updated = { ...prev, [id]: selected };
       localStorage.setItem("answers", JSON.stringify(updated));
       return updated;
     });
     if (skipped.includes(currentIndex)) {
-      setSkipped(skipped.filter(i => i !== currentIndex));
+      setSkipped(skipped.filter((i) => i !== currentIndex));
     }
   };
 
@@ -91,20 +103,21 @@ function QuizPage() {
 
   const toggleFlag = () => {
     if (flagged.includes(currentIndex)) {
-      setFlagged(flagged.filter(i => i !== currentIndex));
+      setFlagged(flagged.filter((i) => i !== currentIndex));
     } else {
       setFlagged([...flagged, currentIndex]);
     }
   };
 
   const handleReview = () => {
-    localStorage.setItem('answers', JSON.stringify(answers));
-    localStorage.setItem('flagged', JSON.stringify(flagged));
-    localStorage.setItem('questions', JSON.stringify(questions));
+    localStorage.setItem("answers", JSON.stringify(answers));
+    localStorage.setItem("flagged", JSON.stringify(flagged));
+    localStorage.setItem("questions", JSON.stringify(questions));
     setTimeout(() => navigate("/review"), 300);
   };
 
   if (!questions.length) return <div>Loading...</div>;
+
   const currentQ = questions[currentIndex];
   const selectedAnswer = answers[currentQ._id] || "";
 
@@ -128,7 +141,7 @@ function QuizPage() {
           {(currentIndex === questions.length - 1 || localStorage.getItem("canReview") === "true") && (
             <div className="submit-wrapper">
               <button
-                className={`submit-button ${reviewMode ? 'locked' : 'ready'}`}
+                className={`submit-button ${reviewMode ? "locked" : "ready"}`}
                 onClick={() => {
                   if (reviewMode) return;
                   localStorage.setItem("canReview", "true");
@@ -153,13 +166,13 @@ function QuizPage() {
 
               if (reviewMode) {
                 if (opt === currentQ.correctAnswer) {
-                  resultClass = "correct";  // Green for correct answer
+                  resultClass = "correct"; // Green for correct answer
                 }
                 if (selectedAnswer === opt && opt !== currentQ.correctAnswer) {
-                  resultClass = "incorrect"; // Red for wrong user selected answer
+                  resultClass = "incorrect"; // Red for wrong selected answer
                 }
               } else if (selectedAnswer === opt) {
-                resultClass = "selected";  // Blue highlight in normal mode
+                resultClass = "selected"; // Blue highlight in normal mode
               }
 
               return (
@@ -176,15 +189,21 @@ function QuizPage() {
           </div>
 
           <div className="bottom-buttons">
-            <button onClick={prevQuestion} disabled={currentIndex === 0}>Prev</button>
-            <button onClick={skipQuestion} disabled={reviewMode}>Skip</button>
-            <button onClick={nextQuestion} disabled={currentIndex === questions.length - 1}>Next</button>
+            <button onClick={prevQuestion} disabled={currentIndex === 0}>
+              Prev
+            </button>
+            <button onClick={skipQuestion} disabled={reviewMode}>
+              Skip
+            </button>
+            <button onClick={nextQuestion} disabled={currentIndex === questions.length - 1}>
+              Next
+            </button>
             <button
-              className={`flag-button ${flagged.includes(currentIndex) ? 'flagged' : ''}`}
+              className={`flag-button ${flagged.includes(currentIndex) ? "flagged" : ""}`}
               onClick={toggleFlag}
               disabled={reviewMode}
             >
-              🚩 {flagged.includes(currentIndex) ? 'Flagged' : 'Mark Flag'}
+              🚩 {flagged.includes(currentIndex) ? "Flagged" : "Mark Flag"}
             </button>
 
             {reviewMode && currentIndex === questions.length - 1 && (
@@ -194,7 +213,7 @@ function QuizPage() {
                   localStorage.removeItem("reviewMode");
                   navigate("/result");
                 }}
-                style={{ marginTop: '10px' }}
+                style={{ marginTop: "10px" }}
               >
                 Finish Review
               </button>
@@ -207,4 +226,3 @@ function QuizPage() {
 }
 
 export default QuizPage;
- 
