@@ -1,0 +1,553 @@
+[
+  {
+    "section": "MathsReasoning",
+    "questionText": "What comes next in the series: 5, 11, 23, 47, ?",
+    "options": [
+      "95",
+      "85",
+      "93",
+      "99"
+    ],
+    "correctAnswer": "95"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "A clock gains 5 minutes every hour. How many minutes will it gain in a day?",
+    "options": [
+      "120",
+      "60",
+      "100",
+      "140"
+    ],
+    "correctAnswer": "120"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "If 3A + 2B = 18 and A - B = 2, find A.",
+    "options": [
+      "4",
+      "6",
+      "5",
+      "7"
+    ],
+    "correctAnswer": "5"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "Find the missing number: 2, 6, 12, 20, ?, 42",
+    "options": [
+      "28",
+      "30",
+      "32",
+      "34"
+    ],
+    "correctAnswer": "30"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "If in a code, ACE = 135, then BDF = ?",
+    "options": [
+      "246",
+      "246",
+      "258",
+      "247"
+    ],
+    "correctAnswer": "246"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "Which number replaces the question mark: 8, 27, 64, 125, ?",
+    "options": [
+      "216",
+      "225",
+      "150",
+      "200"
+    ],
+    "correctAnswer": "216"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "Find the next term: 1, 4, 9, 16, ?, 36",
+    "options": [
+      "20",
+      "25",
+      "30",
+      "24"
+    ],
+    "correctAnswer": "25"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "Which number is the odd one out: 121, 144, 169, 182, 196",
+    "options": [
+      "144",
+      "169",
+      "182",
+      "196"
+    ],
+    "correctAnswer": "182"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "If 2x + 3 = 17, find the value of x.",
+    "options": [
+      "7",
+      "8",
+      "6",
+      "5"
+    ],
+    "correctAnswer": "7"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "Simplify: 3(2x - 4) + 2(x + 1)",
+    "options": [
+      "8x - 10",
+      "5x - 10",
+      "8x - 8",
+      "5x - 8"
+    ],
+    "correctAnswer": "8x - 10"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "What comes next in this analogy: 3 : 27 :: 4 : ?",
+    "options": [
+      "64",
+      "16",
+      "32",
+      "81"
+    ],
+    "correctAnswer": "64"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "Solve: \u221a144 + \u221a81 = ?",
+    "options": [
+      "21",
+      "23",
+      "25",
+      "27"
+    ],
+    "correctAnswer": "21"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "If the perimeter of a square is 40 cm, what is its area?",
+    "options": [
+      "100",
+      "144",
+      "121",
+      "64"
+    ],
+    "correctAnswer": "100"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "What number should come in place of ?: 6, 11, 21, 36, ?",
+    "options": [
+      "56",
+      "49",
+      "51",
+      "61"
+    ],
+    "correctAnswer": "56"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "A man walks 20m north, turns right and walks 30m, turns right and walks 35m. In which direction is he now?",
+    "options": [
+      "East",
+      "West",
+      "North",
+      "South"
+    ],
+    "correctAnswer": "South"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "Choose the word that does not belong to the group: Apple, Banana, Mango, Carrot",
+    "options": [
+      "Apple",
+      "Banana",
+      "Mango",
+      "Carrot"
+    ],
+    "correctAnswer": "Carrot"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "Find the next term in the series: 2, 3, 5, 8, 12, 17, ?",
+    "options": [
+      "20",
+      "23",
+      "25",
+      "27"
+    ],
+    "correctAnswer": "23"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "Which number is missing: 4, 9, ?, 25, 36",
+    "options": [
+      "12",
+      "15",
+      "16",
+      "20"
+    ],
+    "correctAnswer": "16"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "If A = 1, B = 2, ..., Z = 26, then what is the value of FACE?",
+    "options": [
+      "18",
+      "20",
+      "22",
+      "24"
+    ],
+    "correctAnswer": "18"
+  },
+  {
+    "section": "MathsReasoning",
+    "questionText": "If 3^x = 81, then x = ?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correctAnswer": "4"
+  },
+  {
+    "section": "English",
+    "questionText": "Identify the correctly punctuated sentence.",
+    "options": [
+      "Although it was raining but we went out.",
+      "Although it was raining, we went out.",
+      "Although it was raining; but we went out.",
+      "Although, it was raining we went out."
+    ],
+    "correctAnswer": "Although it was raining, we went out."
+  },
+  {
+    "section": "English",
+    "questionText": "Choose the word that is most nearly opposite in meaning to 'Recalcitrant'.",
+    "options": [
+      "Obedient",
+      "Aggressive",
+      "Resilient",
+      "Reluctant"
+    ],
+    "correctAnswer": "Obedient"
+  },
+  {
+    "section": "English",
+    "questionText": "Select the word that best completes the sentence: 'He has a ___ for solving complex puzzles.'",
+    "options": [
+      "proclivity",
+      "reluctance",
+      "distaste",
+      "aversion"
+    ],
+    "correctAnswer": "proclivity"
+  },
+  {
+    "section": "English",
+    "questionText": "Choose the correct transformation: 'No other city is as beautiful as Paris.'",
+    "options": [
+      "Paris is more beautiful than any other city.",
+      "Paris is less beautiful than some cities.",
+      "Paris is as beautiful as all cities.",
+      "Paris is not a beautiful city."
+    ],
+    "correctAnswer": "Paris is more beautiful than any other city."
+  },
+  {
+    "section": "English",
+    "questionText": "Find the synonym of 'Esoteric'.",
+    "options": [
+      "Obvious",
+      "Secret",
+      "Simple",
+      "Public"
+    ],
+    "correctAnswer": "Secret"
+  },
+  {
+    "section": "English",
+    "questionText": "Which of the following is a complex sentence?",
+    "options": [
+      "She runs every morning.",
+      "Although it was raining, she went for a run.",
+      "She went running and I stayed home.",
+      "Run fast."
+    ],
+    "correctAnswer": "Although it was raining, she went for a run."
+  },
+  {
+    "section": "English",
+    "questionText": "Choose the grammatically correct sentence.",
+    "options": [
+      "Neither he nor I is going.",
+      "Neither he or I am going.",
+      "Neither he nor I are going.",
+      "Neither he or I is going."
+    ],
+    "correctAnswer": "Neither he nor I am going."
+  },
+  {
+    "section": "English",
+    "questionText": "Identify the part of speech for the underlined word: 'She sings beautifully.'",
+    "options": [
+      "Noun",
+      "Adverb",
+      "Verb",
+      "Adjective"
+    ],
+    "correctAnswer": "Adverb"
+  },
+  {
+    "section": "English",
+    "questionText": "Select the correct indirect form: He said, 'I will go tomorrow.'",
+    "options": [
+      "He said he would go the next day.",
+      "He said he will go tomorrow.",
+      "He said he is going tomorrow.",
+      "He said he was going next day."
+    ],
+    "correctAnswer": "He said he would go the next day."
+  },
+  {
+    "section": "English",
+    "questionText": "Which sentence uses the subjunctive mood?",
+    "options": [
+      "If I were rich, I would travel the world.",
+      "I am going to the market.",
+      "She enjoys reading.",
+      "They danced all night."
+    ],
+    "correctAnswer": "If I were rich, I would travel the world."
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "If the simple interest on \u20b92500 for 2 years is \u20b9300, what is the rate of interest?",
+    "options": [
+      "5%",
+      "6%",
+      "8%",
+      "10%"
+    ],
+    "correctAnswer": "6%"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "A train 150 m long is running at 60 km/h. How long will it take to cross a man standing on the platform?",
+    "options": [
+      "6 sec",
+      "7 sec",
+      "9 sec",
+      "12 sec"
+    ],
+    "correctAnswer": "9 sec"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "The ratio of ages of A and B is 3:5. After 10 years, the ratio becomes 5:7. Find the present age of A.",
+    "options": [
+      "20",
+      "25",
+      "30",
+      "35"
+    ],
+    "correctAnswer": "30"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "A man can row 12 km downstream in 3 hours and upstream in 4 hours. What is the speed of the stream?",
+    "options": [
+      "0.5 km/h",
+      "1 km/h",
+      "1.5 km/h",
+      "2 km/h"
+    ],
+    "correctAnswer": "0.5 km/h"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "If 40% of a number is 80, what is the number?",
+    "options": [
+      "100",
+      "180",
+      "200",
+      "220"
+    ],
+    "correctAnswer": "200"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "A can do a piece of work in 20 days and B in 30 days. In how many days will they complete it together?",
+    "options": [
+      "10",
+      "12",
+      "15",
+      "18"
+    ],
+    "correctAnswer": "12"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "The cost price of an article is \u20b9600 and profit is 25%. What is the selling price?",
+    "options": [
+      "\u20b9650",
+      "\u20b9700",
+      "\u20b9750",
+      "\u20b9800"
+    ],
+    "correctAnswer": "\u20b9750"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "A shopkeeper gives a discount of 10% and still makes a profit of 8%. What is the cost price of a \u20b9500 marked product?",
+    "options": [
+      "\u20b9425",
+      "\u20b9430",
+      "\u20b9435",
+      "\u20b9460"
+    ],
+    "correctAnswer": "\u20b9435"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "The average of 5 consecutive odd numbers is 35. What is the smallest number?",
+    "options": [
+      "29",
+      "31",
+      "33",
+      "35"
+    ],
+    "correctAnswer": "31"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "The perimeter of a circle is 132 cm. Find its radius.",
+    "options": [
+      "21 cm",
+      "18 cm",
+      "22 cm",
+      "24 cm"
+    ],
+    "correctAnswer": "21 cm"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "A man spends 80% of his income. If he earns \u20b925000, how much does he save?",
+    "options": [
+      "\u20b94000",
+      "\u20b95000",
+      "\u20b94500",
+      "\u20b94800"
+    ],
+    "correctAnswer": "\u20b95000"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "A train 240 m long passes a pole in 24 sec. What is its speed?",
+    "options": [
+      "30 km/h",
+      "36 km/h",
+      "40 km/h",
+      "45 km/h"
+    ],
+    "correctAnswer": "36 km/h"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "A bag contains 4 red, 5 blue and 6 green balls. What is the probability of picking a blue ball?",
+    "options": [
+      "5/15",
+      "1/3",
+      "5/12",
+      "1/2"
+    ],
+    "correctAnswer": "5/15"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "If the radius of a cylinder is doubled and height is halved, its volume will be:",
+    "options": [
+      "Same",
+      "Doubled",
+      "Quadrupled",
+      "Halved"
+    ],
+    "correctAnswer": "Same"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "The HCF of 72 and 120 is:",
+    "options": [
+      "12",
+      "24",
+      "36",
+      "48"
+    ],
+    "correctAnswer": "24"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "What is the compound interest on \u20b910000 for 2 years at 10% per annum?",
+    "options": [
+      "\u20b92000",
+      "\u20b92100",
+      "\u20b92200",
+      "\u20b92300"
+    ],
+    "correctAnswer": "\u20b92100"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "What will be the compound interest on \u20b98000 at 5% p.a. for 2 years?",
+    "options": [
+      "\u20b9820",
+      "\u20b9810",
+      "\u20b9800",
+      "\u20b9840"
+    ],
+    "correctAnswer": "\u20b9820"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "In a class, 60% are girls. If there are 40 students, how many are boys?",
+    "options": [
+      "16",
+      "18",
+      "20",
+      "24"
+    ],
+    "correctAnswer": "16"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "Find the area of a triangle with base 10 cm and height 6 cm.",
+    "options": [
+      "20 cm\u00b2",
+      "30 cm\u00b2",
+      "40 cm\u00b2",
+      "60 cm\u00b2"
+    ],
+    "correctAnswer": "30 cm\u00b2"
+  },
+  {
+    "section": "Aptitude",
+    "questionText": "The difference between SI and CI for \u20b910000 at 10% p.a. for 2 years is:",
+    "options": [
+      "\u20b910",
+      "\u20b920",
+      "\u20b925",
+      "\u20b950"
+    ],
+    "correctAnswer": "\u20b950"
+  }
+]
+

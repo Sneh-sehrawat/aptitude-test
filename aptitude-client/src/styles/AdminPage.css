@@ -1,0 +1,78 @@
+/* AdminPage.css */
+
+.admin-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 2rem 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.admin-card {
+  max-width: 1200px;
+  margin: auto;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
+
+.admin-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-table-wrapper {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.admin-table thead {
+  background-color: #e0f2fe;
+  color: #1e293b;
+  text-align: left;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.admin-table tr:hover {
+  background-color: #f1f5f9;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.result-badge {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.result-pass {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.result-fail {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.no-submissions {
+  text-align: center;
+  color: #6b7280;
+  font-size: 1.1rem;
+  padding: 3rem 0;
+}

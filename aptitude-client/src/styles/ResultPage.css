@@ -1,0 +1,69 @@
+.result-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(to right, #f5faff, #eaf4ff);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .result-container h2 {
+    font-size: 30px;
+    color: #003366;
+    margin-bottom: 10px;
+  }
+  
+  .pass-fail {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #fff;
+    padding: 10px 20px;
+    display: inline-block;
+    border-radius: 6px;
+    background-color: #28a745; /* green default */
+  }
+  
+  .pass-fail:contains('Failed') {
+    background-color: #dc3545;
+  }
+  
+  .score-breakdown {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #dce6f1;
+    text-align: left;
+    color: #003366;
+  }
+  
+  .score-breakdown p {
+    font-size: 17px;
+    margin: 10px 0;
+  }
+  
+  .review-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+  }
+  
+  .review-button:hover {
+    background-color: #0056b3;
+  }
+  
