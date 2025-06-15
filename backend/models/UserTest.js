@@ -8,27 +8,19 @@ const AnswerSchema = new mongoose.Schema({
 });
 
 const UserTestSchema = new mongoose.Schema({
-  userId: { type: String, required: true },  // User ka ID
-  name: { type: String, required: true },    // User ka naam
-  email: { type: String, required: true },   // User ka email
-  company: { type: String, required: true }, // User ki company
-
-  // ✅ Section-wise scores
+  name: String,
+  email: String,
+  company: String,
+  answers: [AnswerSchema],
   sectionScores: {
-    English: { type: Number, default: 0 },
-    MathsReasoning: { type: Number, default: 0 },
-    Aptitude: { type: Number, default: 0 }
+    English: Number,
+    MathsReasoning: Number,
+    Aptitude: Number,
+    totalScore: Number      // ✅ This is now correctly included
   },
-
-  totalScore: { type: Number, default: 0 },   // ✅ Total score
-  result: { type: String, default: "" },      // ✅ Passed/Failed
-
-  answers: [AnswerSchema],                    // ✅ Array of answers
-
-  timeTaken: { type: String, default: "" },   // ✅ Duration
   submittedAt: {
     type: Date,
-    default: Date.now                         // ✅ Timestamp
+    default: Date.now       // ✅ This ensures Mongo auto-sets submission date
   }
 });
 

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../styles/ReviewPage.css";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/ReviewPage.css';
 
 function ReviewPage() {
   const navigate = useNavigate();
@@ -9,14 +9,11 @@ function ReviewPage() {
   const [flagged, setFlagged] = useState([]);
 
   useEffect(() => {
-    const q = JSON.parse(localStorage.getItem("questions")) || [];
-    const a = JSON.parse(localStorage.getItem("answers")) || {};
-    const f = JSON.parse(localStorage.getItem("flagged")) || [];
+    const q = JSON.parse(localStorage.getItem('questions')) || [];
+    const a = JSON.parse(localStorage.getItem('answers')) || {};
+    const f = JSON.parse(localStorage.getItem('flagged')) || [];
 
-    if (!q.length) {
-      navigate("/");
-      return;
-    }
+    if (!q.length) return navigate('/');
 
     setQuestions(q);
     setAnswers(a);
@@ -24,64 +21,53 @@ function ReviewPage() {
   }, [navigate]);
 
   const getStatus = (index, id) => {
-    const isAnswered = answers[id] !== undefined && answers[id] !== null && answers[id] !== "";
+    const isAnswered = Boolean(answers[id]);
     const isFlagged = flagged.includes(index);
-
-    if (isFlagged && !isAnswered) return "Flagged";
-    if (isFlagged && isAnswered) return "Answered-Flagged";
-    if (isAnswered) return "Answered";
-    return "Skipped";
+    if (isFlagged && !isAnswered) return 'Flagged';
+    if (isFlagged && isAnswered) return 'Answered-Flagged';
+    if (isAnswered) return 'Answered';
+    return 'Skipped';
   };
 
-  const answeredCount = questions.filter((q) => answers[q._id]).length;
-  const flaggedOnlyCount = flagged.filter((i) => !answers[questions[i]?._id]).length;
-  const skippedCount = questions.length - answeredCount;
+  const answeredCount = questions.length ? questions.filter(q => answers[q._id]).length : 0;
+  const flaggedOnlyCount = flagged.length && questions.length ? flagged.filter(i => !answers[questions[i]?._id]).length : 0;
+  const skippedCount = questions.length ? questions.length - answeredCount : 0;
 
   const handleFinalSubmit = async () => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-    const name = userInfo.name || "";
-    const email = userInfo.email || "";
-    const company = userInfo.company || "";
-    const startTime = localStorage.getItem("startTime");
-    const endTime = Date.now();
-    const timeTaken = startTime ? Math.floor((endTime - parseInt(startTime, 10)) / 1000) : null;
-    const token = localStorage.getItem("token");
-
     if (answeredCount !== questions.length) {
       alert("Please answer all questions before submitting.");
       return;
     }
 
+    // ✅ Extract user info
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+    const { name, email, company } = userInfo;
+    const timeTaken = localStorage.getItem("timeTaken") || null;
+    const token = localStorage.getItem("token");
+
+    console.log("🧾 Submitting user info:", { name, email, company, timeTaken });
+    console.log("📦 Token:", token);
+    console.log("📦 Answers:", answers);
+
     try {
       const resQuestions = await fetch("http://localhost:5050/api/questions/full", {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       });
 
-      if (!resQuestions.ok) {
-        throw new Error("Failed to fetch questions");
-      }
-
       const fullQuestions = await resQuestions.json();
-
-      console.log("✅ Full questions received from backend:", fullQuestions);
-      console.log("Answers from localStorage:", answers);
 
       const scoreData = {
         English: 0,
         MathsReasoning: 0,
         Aptitude: 0,
-        total: 0,
+        total: 0
       };
 
-      fullQuestions.forEach((q) => {
-        // Convert _id to string for consistent key matching
-        const qid = String(q._id);
-        console.log(`QID: ${qid}, correctAnswer: ${q.correctAnswer}`);
-        const userAnswer = answers[qid];
-
-        console.log("User's answer:", userAnswer);
-
-        if (userAnswer !== undefined) {
+      fullQuestions.forEach(q => {
+        const userAnswer = answers[q._id];
+        if (userAnswer) {
           const isCorrect = userAnswer === q.correctAnswer;
           const score = isCorrect ? 2 : -1;
           scoreData[q.section] += score;
@@ -89,48 +75,34 @@ function ReviewPage() {
         }
       });
 
-      // Ensure no negative scores
-      scoreData.English = Math.max(0, scoreData.English);
-      scoreData.MathsReasoning = Math.max(0, scoreData.MathsReasoning);
-      scoreData.Aptitude = Math.max(0, scoreData.Aptitude);
-      scoreData.total = Math.max(0, scoreData.total);
-
       localStorage.setItem("score", JSON.stringify(scoreData));
 
-      const res = await fetch("http://localhost:5050/api/submit-test", {
+      const response = await fetch("http://localhost:5050/api/submit-test", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           name,
           email,
           company,
-          answers,
-          sectionScores: {
-            English: scoreData.English,
-            MathsReasoning: scoreData.MathsReasoning,
-            Aptitude: scoreData.Aptitude,
-          },
-          totalScore: scoreData.total,
-          result: scoreData.total >= 50 ? "Passed" : "Failed",
-          timeTaken,
-          submissionDate: new Date().toISOString(),
-        }),
+          score: scoreData,
+          timeTaken
+        })
       });
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (!res.ok) {
+      if (!response.ok) {
         throw new Error(data.message || "Failed to submit test");
       }
 
-      console.log("✅ Test submitted:", data);
-      navigate("/result");
+      console.log("✅ Test submitted successfully:", data);
+      navigate('/result');
     } catch (error) {
       console.error("❌ Error submitting test:", error);
-      alert("Failed to submit test. Please try again.");
+      alert("Failed to submit test. Please check console for details.");
     }
   };
 
@@ -151,9 +123,9 @@ function ReviewPage() {
             key={index}
             className={`review-item ${getStatus(index, q._id).toLowerCase()}`}
             onClick={() => jumpToQuestion(index)}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: 'pointer' }}
           >
-            Q{index + 1}: {getStatus(index, q._id).replace("-", " ")}
+            Q{index + 1}: {getStatus(index, q._id).replace('-', ' ')}
           </div>
         ))}
       </div>

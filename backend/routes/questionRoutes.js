@@ -16,6 +16,7 @@ router.get('/generate-set', async (req, res) => {
           section: 1,
           questionText: 1,
           options: 1
+          // correctAnswer excluded here
         }
       }
     ]);
@@ -56,22 +57,11 @@ router.get('/generate-set', async (req, res) => {
   }
 });
 
-// ✅ FIXED: Route to get full questions including correctAnswer with _id as string
+// ✅ New Route: get all questions with correctAnswer for scoring
 router.get('/full', async (req, res) => {
   try {
-    const questions = await Question.find({}, '-__v');
-
-    // ✅ Convert _id to string to avoid mismatch with localStorage keys
-    const questionsWithStringId = questions.map((q) => ({
-      ...q.toObject(),
-      _id: q._id.toString(),
-    }));
-
-    console.log("✅ Sending full question:", obj);
-      return obj;
-   
-
-    res.json(questionsWithStringId);
+    const questions = await Question.find({}, '-__v'); // exclude __v field
+    res.json(questions);
   } catch (err) {
     console.error('❌ Error fetching full questions:', err);
     res.status(500).json({ message: 'Server error fetching full questions' });

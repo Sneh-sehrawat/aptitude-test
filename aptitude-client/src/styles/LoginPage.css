@@ -1,36 +1,72 @@
+/* LoginPage.css */
+
 .login-container {
   max-width: 400px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-container h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
   text-align: center;
 }
 
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form label {
+  text-align: left;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.login-form select,
 .login-form input[type="email"],
 .login-form input[type="password"] {
   width: 100%;
-  padding: 0.7rem;
-  margin: 0.5rem 0;
-  border-radius: 4px;
-  border: 1px solid #aaa;
+  padding: 0.75rem;
+  margin-bottom: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
 }
 
-.role-select {
-  display: flex;
-  justify-content: space-around;
-  margin: 1rem 0;
+.login-form select:focus,
+.login-form input:focus {
+  outline: none;
+  border-color: #007bff;
 }
 
-button {
-  padding: 0.7rem 1.5rem;
+.login-form button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: #fff;
   border: none;
-  background-color: #4CAF50;
-  color: white;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
 }
 
-button:hover {
-  background-color: #45a049;
+.login-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Optional: Responsive design */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem;
+    margin: 2rem 1rem;
+  }
 }

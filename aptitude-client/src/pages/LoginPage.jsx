@@ -23,20 +23,13 @@ function LoginPage() {
         role,
       });
 
-      console.log("Login response:", data);
-
       if (data.success) {
-        // ✅ Save token
-        localStorage.setItem('token', data.token);
-        console.log("Token saved:", data.token);
-
         if (data.role === 'admin') {
-          console.log("Admin login successful");
+          // Admin doesn't need token or user info
           navigate('/admin');
         } else {
-          console.log("User login successful");
-
-          // Save user info
+          // ✅ Save token and user info for normal user
+          localStorage.setItem('token', data.token);
           localStorage.setItem('userInfo', JSON.stringify({
             name: data.name,
             email: data.email,
@@ -48,11 +41,10 @@ function LoginPage() {
         }
       } else {
         alert(data.message || 'Login failed');
-        console.log("Login failed:", data.message);
       }
     } catch (error) {
       alert(error.response?.data?.message || 'Something went wrong');
-      console.error("Login error:", error.response?.data || error);
+      console.error(error);
     }
   };
 

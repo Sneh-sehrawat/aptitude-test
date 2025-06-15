@@ -33,6 +33,11 @@ function FormPage() {
 
     try {
       localStorage.setItem('userInfo', JSON.stringify(formData));
+      localStorage.setItem('name', name);
+      localStorage.setItem('email', email);
+      localStorage.setItem('company', company);
+      
+      localStorage.setItem('userInfo', JSON.stringify(formData));
       const res = await axios.get('http://localhost:5050/api/questions/generate-set');
       localStorage.setItem('questions', JSON.stringify(res.data));
       navigate('/quiz');

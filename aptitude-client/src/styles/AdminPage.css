@@ -76,3 +76,68 @@
   font-size: 1.1rem;
   padding: 3rem 0;
 }
+.result-badge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+}
+
+.result-pass {
+  background-color: #4caf50; /* Green */
+}
+
+.result-fail {
+  background-color: #f44336; /* Red */
+}
+
+.score-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.score-badge {
+  background-color: #ddd;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.dropdown-button {
+  background-color: #e0e0e0;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.breakdown-row {
+  background-color: #f9f9f9;
+}
+
+.section-breakdown ul {
+  padding-left: 20px;
+  margin-top: 4px;
+  list-style: square;
+}
+
+.section-breakdown li {
+  font-weight: 500;
+  padding: 4px 0;
+}
+
+/* Section-wise score colors */
+.score-red {
+  color: #f44336;
+}
+
+.score-orange {
+  color: #ff9800;
+}
+
+.score-green {
+  color: #4caf50;
+}

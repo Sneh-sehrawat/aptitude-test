@@ -38,9 +38,9 @@ router.post('/login', async (req, res) => {
 
   // Admin login
   if (role === 'admin') {
-    if (email === 'admin@example.com' && password === 'Adm!n@2025$ecure') {
-      // Token without expiry
-      const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET);
+    if (email === 'admin@example.com' && password === 'admin123') {
+      // Use secret from env file
+      const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
       return res.json({ success: true, role: 'admin', token });
     } else {
       return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
@@ -54,10 +54,12 @@ router.post('/login', async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ success: false, message: 'Invalid password' });
+console.log("🧾 LOGIN: Signing token with secret:", process.env.JWT_SECRET);
 
-    // Token without expiry
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+    // Generate JWT token using secret from env
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
+    // Send response with token and user info
     res.json({
       success: true,
       role: 'user',

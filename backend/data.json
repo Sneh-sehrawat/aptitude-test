@@ -290,7 +290,7 @@
     "questionText": "Choose the grammatically correct sentence.",
     "options": [
       "Neither he nor I is going.",
-      "Neither he or I am going.",
+      "Neither he nor I am going.",
       "Neither he nor I are going.",
       "Neither he or I is going."
     ],

@@ -26,8 +26,7 @@ function verifyToken(req, res, next) {
 console.log("🧾 VERIFY: Checking token with secret:", process.env.JWT_SECRET);
 
     console.log("✅ Token verified. Decoded payload:", decoded);
-req.userId = decoded.userId || decoded.id || decoded._id;
-
+    req.userId = decoded.userId;
     next();
   });
 }
