@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ReviewPage.css';
+import certiEdgeLogo from "../assets/certiedge-removebg-preview.png"
 
 function ReviewPage() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function ReviewPage() {
 
     setQuestions(q);
     setAnswers(a);
-    setFlagged(f);
+    setFlagged(f); 
   }, [navigate]);
 
   const getStatus = (index, id) => {
@@ -41,11 +42,11 @@ function ReviewPage() {
 
     // ✅ Extract user info
     const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-    const { name, email, company } = userInfo;
+    const { company,phoneno,college } = userInfo;
     const timeTaken = localStorage.getItem("timeTaken") || null;
     const token = localStorage.getItem("token");
 
-    console.log("🧾 Submitting user info:", { name, email, company, timeTaken });
+    console.log("🧾 Submitting user info:", {  company, timeTaken });
     console.log("📦 Token:", token);
     console.log("📦 Answers:", answers);
 
@@ -74,6 +75,7 @@ function ReviewPage() {
           scoreData.total += score;
         }
       });
+      
 
       localStorage.setItem("score", JSON.stringify(scoreData));
 
@@ -84,9 +86,10 @@ function ReviewPage() {
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-          name,
-          email,
+          
           company,
+          phoneno,
+          college,
           score: scoreData,
           timeTaken
         })
@@ -115,7 +118,16 @@ function ReviewPage() {
   if (!questions.length) return <div>Loading review page...</div>;
 
   return (
+    <div>
+      <img
+        src={certiEdgeLogo}
+        alt="CertiEdge Logo"
+        className='logo-img'
+      />
+      
     <div className="review-container">
+      
+      
       <h2>Review Your Responses</h2>
       <div className="review-grid">
         {questions.map((q, index) => (
@@ -139,7 +151,7 @@ function ReviewPage() {
       <button className="final-submit-btn" onClick={handleFinalSubmit}>
         Submit Final Test
       </button>
-    </div>
+    </div></div>
   );
 }
 

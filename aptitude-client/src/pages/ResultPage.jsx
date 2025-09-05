@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ResultPage.css';
+import certiEdgeLogo from "../assets/certiedge-removebg-preview.png"
 
 function ResultPage() {
   const navigate = useNavigate();
-  const [score, setScore] = useState(null);
+
 
 
   const [calculatedScore, setCalculatedScore] = useState({
@@ -15,6 +16,7 @@ function ResultPage() {
   });
 
 useEffect(() => {
+  
   const savedScore = JSON.parse(localStorage.getItem("score"));
   if (savedScore) {
     setCalculatedScore(savedScore);
@@ -52,6 +54,12 @@ useEffect(() => {
 
   return (
     <div className="result-container">
+      <img
+        src={certiEdgeLogo}
+        alt="CertiEdge Logo"
+        className='logo-img'
+      />
+      
       <h2>Your Score Summary</h2>
       <p className="pass-fail">{calculatedScore.total >= 50 ? '🎉 Congratulations, You Passed!' : '❌ You Failed'}</p>
 

@@ -10,7 +10,7 @@ require('dotenv').config();
 // Signup route
 router.post('/signup', async (req, res) => {
   try {
-    const { name, email, password, company } = req.body;
+    const { name, email, password, company,phoneno } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: 'User already exists' });
@@ -21,7 +21,9 @@ router.post('/signup', async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      company
+      company,
+      phoneno
+      
     });
 
     await newUser.save();
@@ -35,10 +37,13 @@ router.post('/signup', async (req, res) => {
 // Login route for users and admin
 router.post('/login', async (req, res) => {
   const { email, password, role } = req.body;
+  console.log("🛰️ Incoming login request body:", req.body);
+
 
   // Admin login
   if (role === 'admin') {
-    if (email === 'admin@example.com' && password === 'admin123') {
+     
+    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
       // Use secret from env file
       const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
       return res.json({ success: true, role: 'admin', token });
@@ -67,10 +72,12 @@ console.log("🧾 LOGIN: Signing token with secret:", process.env.JWT_SECRET);
       name: user.name,
       email: user.email,
       company: user.company,
+      phoneno: user.phoneno,
       user: {
         name: user.name,
         email: user.email,
-        company: user.company
+        company: user.company,
+        phoneno: user.phoneno,
       }
     });
 

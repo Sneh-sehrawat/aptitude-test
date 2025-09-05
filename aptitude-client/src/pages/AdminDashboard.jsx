@@ -6,6 +6,9 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Get user info from localStorage
+  const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -14,10 +17,19 @@ function AdminDashboard() {
     try {
       setLoading(true);
       const res = await axios.get('http://localhost:5050/api/admin/users');
-      setUsers(res.data);
+      const data = res.data;
+
+      // If no name/email in API, fall back to localStorage user
+      const updatedData = data.map(user => ({
+        ...user,
+        name:  storedUser.name || "N/A",
+        email: storedUser.email || "N/A"
+      }));
+
+      setUsers(updatedData);
       setLoading(false);
     } catch (err) {
-      setError('Failed to load user data');
+      setError("Failed to load user data",err);
       setLoading(false);
     }
   };
@@ -76,7 +88,7 @@ function AdminDashboard() {
                 <tr key={i}>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
-                  <td>{user.company}</td>
+                  <td>{user.company || "N/A"}</td>
                   <td>{new Date(user.submitDate).toLocaleString()}</td>
                   <td>{user.timeTaken}</td>
                   <td style={{ color: user.passed ? 'green' : 'red' }}>
@@ -93,3 +105,4 @@ function AdminDashboard() {
 }
 
 export default AdminDashboard;
+

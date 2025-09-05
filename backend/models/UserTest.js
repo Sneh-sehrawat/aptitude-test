@@ -8,20 +8,20 @@ const AnswerSchema = new mongoose.Schema({
 });
 
 const UserTestSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  company: String,
-  answers: [AnswerSchema],
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  phoneno: { type: String },    // 👈 add if missing
+  company: { type: String },    // 👈 add if missing
+  college: { type: String },    // 👈 add if missing
   sectionScores: {
     English: Number,
     MathsReasoning: Number,
     Aptitude: Number,
-    totalScore: Number      // ✅ This is now correctly included
+    totalScore: Number
   },
-  submittedAt: {
-    type: Date,
-    default: Date.now       // ✅ This ensures Mongo auto-sets submission date
-  }
+  timeTaken: { type: String },
+  submittedAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('UserTest', UserTestSchema);

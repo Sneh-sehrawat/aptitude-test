@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import "../styles/SignupPage.css"
+import certiEdgeLogo from "../assets/certiedge-removebg-preview.png";
+
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -8,11 +11,12 @@ function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
+  const [phoneno, setPhoneno] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password || !company) {
+    if (!name || !email || !password || !company||!phoneno) {
       alert('Please fill all fields');
       return;
     }
@@ -23,6 +27,7 @@ function SignupPage() {
         email,
         password,
         company,
+        phoneno,
       });
 
       alert(data.message || 'Signup successful');
@@ -34,9 +39,16 @@ function SignupPage() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
+    <div className='container'>
+   <img
+  src={certiEdgeLogo}
+  alt="CertiEdge Logo"
+  className='logo-img'
+/>
+
+    <div style={{ maxWidth: 400}} className='signup-container'>
       <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='signup-form'>
         <input
           type="text"
           placeholder="Name"
@@ -44,7 +56,7 @@ function SignupPage() {
           onChange={e => setName(e.target.value)}
           required
         />
-        <br /><br />
+        
         <input
           type="email"
           placeholder="Email"
@@ -52,7 +64,7 @@ function SignupPage() {
           onChange={e => setEmail(e.target.value)}
           required
         />
-        <br /><br />
+        
         <input
           type="password"
           placeholder="Password"
@@ -60,7 +72,14 @@ function SignupPage() {
           onChange={e => setPassword(e.target.value)}
           required
         />
-        <br /><br />
+        <input
+          type="text"
+          placeholder="Phonenumber"
+          value={phoneno}
+          onChange={e => setPhoneno(e.target.value)}
+          required
+        />
+        
         <input
           type="text"
           placeholder="Company"
@@ -68,10 +87,16 @@ function SignupPage() {
           onChange={e => setCompany(e.target.value)}
           required
         />
-        <br /><br />
+         <p style={{ textAlign: "center", marginTop: "1rem" }}>
+          Already have an account?{" "}
+          <a href="/login" style={{ color: "#16a34a", fontWeight: "bold" }}>
+            Sign In
+          </a>
+        </p>
+        
         <button type="submit">Signup</button>
       </form>
-    </div>
+    </div></div>
   );
 }
 

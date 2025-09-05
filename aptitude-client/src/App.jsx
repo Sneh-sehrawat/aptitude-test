@@ -8,11 +8,13 @@ import SignupPage from './pages/SignupPage';
 
 import AdminPage from "./pages/AdminPage";
 import ProtectedRoute from './components/ProtectedRoute';
+import ChoicePage from './pages/ChoicePage';
+import MockPage from './pages/MockPage';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/" element={<Navigate to="/signup" />} />
 
       {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
@@ -20,10 +22,26 @@ function App() {
 
       {/* Protected routes for logged-in users */}
       <Route 
+        path="/choice" 
+        element={
+          <ProtectedRoute>
+            <ChoicePage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
         path="/form" 
         element={
           <ProtectedRoute>
             <FormPage />
+          </ProtectedRoute>
+        } 
+      />
+       <Route 
+        path="/mock" 
+        element={
+          <ProtectedRoute>
+            <MockPage />
           </ProtectedRoute>
         } 
       />

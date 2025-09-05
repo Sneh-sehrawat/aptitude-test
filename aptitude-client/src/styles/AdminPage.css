@@ -1,28 +1,43 @@
-/* AdminPage.css */
+/* 🌿 AdminPage.css - Greenish Modern Look */
+body{
+  margin: 0;
+  padding: 0;
+  background-color: linear-gradient(135deg, #ecfdf5, #f0fdf4);; /* light gray background */
+}
 
 .admin-container {
-  min-height: 100vh;
-  background-color: #f9fafb;
-  padding: 2rem 1.5rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 91vh;
+  background: linear-gradient(135deg, #ecfdf5, #f0fdf4); /* light green gradient */
+  padding: 2rem 0.5rem;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .admin-card {
+  width: 100%;
   max-width: 1200px;
-  margin: auto;
-  background-color: #ffffff;
+  background: #ffffff;
   border-radius: 1rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   padding: 2rem;
+  animation: fadeIn 0.4s ease-in-out;
+  border: 2px solid #d1fae5;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .admin-title {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 700;
+  color: #065f46;
   margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  border-left: 6px solid #22c55e;
+  padding-left: 0.75rem;
 }
 
 .admin-table-wrapper {
@@ -36,91 +51,115 @@
 }
 
 .admin-table thead {
-  background-color: #e0f2fe;
-  color: #1e293b;
+  background-color: #22c55e;
+  color: white;
   text-align: left;
 }
 
 .admin-table th,
 .admin-table td {
-  padding: 0.75rem 1rem;
-  border-top: 1px solid #e5e7eb;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  cursor: default;
+  transition: background-color 0.2s ease-in-out, transform 0.1s;
 }
 
-.admin-table tr:hover {
-  background-color: #f1f5f9;
-  transition: background-color 0.2s ease-in-out;
+.admin-table tbody tr:hover {
+  background-color: #f0fdf4;
+  transform: scale(1.01);
 }
 
+.admin-table tbody tr:active {
+  background-color: #bbf7d0; /* light green click effect */
+  transform: scale(0.99);
+}
+
+/* ✅ Status Badges */
 .result-badge {
-  padding: 0.25rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   font-size: 0.8rem;
   border-radius: 9999px;
-  font-weight: 500;
-  display: inline-block;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
 }
 
 .result-pass {
-  background-color: #d1fae5;
+  background-color: #bbf7d0;
   color: #065f46;
 }
 
 .result-fail {
-  background-color: #fee2e2;
+  background-color: #fecaca;
   color: #991b1b;
 }
 
-.no-submissions {
-  text-align: center;
-  color: #6b7280;
-  font-size: 1.1rem;
-  padding: 3rem 0;
-}
-.result-badge {
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-weight: bold;
-  color: white;
+.result-badge:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
 }
 
-.result-pass {
-  background-color: #4caf50; /* Green */
-}
-
-.result-fail {
-  background-color: #f44336; /* Red */
-}
-
+/* ⚡ Score Styles */
 .score-cell {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .score-badge {
-  background-color: #ddd;
-  padding: 4px 8px;
-  border-radius: 6px;
+  background-color: #f0fdf4;
+  padding: 5px 10px;
+  border-radius: 8px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 0.9rem;
+  color: #065f46;
+  transition: 0.2s;
+}
+
+.score-badge:hover {
+  background-color: #bbf7d0;
+  transform: translateY(-2px);
 }
 
 .dropdown-button {
-  background-color: #e0e0e0;
+  background-color: #22c55e;
   border: none;
-  padding: 2px 6px;
-  border-radius: 4px;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 12px;
+  transition: 0.2s;
 }
 
+.dropdown-button:hover {
+  background-color: #16a34a;
+  transform: scale(1.05);
+}
+
+.dropdown-button:active {
+  transform: scale(0.95);
+  background-color: #15803d;
+}
+
+/* 📊 Section Breakdown */
 .breakdown-row {
-  background-color: #f9f9f9;
+  background-color: #f9fafb;
+}
+
+.section-breakdown {
+  padding: 1rem;
+  background: #f0fdf4;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.section-breakdown strong {
+  color: #065f46;
 }
 
 .section-breakdown ul {
   padding-left: 20px;
-  margin-top: 4px;
+  margin-top: 6px;
   list-style: square;
 }
 
@@ -129,15 +168,89 @@
   padding: 4px 0;
 }
 
-/* Section-wise score colors */
+/* 🔴🟠🟢 Section Colors */
 .score-red {
-  color: #f44336;
+  color: #dc2626;
 }
 
 .score-orange {
-  color: #ff9800;
+  color: #ea580c;
 }
 
 .score-green {
-  color: #4caf50;
+  color: #16a34a;
 }
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+  .admin-title {
+    font-size: 1.5rem;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .score-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-card {
+    padding: 1rem;
+  }
+
+  .admin-title {
+    font-size: 1.25rem;
+  }
+
+  .admin-table {
+    font-size: 0.8rem;
+  }
+
+  .result-badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+  }
+}
+.logo-img {
+  position: fixed;      /* ✅ stick to the page, not inside card */
+  top: 20px;            /* distance from top of viewport */
+  left: 8px;           /* distance from left of viewport */
+  height: 80px;         /* similar size to CertiEdge.com */
+  width: auto;          /* maintain aspect ratio */
+  object-fit: contain;  /* prevent distortion */
+  cursor: pointer;
+  z-index: 1000;        /* ✅ ensure it's above other content */
+  transition: transform 0.2s ease-in-out;
+}
+
+.logo-img:hover {
+  transform: scale(1.05); /* small hover zoom */
+}
+
+/* 📱 Responsive Adjustments */
+@media (max-width: 768px) {
+  .logo-img {
+    height: 60px;
+    top: 15px;
+    left: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    height: 45px;
+    top: 10px;
+    left: 10px;
+  }
+}
+
+
+
+

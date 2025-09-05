@@ -1,0 +1,121 @@
+.container1 {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
+}
+.signup-container {
+  width: 100%;
+  max-width: 480px; /* Increased width */
+  padding: 2.5rem;
+  border-radius: 16px;
+  /* box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); */
+  color: #1e293b;
+  background: rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #cbd5e1;
+}
+
+.signup-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 36px rgb(159, 172, 161);
+}
+
+.signup-container h2 {
+  margin-bottom: 1rem;
+  color: #16a34a;
+  text-align: center;
+  font-weight: 700;
+  font-size: 2rem;
+}
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  border-radius: 12px;
+  gap: 16px;
+}
+.signup-form input
+
+{
+  padding: 0.65rem 1rem;
+  margin-bottom: 0.5rem; /* Reduced gap between fields */
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 1rem;
+  background-color: #ffffff;
+  color: #1e293b;
+  transition: all 0.3s ease;
+  outline: green;
+}
+.signup-form input:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 8px rgba(22, 163, 74, 0.3);
+}
+
+.signup-form button {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1rem;
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 0.8rem;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+.signup-form button:hover {
+  background: linear-gradient(135deg, #22c55e, #15803d);
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.4);
+}
+@media (max-width: 480px) {
+  .signup-container {
+    padding: 1.5rem;
+    margin: 1rem;
+    max-width: 95%;
+  }
+  .signup-form {
+    padding: 15px;
+  }
+  .signup-container h2 {
+    font-size: 1.5rem;
+  }
+}
+/* 🌐 Logo Styling */
+.logo-img {
+  position: absolute;     /* stick to top-left */
+  top: 20px;              /* spacing from top */
+  left: 20px;             /* spacing from left */
+  height: 80px;           /* adjust size to match certiedge.com logo */
+  width: auto;            /* keep aspect ratio */
+  object-fit: contain;    /* prevent distortion */
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.logo-img:hover {
+  transform: scale(1.05); /* subtle zoom on hover */
+}
+
+/* 📱 Responsive Adjustments */
+@media (max-width: 768px) {
+  .logo-img {
+    height: 50px;   /* slightly smaller on tablets */
+    top: 15px;
+    left: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    height: 40px;   /* smaller for mobile */
+    top: 10px;
+    left: 10px;
+  }
+}

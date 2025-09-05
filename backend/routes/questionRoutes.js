@@ -15,8 +15,9 @@ router.get('/generate-set', async (req, res) => {
           _id: 1,
           section: 1,
           questionText: 1,
-          options: 1
-          // correctAnswer excluded here
+          options: 1,
+          
+          hint: 1
         }
       }
     ]);
@@ -29,7 +30,8 @@ router.get('/generate-set', async (req, res) => {
           _id: 1,
           section: 1,
           questionText: 1,
-          options: 1
+          options: 1,
+          hint: 1
         }
       }
     ]);
@@ -42,7 +44,8 @@ router.get('/generate-set', async (req, res) => {
           _id: 1,
           section: 1,
           questionText: 1,
-          options: 1
+          options: 1,
+          hint: 1
         }
       }
     ]);
@@ -57,11 +60,11 @@ router.get('/generate-set', async (req, res) => {
   }
 });
 
-// ✅ New Route: get all questions with correctAnswer for scoring
+// ✅ New Route: get all questions with correctAnswer for scoring/review
 router.get('/full', async (req, res) => {
   try {
     const questions = await Question.find({}, '-__v'); // exclude __v field
-    res.json(questions);
+    res.json(questions); // includes hint + correctAnswer
   } catch (err) {
     console.error('❌ Error fetching full questions:', err);
     res.status(500).json({ message: 'Server error fetching full questions' });

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/AdminPage.css";
+import certiEdgeLogo from "../assets/certiedge-removebg-preview.png";
 
 const AdminPage = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedRow, setExpandedRow] = useState(null);
+
+  // ✅ Get logged-in user from localStorage
+//  const loggedInUser = JSON.parse(localStorage.getItem("user")) || {};
+  
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -38,6 +43,11 @@ const AdminPage = () => {
 
   return (
     <div className="admin-container">
+      <img
+                        src={certiEdgeLogo}
+                        alt="CertiEdge Logo"
+                        className='logo-img'
+                      />
       <div className="admin-card">
         <h1 className="admin-title">📋 Test Submissions</h1>
 
@@ -48,6 +58,7 @@ const AdminPage = () => {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Company</th>
+                 <th>Phone No</th>
                 <th>Score</th>
                 <th>Result</th>
                 <th>Submission Date</th>
@@ -56,35 +67,50 @@ const AdminPage = () => {
             <tbody>
               {results.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="no-submissions">No submissions found.</td>
+                  <td colSpan="6" className="no-submissions">
+                    No submissions found.
+                  </td>
                 </tr>
               ) : (
                 results.map((user, index) => {
                   console.log("🧪 User submission:", user); // Debug log
 
-                  const {
+                  // ✅ If backend doesn't provide name/email, take from localStorage
+                    const {
                     name = "—",
                     email = "—",
                     company = "—",
+                     phoneno = "—",
                     sectionScores = {},
                     submittedAt,
                   } = user;
 
+
                   const score = sectionScores.totalScore;
-                  const scoreDisplay = typeof score === "number" ? `${score}/100` : "—/100";
-                  const dateDisplay = submittedAt ? new Date(submittedAt).toLocaleDateString() : "Invalid Date";
+                  const scoreDisplay =
+                    typeof score === "number" ? `${score}/100` : "—/100";
+                  const dateDisplay = submittedAt
+                    ? new Date(submittedAt).toLocaleDateString()
+                    : "Invalid Date";
                   const resultColor = score >= 50 ? "result-pass" : "result-fail";
 
                   return (
+                  
                     <React.Fragment key={index}>
+                      
+                      
                       <tr>
                         <td>{name}</td>
                         <td>{email}</td>
                         <td>{company}</td>
+                         <td>{phoneno}</td>
                         <td>
                           <div className="score-cell">
                             <span className="score-badge">{scoreDisplay}</span>
-                            <button className="dropdown-button" onClick={() => toggleExpand(index)}>
+                            <button
+                              className="dropdown-button"
+                              onClick={() => toggleExpand(index)}
+                            >
                               ▼
                             </button>
                           </div>
@@ -102,13 +128,29 @@ const AdminPage = () => {
                             <div className="section-breakdown">
                               <strong>Section-wise Scores:</strong>
                               <ul>
-                                <li className={getColorClass(sectionScores.English || 0, 20)}>
+                                <li
+                                  className={getColorClass(
+                                    sectionScores.English || 0,
+                                    20
+                                  )}
+                                >
                                   English: {sectionScores.English || 0}/20
                                 </li>
-                                <li className={getColorClass(sectionScores.MathsReasoning || 0, 40)}>
-                                  Maths Reasoning: {sectionScores.MathsReasoning || 0}/40
+                                <li
+                                  className={getColorClass(
+                                    sectionScores.MathsReasoning || 0,
+                                    40
+                                  )}
+                                >
+                                  Maths Reasoning:{" "}
+                                  {sectionScores.MathsReasoning || 0}/40
                                 </li>
-                                <li className={getColorClass(sectionScores.Aptitude || 0, 40)}>
+                                <li
+                                  className={getColorClass(
+                                    sectionScores.Aptitude || 0,
+                                    40
+                                  )}
+                                >
                                   Aptitude: {sectionScores.Aptitude || 0}/40
                                 </li>
                               </ul>
@@ -129,3 +171,4 @@ const AdminPage = () => {
 };
 
 export default AdminPage;
+

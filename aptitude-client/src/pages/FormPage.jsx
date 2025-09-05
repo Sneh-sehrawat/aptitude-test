@@ -1,19 +1,23 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './FormPage.css';
+import "./FormPage.css";
+import certiEdgeLogo from "../assets/certiedge-removebg-preview.png"
+
 
 function FormPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+    college: '',
+    stream: '',
+    phoneno: '',
     company: '',
-    cgpa: '',
     enrollment: '',
     agree: false
   });
+  
 
   const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -24,31 +28,41 @@ function FormPage() {
   };
 
   const handleSubmit = async () => {
-    const { name, email, company, enrollment, agree } = formData;
+    const { college,phoneno, stream, agree} = formData;
 
-    if (!name || !email || !company || !enrollment || !agree) {
-      alert('⚠️ Please fill in all required fields and accept the terms.');
+    // ✅ Required fields check (only college & stream mandatory)
+    if (!college || !stream || !agree||!phoneno) {
+      alert('⚠️ Please fill in College, Stream and accept the terms.');
       return;
     }
 
     try {
+      // Save user info
       localStorage.setItem('userInfo', JSON.stringify(formData));
-      localStorage.setItem('name', name);
-      localStorage.setItem('email', email);
-      localStorage.setItem('company', company);
-      
-      localStorage.setItem('userInfo', JSON.stringify(formData));
+
+      // Fetch questions
       const res = await axios.get('http://localhost:5050/api/questions/generate-set');
+      
+      // Save questions
       localStorage.setItem('questions', JSON.stringify(res.data));
+
+      // Navigate to quiz
       navigate('/quiz');
     } catch (err) {
       console.error(err);
-      alert('Error fetching questions. Please try again.');
+      alert('❌ Error fetching questions. Please try again.');
     }
   };
 
   return (
+    <div>
     <div className="form-split-container">
+      <img
+        src={certiEdgeLogo}
+        alt="CertiEdge Logo"
+        className='logo-img1'
+      />
+      
       <div className="form-left">
         <h2>Welcome to the Aptitude Test</h2>
         <p>This test is designed to evaluate your aptitude, reasoning, and communication skills. Please ensure the following before you start:</p>
@@ -57,6 +71,7 @@ function FormPage() {
           <li>📌 Do not switch tabs or minimize the window</li>
           <li>📌 Keep your internet connection stable</li>
           <li>📌 You can flag questions to revisit later</li>
+          <li>📌 You can use hint maximum of 3 times</li>
           <li>📌 Once submitted, the test cannot be restarted</li>
         </ul>
         <p className="disclaimer">✅ By checking the box, you agree to follow all the test rules and conduct honestly.</p>
@@ -64,11 +79,11 @@ function FormPage() {
 
       <div className="form-right">
         <h3>Enter Your Details</h3>
-        <input type="text" name="name" placeholder="👤 Full Name" onChange={handleChange} />
-        <input type="email" name="email" placeholder="📧 Email" onChange={handleChange} />
-        <input type="text" name="company" placeholder="🏢 Company" onChange={handleChange} />
-        <input type="text" name="cgpa" placeholder="🎓 College CGPA (Optional)" onChange={handleChange} />
-        <input type="text" name="enrollment" placeholder="🆔 Enrollment Number" onChange={handleChange} />
+        <input type="text" name="college" placeholder="🏫 College Name" onChange={handleChange} />
+        <input type="text" name="phoneno" placeholder="☎️ Phone Number" onChange={handleChange} />
+        <input type="text" name="stream" placeholder="📚 Stream" onChange={handleChange} />
+        <input type="text" name="company" placeholder="🏢 Company (Optional)" onChange={handleChange} />
+        <input type="text" name="enrollment" placeholder="🆔 Enrollment Number (Optional)" onChange={handleChange} />
 
         <label className="checkbox-label">
           <input type="checkbox" name="agree" onChange={handleChange} /> I accept all terms and agree to proceed
@@ -76,7 +91,7 @@ function FormPage() {
 
         <button onClick={handleSubmit}>🚀 Start Test</button>
       </div>
-    </div>
+    </div></div>
   );
 }
 

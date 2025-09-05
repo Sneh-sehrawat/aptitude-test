@@ -1,69 +1,184 @@
 .result-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background: linear-gradient(to right, #f5faff, #eaf4ff);
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
-    animation: fadeIn 0.8s ease-in-out;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.85); /* glassy look */
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in-out;
+  border: 1px solid rgba(200, 215, 235, 0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-container h2 {
+  font-size: 2rem;
+  color: #1a365d; /* deep navy */
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.pass-fail {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #fff;
+  padding: 12px 24px;
+  display: inline-block;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #28a745, #218838);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Red for Failed */
+.pass-fail.failed {
+  background: linear-gradient(135deg, #dc3545, #b52a38);
+}
+
+.score-breakdown {
+  background: linear-gradient(to right, #f9fbff, #eef4ff);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border: 1px solid #d6e0f0;
+  text-align: left;
+  color: #1a365d;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.score-breakdown p {
+  font-size: 1rem;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(0,0,0,0.05);
+}
+
+.score-breakdown p:last-child {
+  border-bottom: none;
+}
+
+.review-button {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  margin: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.review-button:hover {
+  background: linear-gradient(135deg, #1e40af, #1e3a8a);
+  transform: translateY(-2px);
+}
+
+/* ✅ Responsive design */
+@media (max-width: 768px) {
+  .result-container {
+    padding: 20px;
+    margin: 20px;
   }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
+
   .result-container h2 {
-    font-size: 30px;
-    color: #003366;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
   }
-  
+
   .pass-fail {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #fff;
-    padding: 10px 20px;
-    display: inline-block;
-    border-radius: 6px;
-    background-color: #28a745; /* green default */
+    font-size: 1rem;
+    padding: 8px 16px;
   }
-  
-  .pass-fail:contains('Failed') {
-    background-color: #dc3545;
-  }
-  
-  .score-breakdown {
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    border: 1px solid #dce6f1;
-    text-align: left;
-    color: #003366;
-  }
-  
+
   .score-breakdown p {
-    font-size: 17px;
-    margin: 10px 0;
+    font-size: 0.95rem;
   }
-  
+
   .review-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 14px 30px;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-weight: bold;
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
   }
-  
-  .review-button:hover {
-    background-color: #0056b3;
+}
+.pass-fail.failed {
+  background: linear-gradient(135deg, #ff4d6d, #c9184a);
+  box-shadow: 0 6px 15px rgba(201, 24, 74, 0.35);
+  position: relative;
+  padding-left: 45px; /* space for icon */
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+/* Add ❌ icon via pseudo-element */
+.pass-fail.failed::before {
+  content: "✖";
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  opacity: 0.9;
+}
+
+/* Hover effect */
+.pass-fail.failed:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 22px rgba(201, 24, 74, 0.45);
+}
+
+/* Subtle glowing pulse animation */
+@keyframes failedPulse {
+  0% { box-shadow: 0 0 0 0 rgba(201, 24, 74, 0.5); }
+  70% { box-shadow: 0 0 0 10px rgba(201, 24, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(201, 24, 74, 0); }
+}
+
+.pass-fail.failed {
+  animation: failedPulse 2s infinite;
+}
+.logo-img {
+  position: absolute;     /* stick to top-left */
+  top: 20px;              /* spacing from top */
+  left: 20px;             /* spacing from left */
+  height: 80px;           /* adjust size to match certiedge.com logo */
+  width: auto;            /* keep aspect ratio */
+  object-fit: contain;    /* prevent distortion */
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.logo-img:hover {
+  transform: scale(1.05); /* subtle zoom on hover */
+}
+
+/* 📱 Responsive Adjustments */
+@media (max-width: 768px) {
+  .logo-img {
+    height: 50px;   /* slightly smaller on tablets */
+    top: 15px;
+    left: 15px;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    height: 40px;   /* smaller for mobile */
+    top: 10px;
+    left: 10px;
+  }
+}

@@ -7,7 +7,7 @@ function ProtectedRoute({ children }) {
 
   if (!token) {
     // If no token, redirect to login
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/signup" replace />;
   }
 
   return children; // If token exists, allow access
