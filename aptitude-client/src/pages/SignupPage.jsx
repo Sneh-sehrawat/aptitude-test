@@ -12,6 +12,7 @@ function SignupPage() {
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
   const [phoneno, setPhoneno] = useState('');
+  const API_BASE =  "https://aptitude-test-r4l2.onrender.com";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +23,7 @@ function SignupPage() {
     }
 
     try {
-      const { data } = await axios.post('http://localhost:5050/api/auth/signup', {
+      const { data } = await axios.post(`${API_BASE}/api/auth/signup`, {
         name,
         email,
         password,

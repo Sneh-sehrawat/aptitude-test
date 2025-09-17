@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/ReviewPage.css';
-import certiEdgeLogo from "../assets/certiedge-removebg-preview.png"
+import certiEdgeLogo from "../assets/certiedge-removebg-preview.png";
 
 function ReviewPage() {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [flagged, setFlagged] = useState([]);
+  const API_BASE = import.meta.env.VITE_API_BASE || "https://aptitude-test-r4l2.onrender.com";
 
   useEffect(() => {
     const q = JSON.parse(localStorage.getItem('questions')) || [];
@@ -30,38 +31,24 @@ function ReviewPage() {
     return 'Skipped';
   };
 
-  const answeredCount = questions.length ? questions.filter(q => answers[q._id]).length : 0;
-  const flaggedOnlyCount = flagged.length && questions.length ? flagged.filter(i => !answers[questions[i]?._id]).length : 0;
-  const skippedCount = questions.length ? questions.length - answeredCount : 0;
+  const answeredCount = questions.filter(q => answers[q._id]).length;
+  const flaggedOnlyCount = flagged.filter(i => !answers[questions[i]?._id]).length;
+  const skippedCount = questions.length - answeredCount;
 
   const handleFinalSubmit = async () => {
-    
-
-    // ✅ Extract user info
     const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-    const { company,phoneno,college,stream,enrollment,highmarks,intermarks,cgpa} = userInfo;
+    const { company, phoneno, college, stream, enrollment, highmarks, intermarks, cgpa } = userInfo;
     const timeTaken = localStorage.getItem("timeTaken") || null;
     const token = localStorage.getItem("token");
 
-    console.log("🧾 Submitting user info:", {  company, timeTaken });
-    console.log("📦 Token:", token);
-    console.log("📦 Answers:", answers);
-
     try {
-      const resQuestions = await fetch("http://localhost:5050/api/questions/full", {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
+      // Fetch full questions to calculate score
+      const resQuestions = await fetch(`${API_BASE}/api/questions/full`, {
+        headers: { "Authorization": `Bearer ${token}` }
       });
-
       const fullQuestions = await resQuestions.json();
 
-      const scoreData = {
-        English: 0,
-        MathsReasoning: 0,
-        Aptitude: 0,
-        total: 0
-      };
+      const scoreData = { English: 0, MathsReasoning: 0, Aptitude: 0, total: 0 };
 
       fullQuestions.forEach(q => {
         const userAnswer = answers[q._id];
@@ -72,18 +59,17 @@ function ReviewPage() {
           scoreData.total += score;
         }
       });
-      
 
       localStorage.setItem("score", JSON.stringify(scoreData));
 
-      const response = await fetch("http://localhost:5050/api/submit-test", {
+      // Submit final test
+      const response = await fetch(`${API_BASE}/api/submit-test`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-          
           company,
           phoneno,
           college,
@@ -92,18 +78,14 @@ function ReviewPage() {
           highmarks,
           intermarks,
           cgpa,
-          
           score: scoreData,
           timeTaken,
-          type:"quiz",
+          type: "quiz",
         })
       });
 
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to submit test");
-      }
+      if (!response.ok) throw new Error(data.message || "Failed to submit test");
 
       console.log("✅ Test submitted successfully:", data);
       navigate('/result');
@@ -123,39 +105,33 @@ function ReviewPage() {
 
   return (
     <div>
-      <img
-        src={certiEdgeLogo}
-        alt="CertiEdge Logo"
-        className='logo-img'
-      />
-      
-    <div className="review-container">
-      
-      
-      <h2>Review Your Responses</h2>
-      <div className="review-grid">
-        {questions.map((q, index) => (
-          <div
-            key={index}
-            className={`review-item ${getStatus(index, q._id).toLowerCase()}`}
-            onClick={() => jumpToQuestion(index)}
-            style={{ cursor: 'pointer' }}
-          >
-            Q{index + 1}: {getStatus(index, q._id).replace('-', ' ')}
-          </div>
-        ))}
-      </div>
+      <img src={certiEdgeLogo} alt="CertiEdge Logo" className='logo-img' />
+      <div className="review-container">
+        <h2>Review Your Responses</h2>
+        <div className="review-grid">
+          {questions.map((q, index) => (
+            <div
+              key={index}
+              className={`review-item ${getStatus(index, q._id).toLowerCase()}`}
+              onClick={() => jumpToQuestion(index)}
+              style={{ cursor: 'pointer' }}
+            >
+              Q{index + 1}: {getStatus(index, q._id).replace('-', ' ')}
+            </div>
+          ))}
+        </div>
 
-      <div className="review-summary">
-        <p>✅ Answered: {answeredCount}</p>
-        <p>🚩 Flagged: {flaggedOnlyCount}</p>
-        <p>⚠️ Skipped: {skippedCount}</p>
-      </div>
+        <div className="review-summary">
+          <p>✅ Answered: {answeredCount}</p>
+          <p>🚩 Flagged: {flaggedOnlyCount}</p>
+          <p>⚠️ Skipped: {skippedCount}</p>
+        </div>
 
-      <button className="final-submit-btn" onClick={handleFinalSubmit}>
-        Submit Final Test
-      </button>
-    </div></div>
+        <button className="final-submit-btn" onClick={handleFinalSubmit}>
+          Submit Final Test
+        </button>
+      </div>
+    </div>
   );
 }
 

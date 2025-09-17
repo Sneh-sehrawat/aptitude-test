@@ -13,7 +13,7 @@ const AdminPage = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const res = await axios.get("http://localhost:5050/api/admin/results");
+        const res = await axios.get("https://aptitude-test-r4l2.onrender.com/api/admin/results");
         console.log("🔍 Submissions received:", res.data);
         setResults(res.data);
       } catch (error) {

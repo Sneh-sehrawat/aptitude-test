@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/QuizPage.css';
 
-
 function QuizPage() {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
@@ -14,15 +13,14 @@ function QuizPage() {
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const[numhintsused,setNumHintsUsed]=useState(0);
-  const[idshowhint,setIdShowHint]=useState([]);
-
-  // ✅ Chat states
+  const [numHintsUsed, setNumHintsUsed] = useState(0);
+  const [idShowHint, setIdShowHint] = useState([]);
   const [isChatMinimized, setIsChatMinimized] = useState(true);
 
   const reviewMode = localStorage.getItem('reviewMode') === 'true';
+  const API_BASE = import.meta.env.VITE_API_BASE || "https://aptitude-test-r4l2.onrender.com";
 
-  // ✅ Prevent copy/paste/right-click
+  // Prevent copy/paste/right-click
   useEffect(() => {
     const handleContextMenu = e => e.preventDefault();
     const handleCopyPaste = e => e.preventDefault();
@@ -38,7 +36,7 @@ function QuizPage() {
     };
   }, []);
 
-  // ✅ Load questions + answers from localStorage
+  // Load questions + answers from localStorage
   useEffect(() => {
     const a = JSON.parse(localStorage.getItem("answers")) || {};
     const f = JSON.parse(localStorage.getItem("flagged")) || [];
@@ -48,7 +46,7 @@ function QuizPage() {
 
     const fetchFullQuestions = async () => {
       try {
-        const res = await fetch("http://localhost:5050/api/questions/full", {
+        const res = await fetch(`${API_BASE}/api/questions/full`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         const fullQ = await res.json();
@@ -61,7 +59,6 @@ function QuizPage() {
     };
 
     fetchFullQuestions();
-
     setAnswers(a);
     setFlagged(f);
 
@@ -74,9 +71,9 @@ function QuizPage() {
       localStorage.removeItem("returnToReview");
       localStorage.setItem("canReview", "true");
     }
-  }, [navigate]);
+  }, [navigate, API_BASE]);
 
-  // ✅ Timer (only in quiz mode)
+  // Timer
   useEffect(() => {
     if (reviewMode) return;
     const timer = setInterval(() => {
@@ -98,7 +95,7 @@ function QuizPage() {
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-  // ✅ Select option
+  // Select option
   const handleOptionClick = (selected) => {
     if (reviewMode) return;
     const id = questions[currentIndex]._id;
@@ -107,9 +104,7 @@ function QuizPage() {
       localStorage.setItem("answers", JSON.stringify(newAns));
       return newAns;
     });
-    if (skipped.includes(currentIndex)) {
-      setSkipped(skipped.filter(i => i !== currentIndex));
-    }
+    if (skipped.includes(currentIndex)) setSkipped(skipped.filter(i => i !== currentIndex));
   };
 
   const skipQuestion = () => {
@@ -143,13 +138,13 @@ function QuizPage() {
     setTimeout(() => navigate("/review"), 300);
   };
 
-  // ✅ AI Chatbot
+  // AI Chatbot
   const askAI = async (question) => {
     if (!question) return;
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:5050/api/gemini/explain-batch", {
+      const res = await fetch(`${API_BASE}/api/gemini/explain-batch`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({
@@ -189,8 +184,6 @@ function QuizPage() {
 
   return (
     <div className="quiz-page" style={{ userSelect: 'none' }}>
-     
-      
       {!reviewMode && <div className="timer-box">⏰ Time Left: {formatTime(timeLeft)}</div>}
 
       <div className="quiz-header">
@@ -205,23 +198,23 @@ function QuizPage() {
             <h2>Question {currentIndex + 1}</h2>
             <p className="question-text">{currentQ.questionText}</p>
 
-            {/* ✅ Hint only in quiz mode */}
+            {/* Hint */}
             {!reviewMode && currentQ.hint && (
               <>
                 <div
                   className="hint-toggle"
-                   onClick={() => {if(numhintsused<3){
-                    setShowHint(prev => !prev);
-                    
-                    if(!idshowhint.includes(currentIndex)){
-                      setNumHintsUsed(numhintsused+1);
-                      setIdShowHint([...idshowhint,currentIndex]);
+                  onClick={() => {
+                    if (numHintsUsed < 3) {
+                      setShowHint(prev => !prev);
+                      if (!idShowHint.includes(currentIndex)) {
+                        setNumHintsUsed(numHintsUsed + 1);
+                        setIdShowHint([...idShowHint, currentIndex]);
+                      }
+                    } else {
+                      alert("You have used all your hints");
                     }
-                  } 
-                    else
-                     alert("You have used all your hints")}}
+                  }}
                 >
-                  
                   💡 {showHint ? "Hide Hint" : "Show Hint"}
                 </div>
                 {showHint && <p className="hint-box">💡 {currentQ.hint}</p>}
@@ -298,7 +291,7 @@ function QuizPage() {
         </div>
       </div>
 
-      {/* ✅ AI Chatbot only in review mode */}
+      {/* AI Chatbot */}
       {reviewMode && (
         <>
           {!isChatMinimized ? (
@@ -308,7 +301,7 @@ function QuizPage() {
                   AI Helper
                   <button
                     className="chat-minimize-btn"
-                    onClick={() => setIsChatMinimized(true)} // ✅ minimize instead of vanish
+                    onClick={() => setIsChatMinimized(true)}
                   >
                     ❌
                   </button>
@@ -325,7 +318,6 @@ function QuizPage() {
               </div>
             </div>
           ) : (
-            // ✅ Floating minimized chat button
             <button
               className="chat-maximize-btn"
               onClick={() => setIsChatMinimized(false)}

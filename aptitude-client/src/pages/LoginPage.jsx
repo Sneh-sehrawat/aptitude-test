@@ -4,13 +4,15 @@ import axios from "axios";
 import "../styles/LoginPage.css";
 import certiEdgeLogo from "../assets/certiedge-removebg-preview.png";
 
-
 function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user"); // default role
   const [loading, setLoading] = useState(false);
+
+  // ✅ Use environment variable or fallback to Render backend
+  const API_BASE =  "https://aptitude-test-r4l2.onrender.com";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,14 +25,14 @@ function LoginPage() {
     try {
       setLoading(true);
 
-      const { data } = await axios.post("http://localhost:5050/api/auth/login", {
+      const { data } = await axios.post(`${API_BASE}/api/auth/login`, {
         email,
         password,
         role,
       });
 
       if (data.success) {
-        // ✅ Save token + user info in localStorage
+        // Save token + user info in localStorage
         if (data.token) {
           localStorage.setItem("token", data.token);
         }
@@ -39,9 +41,8 @@ function LoginPage() {
           localStorage.setItem("user", JSON.stringify(data.user));
         }
 
-        // redirect based on role
+        // Redirect based on role
         if (data.role === "admin") {
-          console.log(data);
           navigate("/admin");
         } else {
           navigate("/form");
@@ -59,15 +60,9 @@ function LoginPage() {
 
   return (
     <div className="container">
-      <img
-        src={certiEdgeLogo}
-        alt="CertiEdge Logo"
-        className='logo-img'
-      />
-      
-      
+      <img src={certiEdgeLogo} alt="CertiEdge Logo" className="logo-img" />
+
       <div className="login-container" style={{ maxWidth: 400 }}>
-        
         <h2>Login</h2>
 
         <form className="login-form" onSubmit={handleSubmit}>
