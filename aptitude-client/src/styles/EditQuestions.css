@@ -1,0 +1,178 @@
+/* 🌿 Isolated Styles for Question Management Page */
+
+.question-admin-container {
+  min-height: 91vh;
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  padding: 2rem 1rem;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.question-admin-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #065f46;
+  margin-bottom: 1.5rem;
+  border-left: 6px solid #22c55e;
+  padding-left: 0.75rem;
+}
+
+.question-admin-form {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.question-admin-input,
+.question-admin-select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #d1fae5;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.question-admin-input:focus,
+.question-admin-select:focus {
+  border-color: #22c55e;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+.question-admin-button {
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.question-admin-button:hover {
+  background-color: #16a34a;
+  transform: scale(1.02);
+}
+
+.question-admin-subtitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #065f46;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.question-admin-list {
+  width: 100%;
+  max-width: 800px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.question-admin-list-item {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: transform 0.2s ease, background-color 0.2s;
+}
+
+.question-admin-list-item:hover {
+  background-color: #f0fdf4;
+  transform: scale(1.01);
+}
+
+.question-admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.question-admin-edit,
+.question-admin-delete {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.question-admin-edit {
+  background-color: #facc15;
+  color: #78350f;
+}
+
+.question-admin-edit:hover {
+  background-color: #eab308;
+  transform: scale(1.05);
+}
+
+.question-admin-delete {
+  background-color: #ef4444;
+  color: white;
+}
+
+.question-admin-delete:hover {
+  background-color: #dc2626;
+  transform: scale(1.05);
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 768px) {
+  .question-admin-form {
+    padding: 1rem;
+  }
+
+  .question-admin-title {
+    font-size: 1.6rem;
+  }
+
+  .question-admin-list-item {
+    flex-direction: column;
+  }
+
+  .question-admin-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .question-admin-title {
+    font-size: 1.3rem;
+  }
+
+  .question-admin-form {
+    gap: 0.6rem;
+  }
+
+  .question-admin-input,
+  .question-admin-select {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  .question-admin-button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+}

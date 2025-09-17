@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import certiEdgeLogo from "../assets/certiedge-removebg-preview.png"
+import certiEdgeLogo from "../assets/certiedge-removebg-preview.png";
 
-// Component for the main choice page
 const ChoicePage = () => {
   const navigate = useNavigate();
 
@@ -12,16 +11,17 @@ const ChoicePage = () => {
         <img
           src={certiEdgeLogo}
           alt="CertiEdge Logo"
-          className='logo-img'
+          className="logo-img"
         />
-        
+
         <div className="text-container">
           <h1 className="title">Welcome!</h1>
           <p className="subtitle">Please choose an option to continue.</p>
         </div>
+
         <div className="card-container">
-          {/* Mock Test Card using navigate */}
-          <div className="card mock-test-card" onClick={() => navigate('/mock')}>
+          {/* Mock Test Card */}
+          <div className="card" onClick={() => navigate('/mock')}>
             <img
               src="https://placehold.co/300x200/4F46E5/FFFFFF?text=Mock+Test"
               alt="Mock Test Illustration"
@@ -33,8 +33,8 @@ const ChoicePage = () => {
             </p>
           </div>
 
-          {/* Quiz Form Card using navigate */}
-          <div className="card quiz-form-card" onClick={() => navigate('/form')}>
+          {/* Quiz Form Card */}
+          <div className="card" onClick={() => navigate('/form')}>
             <img
               src="https://placehold.co/300x200/10B981/FFFFFF?text=Quiz+Time"
               alt="Quiz Illustration"
@@ -47,59 +47,76 @@ const ChoicePage = () => {
           </div>
         </div>
       </div>
-      {/* Vanilla CSS styles are included here for a self-contained component */}
+
+      {/* Responsive CSS */}
       <style>
         {`
-          .container, .page {
+          .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 91vh;
+            justify-content: flex-start;
+            min-height: 100vh;
             background-color: #e8f5e9;
             padding: 1rem;
             font-family: 'Inter', sans-serif;
             text-align: center;
+            position: relative;
           }
-          
+
+          .logo-img {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+          }
+
+          .logo-img:hover {
+            transform: scale(1.05);
+          }
+
           .text-container {
-            margin-bottom: 2.5rem;
+            margin-top: 5rem;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
           }
 
           .title {
-            font-size: 2.25rem;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
             font-weight: 800;
             color: #2e7d32;
             margin-bottom: 0.5rem;
           }
 
           .subtitle {
-            font-size: 1.125rem;
+            font-size: clamp(1rem, 3vw, 1.25rem);
             color: #43a047;
           }
 
           .card-container {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 1.5rem;
-          }
-
-          @media (min-width: 640px) {
-            .card-container {
-              flex-direction: row;
-            }
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 1rem;
           }
 
           .card {
-            width: 20rem;
-            height: 24rem;
+            flex: 1 1 280px;
+            max-width: 350px;
             background-color: #ffffff;
             border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             padding: 1.5rem;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -107,72 +124,48 @@ const ChoicePage = () => {
 
           .card:hover {
             transform: scale(1.05);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
           }
 
           .card-image {
             width: 100%;
-            height: auto;
+            max-height: 200px;
+            object-fit: cover;
             border-radius: 0.5rem;
             margin-bottom: 1rem;
           }
 
           .card-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #2e7d32;
             text-align: center;
           }
 
           .card-subtitle {
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             color: #66bb6a;
             text-align: center;
             margin-top: 0.5rem;
           }
 
-          .button {
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #ffffff;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            border: none;
-            cursor: pointer;
-          }
-
-          .button:hover {
-            transform: scale(1.05);
-          }
-
-          .mock-test-button {
-            background-color: #4caf50;
-          }
-
-          .mock-test-button:hover {
-            background-color: #388e3c;
-          }
-
-          .quiz-form-button {
-            background-color: #8bc34a;
-          }
-
-          .quiz-form-button:hover {
-            background-color: #689f38;
+          /* Mobile */
+          @media (max-width: 640px) {
             .logo-img {
-  position: absolute;     /* stick to top-left */
-  top: 20px;              /* spacing from top */
-  left: 20px;             /* spacing from left */
-  height: 80px;           /* adjust size to match certiedge.com logo */
-  width: auto;            /* keep aspect ratio */
-  object-fit: contain;    /* prevent distortion */
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-}
+              height: 50px;
+              top: 0.5rem;
+              left: 0.5rem;
+            }
+            .text-container {
+              margin-top: 4rem;
+            }
+          }
 
-}
+          /* Tablet */
+          @media (min-width: 641px) and (max-width: 1024px) {
+            .card-container {
+              gap: 2rem;
+            }
           }
         `}
       </style>

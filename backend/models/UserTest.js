@@ -13,7 +13,13 @@ const UserTestSchema = new mongoose.Schema({
   email: { type: String, required: true },
   phoneno: { type: String },    // 👈 add if missing
   company: { type: String },    // 👈 add if missing
-  college: { type: String },    // 👈 add if missing
+  college: { type: String },
+  stream: { type: String },  // 👈 add if missing
+  enrollment: { type: String },
+  highmarks:{type:String},
+  intermarks:{type:String},
+  cgpa:{type:String},  // 👈 add if missing
+  type: {type:String},    // 👈 add if missing
   sectionScores: {
     English: Number,
     MathsReasoning: Number,

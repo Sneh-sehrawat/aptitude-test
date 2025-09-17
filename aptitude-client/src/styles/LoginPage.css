@@ -5,18 +5,19 @@
   align-items: center;
   justify-content: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  
+
+  /* ✨ Professional green gradient */
+  background: linear-gradient(135deg, #f8fff9 0%, #e6f9f0 30%, #d1fae5 60%, #16a34a 100%);
 }
 
 /* === Login Container === */
 .login-container {
-  width: 100%;
-  max-width: 480px; /* Increased width */
+width: 100%;
+  max-width: 480px;
   padding: 2.5rem;
   border-radius: 16px;
-  /* box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); */
   color: #1e293b;
-  background: rgba(0, 0, 0, 0.02);
+   background: #ffffff;  /* solid white, not transparent */
   transition: all 0.3s ease-in-out;
   border: 1px solid #cbd5e1;
 }
@@ -28,7 +29,7 @@
 
 .login-container h2 {
   margin-bottom: 1rem;
-  color: #16a34a;
+  color: #058e3c;
   text-align: center;
   font-weight: 700;
   font-size: 2rem;

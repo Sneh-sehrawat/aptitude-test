@@ -61,14 +61,69 @@ router.get('/generate-set', async (req, res) => {
 });
 
 // ✅ New Route: get all questions with correctAnswer for scoring/review
-router.get('/full', async (req, res) => {
+router.get("/full", async (req, res) => {
+  const quizQuestions = await Question.find({ type: "quiz" });
+  res.json(quizQuestions);
+});
+
+// Get all mock questions
+router.get("/mock/full", async (req, res) => {
+  const mockQuestions = await Question.find({ type: "mock" });
+  res.json(mockQuestions);
+});
+router.post("/", async (req, res) => {
   try {
-    const questions = await Question.find({}, '-__v'); // exclude __v field
-    res.json(questions); // includes hint + correctAnswer
+    const question = new Question(req.body);
+    await question.save();
+    res.status(201).json(question);
   } catch (err) {
-    console.error('❌ Error fetching full questions:', err);
-    res.status(500).json({ message: 'Server error fetching full questions' });
+    res.status(400).json({ error: err.message });
   }
 });
+
+// ✅ READ all questions (no filter, all quiz + mock)
+router.get("/", async (req, res) => {
+  try {
+    const questions = await Question.find();
+    res.json(questions);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ READ one question by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.id);
+    if (!question) return res.status(404).json({ error: "Question not found" });
+    res.json(question);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ UPDATE question by ID
+router.put("/:id", async (req, res) => {
+  try {
+    const updated = await Question.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ error: "Question not found" });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ✅ DELETE question by ID
+router.delete("/:id", async (req, res) => {
+  try {
+    const deleted = await Question.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: "Question not found" });
+    res.json({ message: "Question deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 
 module.exports = router;

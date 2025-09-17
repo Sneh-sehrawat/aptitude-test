@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/ResultPage.css';
 import certiEdgeLogo from "../assets/certiedge-removebg-preview.png";
 
-function ResultPage() {
+function MockResultPage() {
   const navigate = useNavigate();
 
   const [calculatedScore, setCalculatedScore] = useState({
@@ -13,29 +13,23 @@ function ResultPage() {
     total: 0
   });
 
-  
-
   useEffect(() => {
     const savedScore = JSON.parse(localStorage.getItem("score"));
     if (savedScore) {
       setCalculatedScore(savedScore);
     }
-
-    
   }, []);
 
   const handleReviewAnswers = () => {
-    localStorage.setItem('reviewMode', 'true');
-    localStorage.setItem('jumpTo', '0');
-    navigate('/quiz');
+    localStorage.setItem('mock_reviewMode', 'true');
+    localStorage.setItem('mock_jumpTo', '0');
+    navigate('/mock');   // ✅ go to mock test review
   };
 
   const handleStartNewTest = () => {
     localStorage.clear();
     navigate('/');
   };
-
-  
 
   const remark = calculatedScore.total >= 80
     ? "Excellent work!"
@@ -47,13 +41,9 @@ function ResultPage() {
 
   return (
     <div className="result-container">
-      <img
-        src={certiEdgeLogo}
-        alt="CertiEdge Logo"
-        className='logo-img'
-      />
+      <img src={certiEdgeLogo} alt="CertiEdge Logo" className='logo-img' />
       
-      <h2>Your Score Summary</h2>
+      <h2>Mock Test Score Summary</h2>
       <p className="pass-fail">
         {calculatedScore.total >= 50 
           ? '🎉 Congratulations, You Passed!' 
@@ -79,10 +69,8 @@ function ResultPage() {
       >
         Start New Test
       </button>
-
-      
     </div>
   );
 }
 
-export default ResultPage;
+export default MockResultPage;

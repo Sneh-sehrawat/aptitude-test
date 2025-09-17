@@ -12,6 +12,9 @@ function FormPage() {
     phoneno: '',
     company: '',
     enrollment: '',
+    highmarks:'',
+    intermarks:'',
+    cgpa:'',
     agree: false
   });
   
@@ -28,10 +31,10 @@ function FormPage() {
   };
 
   const handleSubmit = async () => {
-    const { college,phoneno, stream, agree} = formData;
+    const { stream, enrollment, college, highmarks, intermarks, cgpa} = formData;
 
     // ✅ Required fields check (only college & stream mandatory)
-    if (!college || !stream || !agree||!phoneno) {
+    if ( !stream || !enrollment|| !college|| !highmarks|| !intermarks|| !cgpa || !formData.agree) {
       alert('⚠️ Please fill in College, Stream and accept the terms.');
       return;
     }
@@ -79,11 +82,12 @@ function FormPage() {
 
       <div className="form-right">
         <h3>Enter Your Details</h3>
-        <input type="text" name="college" placeholder="🏫 College Name" onChange={handleChange} />
-        <input type="text" name="phoneno" placeholder="☎️ Phone Number" onChange={handleChange} />
+         <input type="text" name="highmarks" placeholder="📊 10th Percentage/cgpa" onChange={handleChange} />
+          <input type="text" name="intermarks" placeholder="📊 12th Percentage/cgpa" onChange={handleChange} />
+        <input type="text" name="college" placeholder="🏫 College" onChange={handleChange} />
+         <input type="text" name="cgpa" placeholder="📊 College CGPA" onChange={handleChange} />
         <input type="text" name="stream" placeholder="📚 Stream" onChange={handleChange} />
-        <input type="text" name="company" placeholder="🏢 Company (Optional)" onChange={handleChange} />
-        <input type="text" name="enrollment" placeholder="🆔 Enrollment Number (Optional)" onChange={handleChange} />
+        <input type="text" name="enrollment" placeholder="🆔 Enrollment Number" onChange={handleChange} />
 
         <label className="checkbox-label">
           <input type="checkbox" name="agree" onChange={handleChange} /> I accept all terms and agree to proceed

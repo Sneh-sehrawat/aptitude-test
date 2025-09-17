@@ -34,7 +34,8 @@ app.use('/api/auth', authRoutes);         // Example: /api/auth/login
 app.use('/api/questions', questionRoutes);// Example: /api/questions/fetch
 app.use('/api/admin', adminRoutes);  
 app.use('/api', testRoutes);   
-app.use("/api/gemini", require("./routes/gemini"));     
+app.use("/api/gemini", require("./routes/gemini"));    
+ 
 
 // DATABASE CONNECTION & SERVER START
 mongoose.connect(process.env.MONGO_URI)

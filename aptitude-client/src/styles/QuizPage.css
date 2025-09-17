@@ -666,3 +666,20 @@
 
 ; /* ✅ extra spacing */
 }
+.option-button.correct {
+  background-color: #4caf50; /* green */
+  color: white;
+  border: 2px solid #388e3c;
+}
+
+.option-button.incorrect {
+  background-color: #f44336; /* red */
+  color: white;
+  border: 2px solid #c62828;
+}
+
+.option-button.selected {
+  background-color: #1976d2; /* blue */
+  color: white;
+  border: 2px solid #0d47a1;
+}

@@ -15,6 +15,42 @@ body{
   align-items: flex-start;
 }
 
+.button1{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.main-button1 {
+  background: linear-gradient(135deg, #22c55e, #16a34a); /* Greenish gradient */
+  color: rgb(243, 244, 243);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px; /* slightly more rounded */
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); /* subtle glow */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.main-button1:hover {
+  background: linear-gradient(135deg, #16a34a, #22c55e); /* reverse gradient */
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.5); /* stronger glow on hover */
+}
+
+.main-button1:active {
+  transform: scale(0.98) translateY(1px);
+  box-shadow: 0 3px 10px rgba(34, 197, 94, 0.3);
+}
+
+
+
+
+
+
 .admin-card {
   width: 100%;
   max-width: 1200px;
@@ -250,7 +286,5 @@ body{
     left: 10px;
   }
 }
-
-
 
 

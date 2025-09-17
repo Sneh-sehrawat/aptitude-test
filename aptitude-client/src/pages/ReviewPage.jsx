@@ -35,14 +35,11 @@ function ReviewPage() {
   const skippedCount = questions.length ? questions.length - answeredCount : 0;
 
   const handleFinalSubmit = async () => {
-    if (answeredCount !== questions.length) {
-      alert("Please answer all questions before submitting.");
-      return;
-    }
+    
 
     // ✅ Extract user info
     const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
-    const { company,phoneno,college } = userInfo;
+    const { company,phoneno,college,stream,enrollment,highmarks,intermarks,cgpa} = userInfo;
     const timeTaken = localStorage.getItem("timeTaken") || null;
     const token = localStorage.getItem("token");
 
@@ -90,8 +87,15 @@ function ReviewPage() {
           company,
           phoneno,
           college,
+          stream,
+          enrollment,
+          highmarks,
+          intermarks,
+          cgpa,
+          
           score: scoreData,
-          timeTaken
+          timeTaken,
+          type:"quiz",
         })
       });
 

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import '../styles/QuizPage.css';
 
-function MockPage() {
+function MockTest() {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,42 +13,40 @@ function MockPage() {
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const[numhintsused,setNumHintsUsed]=useState(0);
-  const[idshowhint,setIdShowHint]=useState([]);
-  const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
-
-  // ✅ Chat states
+  const [numhintsused, setNumHintsUsed] = useState(0);
+  const [idshowhint, setIdShowHint] = useState([]);
+  const [showAnswerMap, setShowAnswerMap] = useState({});
   const [isChatMinimized, setIsChatMinimized] = useState(true);
 
-  const reviewMode = localStorage.getItem('reviewMode') === 'true';
+  const STORAGE_PREFIX = "mock_";
+  const reviewMode = localStorage.getItem(`${STORAGE_PREFIX}reviewMode`) === 'true';
 
-  // ✅ Prevent copy/paste/right-click
+  // ✅ Disable copy/paste/right-click
   useEffect(() => {
-    const handleContextMenu = e => e.preventDefault();
-    const handleCopyPaste = e => e.preventDefault();
-    document.addEventListener('contextmenu', handleContextMenu);
-    document.addEventListener('copy', handleCopyPaste);
-    document.addEventListener('cut', handleCopyPaste);
-    document.addEventListener('paste', handleCopyPaste);
+    const block = (e) => e.preventDefault();
+    document.addEventListener('contextmenu', block);
+    document.addEventListener('copy', block);
+    document.addEventListener('cut', block);
+    document.addEventListener('paste', block);
     return () => {
-      document.removeEventListener('contextmenu', handleContextMenu);
-      document.removeEventListener('copy', handleCopyPaste);
-      document.removeEventListener('cut', handleCopyPaste);
-      document.removeEventListener('paste', handleCopyPaste);
+      document.removeEventListener('contextmenu', block);
+      document.removeEventListener('copy', block);
+      document.removeEventListener('cut', block);
+      document.removeEventListener('paste', block);
     };
   }, []);
 
-  // ✅ Load questions + answers from localStorage
+  // ✅ Load questions + stored answers
   useEffect(() => {
-    const a = JSON.parse(localStorage.getItem("answers")) || {};
-    const f = JSON.parse(localStorage.getItem("flagged")) || [];
-    const jumpIndex = parseInt(localStorage.getItem("jumpTo"), 10);
-    const shouldReturn = localStorage.getItem("returnToReview") === "true";
+    const storedAnswers = JSON.parse(localStorage.getItem(`${STORAGE_PREFIX}answers`)) || {};
+    const storedFlagged = JSON.parse(localStorage.getItem(`${STORAGE_PREFIX}flagged`)) || [];
+    const jumpIndex = parseInt(localStorage.getItem(`${STORAGE_PREFIX}jumpTo`), 10);
+    const shouldReturn = localStorage.getItem(`${STORAGE_PREFIX}returnToReview`) === "true";
     const token = localStorage.getItem("token");
 
     const fetchFullQuestions = async () => {
       try {
-        const res = await fetch("http://localhost:5050/api/questions/full", {
+        const res = await fetch("http://localhost:5050/api/questions/mock/full", {
           headers: { "Authorization": `Bearer ${token}` }
         });
         const fullQ = await res.json();
@@ -62,26 +59,25 @@ function MockPage() {
     };
 
     fetchFullQuestions();
-
-    setAnswers(a);
-    setFlagged(f);
+    setAnswers(storedAnswers);
+    setFlagged(storedFlagged);
 
     if (!isNaN(jumpIndex)) {
       setCurrentIndex(jumpIndex);
-      localStorage.removeItem("jumpTo");
+      localStorage.removeItem(`${STORAGE_PREFIX}jumpTo`);
     }
 
     if (shouldReturn) {
-      localStorage.removeItem("returnToReview");
-      localStorage.setItem("canReview", "true");
+      localStorage.removeItem(`${STORAGE_PREFIX}returnToReview`);
+      localStorage.setItem(`${STORAGE_PREFIX}canReview`, "true");
     }
   }, [navigate]);
 
-  // ✅ Timer (only in quiz mode)
+  // ✅ Timer for quiz mode
   useEffect(() => {
     if (reviewMode) return;
     const timer = setInterval(() => {
-      setTimeLeft(prev => {
+      setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
           handleReview();
@@ -103,13 +99,13 @@ function MockPage() {
   const handleOptionClick = (selected) => {
     if (reviewMode) return;
     const id = questions[currentIndex]._id;
-    setAnswers(prev => {
+    setAnswers((prev) => {
       const newAns = { ...prev, [id]: selected };
-      localStorage.setItem("answers", JSON.stringify(newAns));
+      localStorage.setItem(`${STORAGE_PREFIX}answers`, JSON.stringify(newAns));
       return newAns;
     });
     if (skipped.includes(currentIndex)) {
-      setSkipped(skipped.filter(i => i !== currentIndex));
+      setSkipped(skipped.filter((i) => i !== currentIndex));
     }
   };
 
@@ -119,40 +115,48 @@ function MockPage() {
   };
 
   const nextQuestion = () => {
-    if (currentIndex < questions.length - 1) setCurrentIndex(currentIndex + 1);
-    else if (reviewMode && currentIndex === questions.length - 1) {
-      localStorage.removeItem("reviewMode");
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else if (reviewMode && currentIndex === questions.length - 1) {
+      localStorage.removeItem(`${STORAGE_PREFIX}reviewMode`);
       navigate("/result");
     }
     setShowHint(false);
-    setShowCorrectAnswer(false);
   };
 
   const prevQuestion = () => {
     if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
     setShowHint(false);
-    setShowCorrectAnswer(false);
   };
 
   const toggleFlag = () => {
-    if (flagged.includes(currentIndex)) setFlagged(flagged.filter(i => i !== currentIndex));
-    else setFlagged([...flagged, currentIndex]);
+    if (flagged.includes(currentIndex)) {
+      setFlagged(flagged.filter((i) => i !== currentIndex));
+    } else {
+      setFlagged([...flagged, currentIndex]);
+    }
   };
 
   const handleReview = () => {
-    localStorage.setItem('answers', JSON.stringify(answers));
-    localStorage.setItem('flagged', JSON.stringify(flagged));
-    localStorage.setItem('questions', JSON.stringify(questions));
-    setTimeout(() => navigate("/review"), 300);
+    localStorage.setItem(`${STORAGE_PREFIX}answers`, JSON.stringify(answers));
+    localStorage.setItem(`${STORAGE_PREFIX}flagged`, JSON.stringify(flagged));
+    localStorage.setItem(`${STORAGE_PREFIX}questions`, JSON.stringify(questions));
+
+    localStorage.setItem("answers", JSON.stringify(answers));
+    localStorage.setItem("flagged", JSON.stringify(flagged));
+    localStorage.setItem("questions", JSON.stringify(questions));
+
+    setTimeout(() => navigate("/mockreview"), 300);
   };
 
   const handleCheckAnswer = () => {
     if (!reviewMode) {
-      setShowCorrectAnswer(true);
+      const id = questions[currentIndex]._id;
+      setShowAnswerMap((prev) => ({ ...prev, [id]: true }));
     }
   };
 
-  // ✅ AI Chatbot
+  // ✅ AI Helper
   const askAI = async (question) => {
     if (!question) return;
     setLoading(true);
@@ -162,30 +166,35 @@ function MockPage() {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({
-          questions: [{
-            _id: question._id,
-            question: question.questionText,
-            options: question.options,
-            correctAnswer: question.correctAnswer,
-            userAnswer: answers[question._id] || null
-          }]
-        })
+          questions: [
+            {
+              _id: question._id,
+              question: question.questionText,
+              options: question.options,
+              correctAnswer: question.correctAnswer,
+              userAnswer: answers[question._id] || null,
+            },
+          ],
+        }),
       });
       const data = await res.json();
       const explanationData = data.explanations[question._id];
 
       if (explanationData) {
-        setChatMessages(prev => [
+        setChatMessages((prev) => [
           ...prev,
           { from: "user", text: `Explain Q${currentIndex + 1}: ${question.questionText}` },
-          { from: "ai", text: `AI Picked: ${explanationData.aiCorrectOption}\n\nExplanation: ${explanationData.explanation}` }
+          {
+            from: "ai",
+            text: `AI Picked: ${explanationData.aiCorrectOption}\n\nExplanation: ${explanationData.explanation}`,
+          },
         ]);
       } else {
-        setChatMessages(prev => [...prev, { from: "ai", text: "⚠️ Explanation not found for this question." }]);
+        setChatMessages((prev) => [...prev, { from: "ai", text: "⚠️ No explanation available." }]);
       }
     } catch (err) {
       console.error("AI error:", err);
-      setChatMessages(prev => [...prev, { from: "ai", text: "⚠️ Failed to fetch explanation." }]);
+      setChatMessages((prev) => [...prev, { from: "ai", text: "⚠️ Failed to fetch explanation." }]);
     } finally {
       setLoading(false);
     }
@@ -195,16 +204,18 @@ function MockPage() {
 
   const currentQ = questions[currentIndex];
   const selectedAnswer = answers[currentQ._id];
+  const showCorrect = showAnswerMap[currentQ._id] || reviewMode;
 
   return (
-    <div className="quiz-page" style={{ userSelect: 'none' }}>
-      
-      
+    <div className="quiz-page" style={{ userSelect: "none" }}>
       {!reviewMode && <div className="timer-box">⏰ Time Left: {formatTime(timeLeft)}</div>}
 
       <div className="quiz-header">
-        <h1>Aptitude Test</h1>
-        <p>Total Questions: {questions.length}</p>
+        <h1>Mock Test</h1>
+        <p>
+          Total Questions: {questions.length} | Type:{" "}
+          {currentIndex < 4 ? "Quiz" : "Mock"}
+        </p>
       </div>
 
       <div className="quiz-wrapper">
@@ -214,46 +225,41 @@ function MockPage() {
             <h2>Question {currentIndex + 1}</h2>
             <p className="question-text">{currentQ.questionText}</p>
 
-            {/* ✅ Hint only in quiz mode */}
             {!reviewMode && currentQ.hint && (
               <>
                 <div
                   className="hint-toggle"
-                  onClick={() => {if(numhintsused<3){
-                    setShowHint(prev => !prev);
-                    
-                    if(!idshowhint.includes(currentIndex)){
-                      setNumHintsUsed(numhintsused+1);
-                      setIdShowHint([...idshowhint,currentIndex]);
+                  onClick={() => {
+                    if (numhintsused < 3) {
+                      setShowHint((prev) => !prev);
+                      if (!idshowhint.includes(currentIndex)) {
+                        setNumHintsUsed(numhintsused + 1);
+                        setIdShowHint([...idshowhint, currentIndex]);
+                      }
+                    } else {
+                      alert("You have used all your hints");
                     }
-                  } 
-                    else
-                      alert("You have used all your hints")}}
+                  }}
                 >
-                  
                   💡 {showHint ? "Hide Hint" : "Show Hint"}
                 </div>
                 {showHint && <p className="hint-box">💡 {currentQ.hint}</p>}
               </>
             )}
-            {showCorrectAnswer && (
-              <p className="correct-answer-text">
-                Correct Answer: {currentQ.correctAnswer}
-              </p>
-            )}
           </div>
 
-          {(currentIndex === questions.length - 1 || localStorage.getItem("canReview") === "true") && (
+          {(currentIndex === questions.length - 1 ||
+            localStorage.getItem(`${STORAGE_PREFIX}canReview`) === "true") && (
             <div className="submit-wrapper">
               <button
-                className={`submit-button ${reviewMode ? 'locked' : 'ready'}`}
+                className={`submit-button ${reviewMode ? "locked" : "ready"}`}
                 onClick={() => {
                   if (reviewMode) return;
-                  localStorage.setItem("canReview", "true");
-                  localStorage.setItem("answers", JSON.stringify(answers));
-                  localStorage.setItem("flagged", JSON.stringify(flagged));
-                  localStorage.setItem("questions", JSON.stringify(questions));
-                  navigate("/review");
+                  localStorage.setItem(`${STORAGE_PREFIX}canReview`, "true");
+                  localStorage.setItem(`${STORAGE_PREFIX}answers`, JSON.stringify(answers));
+                  localStorage.setItem(`${STORAGE_PREFIX}flagged`, JSON.stringify(flagged));
+                  localStorage.setItem(`${STORAGE_PREFIX}questions`, JSON.stringify(questions));
+                  navigate("/mockreview");
                 }}
                 disabled={reviewMode}
               >
@@ -268,9 +274,10 @@ function MockPage() {
           <div className="options">
             {currentQ.options.map((opt, idx) => {
               let resultClass = "";
-              if (reviewMode) {
+              if (showCorrect) {
                 if (opt === currentQ.correctAnswer) resultClass = "correct";
-                else if (selectedAnswer === opt && opt !== currentQ.correctAnswer) resultClass = "incorrect";
+                else if (selectedAnswer === opt && opt !== currentQ.correctAnswer)
+                  resultClass = "incorrect";
               } else if (selectedAnswer === opt) {
                 resultClass = "selected";
               }
@@ -289,15 +296,21 @@ function MockPage() {
           </div>
 
           <div className="bottom-buttons">
-            <button onClick={prevQuestion} disabled={currentIndex === 0}>Prev</button>
-            <button onClick={skipQuestion} disabled={reviewMode}>Skip</button>
-            <button onClick={nextQuestion} disabled={currentIndex === questions.length - 1}>Next</button>
+            <button onClick={prevQuestion} disabled={currentIndex === 0}>
+              Prev
+            </button>
+            <button onClick={skipQuestion} disabled={reviewMode}>
+              Skip
+            </button>
+            <button onClick={nextQuestion} disabled={currentIndex === questions.length - 1}>
+              Next
+            </button>
             <button
-              className={`flag-button ${flagged.includes(currentIndex) ? 'flagged' : ''}`}
+              className={`flag-button ${flagged.includes(currentIndex) ? "flagged" : ""}`}
               onClick={toggleFlag}
               disabled={reviewMode}
             >
-              🚩 {flagged.includes(currentIndex) ? 'Flagged' : 'Mark Flag'}
+              🚩 {flagged.includes(currentIndex) ? "Flagged" : "Mark Flag"}
             </button>
             <button
               className="check-answer-button"
@@ -309,8 +322,11 @@ function MockPage() {
             {reviewMode && currentIndex === questions.length - 1 && (
               <button
                 className="submit-button ready"
-                onClick={() => { localStorage.removeItem("reviewMode"); navigate("/result"); }}
-                style={{ marginTop: '10px' }}
+                onClick={() => {
+                  localStorage.removeItem(`${STORAGE_PREFIX}reviewMode`);
+                  navigate("/result");
+                }}
+                style={{ marginTop: "10px" }}
               >
                 Finish Review
               </button>
@@ -319,7 +335,6 @@ function MockPage() {
         </div>
       </div>
 
-      {/* ✅ AI Chatbot only in review mode */}
       {reviewMode && (
         <>
           {!isChatMinimized ? (
@@ -329,14 +344,16 @@ function MockPage() {
                   AI Helper
                   <button
                     className="chat-minimize-btn"
-                    onClick={() => setIsChatMinimized(true)} // ✅ minimize instead of vanish
+                    onClick={() => setIsChatMinimized(true)}
                   >
                     ❌
                   </button>
                 </div>
                 <div className="chat-body">
                   {chatMessages.map((msg, i) => (
-                    <div key={i} className={`chat-msg ${msg.from}`}>{msg.text}</div>
+                    <div key={i} className={`chat-msg ${msg.from}`}>
+                      {msg.text}
+                    </div>
                   ))}
                   {loading && <p>⏳ Loading...</p>}
                 </div>
@@ -346,11 +363,7 @@ function MockPage() {
               </div>
             </div>
           ) : (
-            // ✅ Floating minimized chat button
-            <button
-              className="chat-maximize-btn"
-              onClick={() => setIsChatMinimized(false)}
-            >
+            <button className="chat-maximize-btn" onClick={() => setIsChatMinimized(false)}>
               💬
             </button>
           )}
@@ -360,4 +373,4 @@ function MockPage() {
   );
 }
 
-export default MockPage;
+export default MockTest;

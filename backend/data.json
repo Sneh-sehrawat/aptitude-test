@@ -1,30 +1,436 @@
 [
   {
-    "section": "MathsReasoning",
-    "questionText": "What comes next in the series: 5, 11, 23, 47, ?",
-    "options": ["95", "85", "93", "99"],
-    "correctAnswer": "95",
-    "hint": "Notice the pattern: each number is double the previous one, then add 1."
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "A train runs at 60 km/h. How long will it take to cover 180 km?",
+    "options": ["2 hours", "2.5 hours", "3 hours", "3.5 hours"],
+    "correctAnswer": "3 hours",
+    "hint": "Use Time = Distance / Speed."
   },
   {
-    "section": "MathsReasoning",
-    "questionText": "A clock gains 5 minutes every hour. How many minutes will it gain in a day?",
-    "options": ["120", "60", "100", "140"],
-    "correctAnswer": "120",
-    "hint": "Think about how many hours are in a day, then multiply by 5."
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "If 12 men can complete a work in 6 days, how many men are needed to finish it in 3 days?",
+    "options": ["12", "18", "24", "36"],
+    "correctAnswer": "24",
+    "hint": "Work is inversely proportional to number of workers (M1 × D1 = M2 × D2)."
   },
   {
-    "section": "MathsReasoning",
-    "questionText": "If 3A + 2B = 18 and A - B = 2, find A.",
-    "options": ["4", "6", "5", "7"],
-    "correctAnswer": "5",
-    "hint": "Substitute B = A - 2 into the first equation."
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "What is the missing number in the series: 2, 6, 12, 20, 30, ?",
+    "options": ["36", "40", "42", "44"],
+    "correctAnswer": "42",
+    "hint": "The differences are consecutive even numbers: +4, +6, +8, +10, +12."
   },
   {
-    "section": "MathsReasoning",
-    "questionText": "Find the missing number: 2, 6, 12, 20, ?, 42",
-    "options": ["28", "30", "32", "34"],
-    "correctAnswer": "30",
-    "hint": "Check the difference between consecutive numbers."
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "If DOG = 26, CAT = 24, then BAT = ?",
+    "options": ["23", "24", "25", "26"],
+    "correctAnswer": "23",
+    "hint": "Convert letters to positions (A=1, B=2, etc.), then sum them."
+  },
+  {
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "A shopkeeper offers 20% discount on a product of ₹500. The selling price is:",
+    "options": ["₹400", "₹420", "₹450", "₹480"],
+    "correctAnswer": "₹400",
+    "hint": "Selling price = Marked price – Discount."
+  },
+  {
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "A clock shows 3:15. What is the angle between the hour and minute hand?",
+    "options": ["0°", "7.5°", "22.5°", "30°"],
+    "correctAnswer": "7.5°",
+    "hint": "Use formula: |30H − 5.5M|."
+  },
+  {
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "The ratio of ages of A and B is 4:5. If A is 20 years old, what is B’s age?",
+    "options": ["22", "24", "25", "30"],
+    "correctAnswer": "25",
+    "hint": "If A:B = 4:5, then B = (5/4) × A."
+  },
+  {
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "If 3x = 81, then x = ?",
+    "options": ["9", "27", "243", "81"],
+    "correctAnswer": "9",
+    "hint": "Solve 3^x = 81 → 3^4 = 81 → x = 4."
+  },
+  {
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "Which of the following is odd one out?",
+    "options": ["Square", "Rectangle", "Circle", "Triangle"],
+    "correctAnswer": "Circle",
+    "hint": "Circle is not a polygon."
+  },
+  {
+    "section": "Aptitude & Logical Reasoning",
+    "type": "quiz",
+    "questionText": "If the code for CAT is DBU, then the code for DOG is:",
+    "options": ["EPH", "EOH", "DPH", "EOF"],
+    "correctAnswer": "EPH",
+    "hint": "Each letter is shifted forward by +1."
+  },
+
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "Find the odd word:",
+    "options": ["Apple", "Mango", "Carrot", "Orange"],
+    "correctAnswer": "Carrot",
+    "hint": "Carrot is a vegetable; others are fruits."
+  },
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "If ALL = 24, BAT = 23, then CAT = ?",
+    "options": ["25", "26", "27", "28"],
+    "correctAnswer": "25",
+    "hint": "Convert letters to numbers and sum them."
+  },
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "Which is the next figure in the sequence: ▲, ■, ●, ▲, ■, ?",
+    "options": ["▲", "■", "●", "♦"],
+    "correctAnswer": "●",
+    "hint": "The sequence repeats every three symbols."
+  },
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "A boy is facing North. He turns 90° right, then 180° left. Which direction is he facing?",
+    "options": ["East", "West", "South", "North"],
+    "correctAnswer": "West",
+    "hint": "Track turns step by step: North → East → West."
+  },
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "In a family of six, P is father of Q, R is mother of Q, S is brother of R, T is daughter of Q. Who is uncle of T?",
+    "options": ["P", "Q", "R", "S"],
+    "correctAnswer": "S",
+    "hint": "R is mother of Q; R’s brother S is Q’s uncle, hence T’s uncle."
+  },
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "Which number should replace the question mark: 3, 9, 27, ?, 243",
+    "options": ["54", "72", "81", "90"],
+    "correctAnswer": "81",
+    "hint": "This is powers of 3: 3^1, 3^2, 3^3, 3^4, 3^5."
+  },
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "Arrange in logical order:",
+    "options": [
+      "College → Graduation → School → Interview → Job",
+      "School → College → Graduation → Interview → Job",
+      "Job → Interview → Graduation → College → School",
+      "Interview → Job → College → Graduation → School"
+    ],
+    "correctAnswer": "School → College → Graduation → Interview → Job",
+    "hint": "Follow the natural life/education sequence."
+  },
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "Which two numbers come next: 1, 1, 2, 3, 5, 8, ? , ?",
+    "options": ["11, 18", "12, 19", "13, 21", "14, 22"],
+    "correctAnswer": "13, 21",
+    "hint": "This is the Fibonacci sequence."
+  },
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "If “BOOK” is written as “COOL”, then “LOOK” is written as:",
+    "options": ["MOOL", "NOOK", "COOL", "LOOP"],
+    "correctAnswer": "COOL",
+    "hint": "B→C, rest letters remain same."
+  },
+  {
+    "section": "Cognitive & Analytical Thinking",
+    "type": "quiz",
+    "questionText": "If Some A are B and All B are C, then which is true?",
+    "options": ["Some A are C", "All A are C", "Some C are A", "None"],
+    "correctAnswer": "Some A are C",
+    "hint": "Draw Venn diagram: overlap A and B, and all B inside C."
+  },
+
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "Choose the correct synonym of “Rapid”:",
+    "options": ["Slow", "Fast", "Steady", "Weak"],
+    "correctAnswer": "Fast",
+    "hint": "Rapid means quick."
+  },
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "Choose the correct antonym of “Expand”:",
+    "options": ["Extend", "Enlarge", "Contract", "Increase"],
+    "correctAnswer": "Contract",
+    "hint": "Expand means grow; opposite is shrink."
+  },
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "Fill in the blank: She ____ going to the library.",
+    "options": ["is", "are", "were", "be"],
+    "correctAnswer": "is",
+    "hint": "Singular subject requires 'is'."
+  },
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "Identify the error:",
+    "options": [
+      "He don’t like playing football.",
+      "He doesn’t like playing football.",
+      "He not like playing football.",
+      "He dislike playing football."
+    ],
+    "correctAnswer": "He don’t like playing football.",
+    "hint": "Correct form is 'doesn’t', not 'don’t'."
+  },
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "Choose the correctly spelled word:",
+    "options": ["Recieve", "Receive", "Receeve", "Recive"],
+    "correctAnswer": "Receive",
+    "hint": "Remember 'i before e except after c'."
+  },
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "Choose the word that best fits: “AI is a ____ field of computer science.”",
+    "options": ["narrow", "evolving", "dying", "useless"],
+    "correctAnswer": "evolving",
+    "hint": "AI is growing rapidly."
+  },
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "Find the odd one out:",
+    "options": ["Cat", "Dog", "Lion", "Table"],
+    "correctAnswer": "Table",
+    "hint": "All others are animals."
+  },
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "“AI is being used in healthcare, education, and transport.” Where is AI used?",
+    "options": [
+      "Healthcare only",
+      "Transport only",
+      "Education and healthcare",
+      "Healthcare, education, and transport"
+    ],
+    "correctAnswer": "Healthcare, education, and transport",
+    "hint": "Check all listed fields."
+  },
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "Rearrange into correct sentence:",
+    "options": [
+      "Today a is beautiful morning",
+      "Today is a morning beautiful",
+      "Today is a beautiful morning",
+      "Morning today is beautiful a"
+    ],
+    "correctAnswer": "Today is a beautiful morning",
+    "hint": "Arrange subject + verb + object."
+  },
+  {
+    "section": "English & Comprehension",
+    "type": "quiz",
+    "questionText": "Fill in the blank: “The book was written ____ Shakespeare.”",
+    "options": ["by", "from", "of", "with"],
+    "correctAnswer": "by",
+    "hint": "Books are written 'by' authors."
+  },
+
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "CPU stands for:",
+    "options": [
+      "Central Processing Unit",
+      "Central Program Unit",
+      "Control Processing Utility",
+      "Computer Primary Unit"
+    ],
+    "correctAnswer": "Central Processing Unit",
+    "hint": "CPU is the brain of the computer."
+  },
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "Which is not an input device?",
+    "options": ["Keyboard", "Mouse", "Monitor", "Scanner"],
+    "correctAnswer": "Monitor",
+    "hint": "Monitor is an output device."
+  },
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "Which language is machine-dependent?",
+    "options": ["Assembly", "Machine", "High-level", "Java"],
+    "correctAnswer": "Machine",
+    "hint": "Machine code is directly understood by computers."
+  },
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "Which is the smallest unit of data?",
+    "options": ["Bit", "Byte", "KB", "MB"],
+    "correctAnswer": "Bit",
+    "hint": "A bit is a single binary digit (0 or 1)."
+  },
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "MS Word is an example of:",
+    "options": ["System software", "Application software", "Programming language", "Operating system"],
+    "correctAnswer": "Application software",
+    "hint": "MS Word is used for documentation."
+  },
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "Which shortcut is used to copy?",
+    "options": ["Ctrl + V", "Ctrl + C", "Ctrl + X", "Ctrl + P"],
+    "correctAnswer": "Ctrl + C",
+    "hint": "Ctrl + C is for copy, Ctrl + V for paste."
+  },
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "Which is an operating system?",
+    "options": ["Linux", "Python", "Java", "HTML"],
+    "correctAnswer": "Linux",
+    "hint": "Linux manages hardware and software."
+  },
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "Which is not a search engine?",
+    "options": ["Google", "Bing", "Yahoo", "WhatsApp"],
+    "correctAnswer": "WhatsApp",
+    "hint": "WhatsApp is a messaging app, not a search engine."
+  },
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "What does URL stand for?",
+    "options": [
+      "Universal Resource Locator",
+      "Uniform Resource Locator",
+      "Unified Resource Link",
+      "Universal Reference Link"
+    ],
+    "correctAnswer": "Uniform Resource Locator",
+    "hint": "URL is the address of a resource on the web."
+  },
+  {
+    "section": "Computer Fundamentals",
+    "type": "quiz",
+    "questionText": "Which memory is volatile?",
+    "options": ["ROM", "Hard disk", "RAM", "Pen drive"],
+    "correctAnswer": "RAM",
+    "hint": "RAM loses data when power is off."
+  },
+
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "In C, which symbol is used to end a statement?",
+    "options": [":", ";", ".", "#"],
+    "correctAnswer": ";",
+    "hint": "Each statement ends with semicolon."
+  },
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "Which is a correct variable name?",
+    "options": ["1number", "number1", "num-ber", "number one"],
+    "correctAnswer": "number1",
+    "hint": "Variable names cannot start with digits or have spaces."
+  },
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "What is the output of: print(2 + 3 * 4)?",
+    "options": ["20", "14", "24", "12"],
+    "correctAnswer": "14",
+    "hint": "Follow BODMAS: multiplication before addition."
+  },
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "Which loop is guaranteed to run at least once?",
+    "options": ["for", "while", "do…while", "foreach"],
+    "correctAnswer": "do…while",
+    "hint": "In do…while, body runs before condition check."
+  },
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "Which of these is NOT a programming language?",
+    "options": ["Python", "C++", "HTML", "Java"],
+    "correctAnswer": "HTML",
+    "hint": "HTML is a markup language."
+  },
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "If x = 10, then x % 3 = ?",
+    "options": ["0", "1", "2", "3"],
+    "correctAnswer": "1",
+    "hint": "Remainder when 10 is divided by 3 is 1."
+  },
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "Which data structure uses FIFO?",
+    "options": ["Stack", "Queue", "Tree", "Graph"],
+    "correctAnswer": "Queue",
+    "hint": "FIFO stands for First In First Out, which is the behavior of a Queue."
+  },
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "Flowcharts are used for:",
+    "options": ["Decorating code", "Representing algorithms", "Drawing diagrams", "Writing syntax"],
+    "correctAnswer": "Representing algorithms",
+    "hint": "Flowcharts visually represent the steps of an algorithm."
+  },
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "In Python, what is the index of the first element in a list?",
+    "options": ["0", "1", "-1", "2"],
+    "correctAnswer": "0",
+    "hint": "Python uses zero-based indexing, so the first element has index 0."
+  },
+  {
+    "section": "Programming Logic & Computational Thinking",
+    "type": "quiz",
+    "questionText": "Which keyword is used to define a function in Python?",
+    "options": ["func", "def", "function", "define"],
+    "correctAnswer": "def",
+    "hint": "In Python, functions are defined using the 'def' keyword."
   }
 ]

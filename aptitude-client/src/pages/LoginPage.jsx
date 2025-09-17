@@ -44,7 +44,7 @@ function LoginPage() {
           console.log(data);
           navigate("/admin");
         } else {
-          navigate("/choice");
+          navigate("/form");
         }
       } else {
         alert(data.message || "Login failed");

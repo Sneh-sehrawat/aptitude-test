@@ -10,6 +10,9 @@ import AdminPage from "./pages/AdminPage";
 import ProtectedRoute from './components/ProtectedRoute';
 import ChoicePage from './pages/ChoicePage';
 import MockPage from './pages/MockPage';
+import MockReviewPage from './pages/MockReviewPage';
+import MockResultPage from './pages/MockResultPage';
+import EditQuestions from './pages/EditQuestions';
 
 function App() {
   return (
@@ -69,13 +72,36 @@ function App() {
           </ProtectedRoute>
         } 
       />
-
+      <Route 
+        path="/mockreview" 
+        element={
+          <ProtectedRoute>
+            <MockReviewPage />
+          </ProtectedRoute>
+        } 
+      />
+       <Route 
+        path="/mockresult" 
+        element={
+          <ProtectedRoute>
+            <MockResultPage />
+          </ProtectedRoute>
+        } 
+      />
       {/* Admin route - can also protect similarly if you want */}
       <Route 
         path="/admin" 
         element={
           <ProtectedRoute>
             <AdminPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/editquestions" 
+        element={
+          <ProtectedRoute>
+            <EditQuestions />
           </ProtectedRoute>
         } 
       />

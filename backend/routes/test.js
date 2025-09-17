@@ -10,7 +10,7 @@ router.post('/submit-test', verifyToken, async (req, res) => {
     console.log("📥 Received result submission:", req.body);
 
     const userId = req.userId;
-    const { score, timeTaken, phoneno,college } = req.body; //  phoneno comes from form
+    const { score, timeTaken, type,college,stream,enrollment,highmarks,intermarks,cgpa} = req.body; //  phoneno comes from form
 
     if (!score || typeof score.total !== 'number') {
       return res.status(400).json({ error: 'Missing or invalid score data.' });
@@ -18,16 +18,27 @@ router.post('/submit-test', verifyToken, async (req, res) => {
 
     // Fetch name and email from User collection (signup data)
     const user = await User.findById(userId).select("name email company phoneno");
+    
+
+
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    
 
     const newResult = new UserTest({
       userId,
       name: user.name,       // always reliable
       email: user.email,     //  always reliable
       phoneno: user.phoneno,              //  from form
-      company:user.company,               // from form
+      company:user.company, 
+      type: type, 
+      college: college,  
+      stream: stream,
+      enrollment: enrollment,  
+      highmarks:highmarks,
+      intermarks:intermarks,
+      cgpa:cgpa,        // from form
       sectionScores: {
         English: score.English || 0,
         MathsReasoning: score.MathsReasoning || 0,

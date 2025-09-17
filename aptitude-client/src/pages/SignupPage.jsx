@@ -16,7 +16,7 @@ function SignupPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password || !company||!phoneno) {
+    if (!name || !email || !password ||!phoneno) {
       alert('Please fill all fields');
       return;
     }
@@ -39,7 +39,7 @@ function SignupPage() {
   };
 
   return (
-    <div className='container'>
+    <div className='container1'>
    <img
   src={certiEdgeLogo}
   alt="CertiEdge Logo"
@@ -82,7 +82,7 @@ function SignupPage() {
         
         <input
           type="text"
-          placeholder="Company"
+          placeholder="Company(optional)"
           value={company}
           onChange={e => setCompany(e.target.value)}
           required
