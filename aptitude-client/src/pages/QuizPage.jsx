@@ -9,7 +9,7 @@ function QuizPage() {
   const [answers, setAnswers] = useState({});
   const [skipped, setSkipped] = useState([]);
   const [flagged, setFlagged] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(90 * 60);
+  const [timeLeft, setTimeLeft] = useState(50 * 60);
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showHint, setShowHint] = useState(false);

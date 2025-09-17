@@ -34,7 +34,12 @@ app.use('/api/auth', authRoutes);         // Example: /api/auth/login
 app.use('/api/questions', questionRoutes);// Example: /api/questions/fetch
 app.use('/api/admin', adminRoutes);  
 app.use('/api', testRoutes);   
-app.use("/api/gemini", require("./routes/gemini"));    
+app.use("/api/gemini", require("./routes/gemini")); 
+// In your Express app (e.g., index.js or app.js)
+app.get('/health', (req, res) => {
+  res.status(200).send('Server is alive!');
+});
+
  
 
 // DATABASE CONNECTION & SERVER START
