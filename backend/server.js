@@ -17,7 +17,7 @@ const app = express();
 
 // CORS Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ["http://localhost:5173", "https://aptitude-test-r4l2.onrender.com"],
   methods: ['GET', 'POST'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
