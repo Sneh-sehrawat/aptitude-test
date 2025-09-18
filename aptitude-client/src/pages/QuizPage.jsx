@@ -9,12 +9,12 @@ function QuizPage() {
   const [answers, setAnswers] = useState({});
   const [skipped, setSkipped] = useState([]);
   const [flagged, setFlagged] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(50 * 60);
+  const [timeLeft, setTimeLeft] = useState(50 * 60); // 50 minutes
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showHint, setShowHint] = useState(false);
-  const [numHintsUsed, setNumHintsUsed] = useState(0);
-  const [idShowHint, setIdShowHint] = useState([]);
+  // const [showHint, setShowHint] = useState(false); // Hint disabled
+  // const [numHintsUsed, setNumHintsUsed] = useState(0);
+  // const [idShowHint, setIdShowHint] = useState([]);
   const [isChatMinimized, setIsChatMinimized] = useState(true);
 
   const reviewMode = localStorage.getItem('reviewMode') === 'true';
@@ -36,15 +36,15 @@ function QuizPage() {
     };
   }, []);
 
-  // Load questions + answers from localStorage
+  // Load questions, answers, flags, and timer
   useEffect(() => {
+    const token = localStorage.getItem("token");
     const a = JSON.parse(localStorage.getItem("answers")) || {};
     const f = JSON.parse(localStorage.getItem("flagged")) || [];
     const jumpIndex = parseInt(localStorage.getItem("jumpTo"), 10);
     const shouldReturn = localStorage.getItem("returnToReview") === "true";
-    const token = localStorage.getItem("token");
 
-    const fetchFullQuestions = async () => {
+    const fetchQuestions = async () => {
       try {
         const res = await fetch(`${API_BASE}/api/questions/full`, {
           headers: { "Authorization": `Bearer ${token}` }
@@ -53,12 +53,12 @@ function QuizPage() {
         if (!fullQ.length) return navigate("/");
         setQuestions(fullQ);
       } catch (err) {
-        console.error("❌ Failed to fetch full questions:", err);
+        console.error("❌ Failed to fetch questions:", err);
         navigate("/");
       }
     };
 
-    fetchFullQuestions();
+    fetchQuestions();
     setAnswers(a);
     setFlagged(f);
 
@@ -71,7 +71,11 @@ function QuizPage() {
       localStorage.removeItem("returnToReview");
       localStorage.setItem("canReview", "true");
     }
-  }, [navigate, API_BASE]);
+
+    // Load timer from localStorage
+    const savedTime = parseInt(localStorage.getItem("quizTimeLeft"), 10);
+    if (!isNaN(savedTime)) setTimeLeft(savedTime);
+  }, [navigate, reviewMode, API_BASE]);
 
   // Timer
   useEffect(() => {
@@ -83,6 +87,7 @@ function QuizPage() {
           handleReview();
           return 0;
         }
+        localStorage.setItem("quizTimeLeft", prev - 1); // persist timer
         return prev - 1;
       });
     }, 1000);
@@ -95,12 +100,17 @@ function QuizPage() {
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-  // Select option
+  // Select / Deselect option
   const handleOptionClick = (selected) => {
     if (reviewMode) return;
     const id = questions[currentIndex]._id;
     setAnswers(prev => {
-      const newAns = { ...prev, [id]: selected };
+      const newAns = { ...prev };
+      if (newAns[id] === selected) {
+        delete newAns[id]; // deselect
+      } else {
+        newAns[id] = selected; // select
+      }
       localStorage.setItem("answers", JSON.stringify(newAns));
       return newAns;
     });
@@ -118,12 +128,12 @@ function QuizPage() {
       localStorage.removeItem("reviewMode");
       navigate("/result");
     }
-    setShowHint(false);
+    // setShowHint(false); // Hint disabled
   };
 
   const prevQuestion = () => {
     if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
-    setShowHint(false);
+    // setShowHint(false); // Hint disabled
   };
 
   const toggleFlag = () => {
@@ -197,29 +207,6 @@ function QuizPage() {
             <h3 className="section-heading">Section: {currentQ.section}</h3>
             <h2>Question {currentIndex + 1}</h2>
             <p className="question-text">{currentQ.questionText}</p>
-
-            {/* Hint */}
-            {!reviewMode && currentQ.hint && (
-              <>
-                <div
-                  className="hint-toggle"
-                  onClick={() => {
-                    if (numHintsUsed < 3) {
-                      setShowHint(prev => !prev);
-                      if (!idShowHint.includes(currentIndex)) {
-                        setNumHintsUsed(numHintsUsed + 1);
-                        setIdShowHint([...idShowHint, currentIndex]);
-                      }
-                    } else {
-                      alert("You have used all your hints");
-                    }
-                  }}
-                >
-                  💡 {showHint ? "Hide Hint" : "Show Hint"}
-                </div>
-                {showHint && <p className="hint-box">💡 {currentQ.hint}</p>}
-              </>
-            )}
           </div>
 
           {(currentIndex === questions.length - 1 || localStorage.getItem("canReview") === "true") && (
@@ -332,5 +319,7 @@ function QuizPage() {
 }
 
 export default QuizPage;
+
+
 
 

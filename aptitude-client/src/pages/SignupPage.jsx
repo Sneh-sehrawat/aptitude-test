@@ -21,6 +21,27 @@ function SignupPage() {
       alert('Please fill all fields');
       return;
     }
+     const nameRegex = /^[a-zA-Z\s]{1,50}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,50}$/;
+    const phoneRegex = /^\d{10}$/;
+   
+    if (!name || !email || !password || !phoneno) {
+      alert('Please fill all required fields');
+      return;
+    }
+    if (!nameRegex.test(name)) {
+      alert('Name should only contain letters and spaces, max 50 characters');
+      return;
+    }
+    if (!emailRegex.test(email)) {
+      alert('Enter a valid email address, max 50 characters');
+      return;
+    }
+    if (!phoneRegex.test(phoneno)) {
+      alert('Phone number must be exactly 10 digits and contain only numbers');
+      return;
+    }
+    
 
     try {
       const { data } = await axios.post(`${API_BASE}/api/auth/signup`, {
@@ -86,7 +107,6 @@ function SignupPage() {
           placeholder="Company(optional)"
           value={company}
           onChange={e => setCompany(e.target.value)}
-          required
         />
          <p style={{ textAlign: "center", marginTop: "1rem" }}>
           Already have an account?{" "}

@@ -38,6 +38,50 @@ function FormPage() {
       alert('⚠️ Please fill all details and accept the terms.');
       return;
     }
+    const nameRegex = /^[a-zA-Z\s]{1,50}$/;
+    const enrollmentRegex = /^[a-zA-Z0-9]{1,15}$/;
+    const percentageRegex = /^(100(\.0+)?|[0-9]{1,2}(\.[0-9]+)?)$/; // 0-100
+    const cgpaRegex = /^(10(\.0+)?|[0-9](\.[0-9]+)?)$/; // 0-10 scale
+
+    if (!college || !stream || !enrollment || !highmarks || !intermarks || !cgpa || !agree) {
+      alert('⚠️ Please fill all required details and accept the terms.');
+      return;
+    }
+
+  
+if (!percentageRegex.test(highmarks)) {
+  alert('10th marks must be a number between 0 and 100');
+  return;
+}
+
+
+if (!percentageRegex.test(intermarks)) {
+  alert('12th marks must be a number between 0 and 100');
+  return;
+}
+
+
+if (!nameRegex.test(college)) {
+  alert('College name should contain only letters and spaces, max 50 chars');
+  return;
+}
+
+if (!cgpaRegex.test(cgpa)) {
+  alert('College CGPA must be a number between 0 and 10');
+  return;
+}
+
+
+if (!nameRegex.test(stream)) {
+  alert('Stream should contain only letters and spaces, max 50 chars');
+  return;
+}
+
+
+if (!enrollmentRegex.test(enrollment)) {
+  alert('Enrollment should be alphanumeric and max 15 characters');
+  return;
+}
 
     try {
       // Save user info
@@ -70,11 +114,10 @@ function FormPage() {
           <h2>Welcome to the Aptitude Test</h2>
           <p>This test is designed to evaluate your aptitude, reasoning, and communication skills. Please ensure the following before you start:</p>
           <ul>
-            <li>📌 Complete the test in one sitting (90 minutes duration)</li>
+            <li>📌 Complete the test in one sitting (50 minutes duration)</li>
             <li>📌 Do not switch tabs or minimize the window</li>
             <li>📌 Keep your internet connection stable</li>
             <li>📌 You can flag questions to revisit later</li>
-            <li>📌 You can use hint maximum of 3 times</li>
             <li>📌 Once submitted, the test cannot be restarted</li>
           </ul>
           <p className="disclaimer">✅ By checking the box, you agree to follow all the test rules and conduct honestly.</p>

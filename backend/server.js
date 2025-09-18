@@ -17,8 +17,8 @@ const app = express();
 
 // CORS Middleware
 app.use(cors({
-  origin: ["https://react.edvancecube.com"],
-  methods: ['GET', 'POST'],
+  origin: ["https://react.edvancecube.com","http://localhost:5173"],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }));

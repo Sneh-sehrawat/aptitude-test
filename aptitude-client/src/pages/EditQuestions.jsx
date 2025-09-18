@@ -18,7 +18,7 @@ const AdminQuestionPage = () => {
   // ✅ Fetch all questions
   const fetchQuestions = async () => {
     try {
-      const res = await fetch("/api/questions");
+      const res = await fetch("https://aptitude-test-r4l2.onrender.com/api/questions");
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setQuestions(data);
@@ -54,7 +54,7 @@ const AdminQuestionPage = () => {
     try {
       if (editingId) {
         // 🔄 Update existing
-        const res = await fetch(`/api/questions/${editingId}`, {
+        const res = await fetch(`https://aptitude-test-r4l2.onrender.com/api/questions/${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
@@ -68,7 +68,7 @@ const AdminQuestionPage = () => {
         }
       } else {
         // ➕ Create new
-        const res = await fetch("/api/questions", {
+        const res = await fetch("https://aptitude-test-r4l2.onrender.com/api/questions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
@@ -115,7 +115,7 @@ const AdminQuestionPage = () => {
     if (!window.confirm("⚠️ Delete this question?")) return;
 
     try {
-      const res = await fetch(`/api/questions/${id}`, { method: "DELETE" });
+      const res = await fetch(`https://aptitude-test-r4l2.onrender.com/api/questions/${id}`, { method: "DELETE" });
       if (res.ok) {
         alert("🗑️ Deleted!");
         fetchQuestions();

@@ -48,7 +48,9 @@ const AdminPage = () => {
         const score = sectionScores[section];
         const total = section === "English" ? 20 : 40;
         const status = score >= total * 0.5 ? "Pass" : "Fail";
-        csvContent += `${section},${score},${total},${status}\n`;
+        // 🔥 Rename MathsReasoning → Computer Fundamentals
+        const sectionName = section === "MathsReasoning" ? "Computer Fundamentals" : section;
+        csvContent += `${sectionName},${score},${total},${status}\n`;
       }
     }
 
@@ -64,7 +66,7 @@ const AdminPage = () => {
   };
 
   const downloadAllCSV = () => {
-    let csvContent = `Name,Email,English,MathsReasoning,Aptitude,Total,Result\n`;
+    let csvContent = `Name,Email,English,Computer Fundamentals,Aptitude,Total,Result\n`;
 
     results.forEach((user) => {
       const { name, email, sectionScores = {} } = user;
@@ -217,7 +219,7 @@ const AdminPage = () => {
                                     40
                                   )}
                                 >
-                                  Maths Reasoning:{" "}
+                                  Computer Fundamentals:{" "}
                                   {sectionScores.MathsReasoning || 0}/40
                                 </li>
                                 <li
