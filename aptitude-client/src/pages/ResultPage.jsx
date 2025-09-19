@@ -13,15 +13,31 @@ function ResultPage() {
     total: 0
   });
 
-  
-
   useEffect(() => {
     const savedScore = JSON.parse(localStorage.getItem("score"));
     if (savedScore) {
       setCalculatedScore(savedScore);
     }
+  }, []);
 
-    
+  // 🚫 Disable browser back button
+ useEffect(() => {
+   
+
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = "⚠️ You cannot leave or refresh during the test!";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    window.history.pushState(null, "", window.location.href);
+    const handlePopState = () => window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handlePopState);
+    };
   }, []);
 
   const handleReviewAnswers = () => {
@@ -34,16 +50,6 @@ function ResultPage() {
     localStorage.clear();
     navigate('/');
   };
-
-  
-
-  const remark = calculatedScore.total >= 80
-    ? "Excellent work!"
-    : calculatedScore.total >= 60
-    ? "Good job! Keep improving."
-    : calculatedScore.total >= 50
-    ? "You passed. Keep practicing."
-    : "Fail - You need more practice.";
 
   return (
     <div className="result-container">
@@ -65,7 +71,6 @@ function ResultPage() {
         <p><strong>Maths Reasoning:</strong> {calculatedScore.MathsReasoning}</p>
         <p><strong>Aptitude:</strong> {calculatedScore.Aptitude}</p>
         <p><strong>Total Score (out of 100):</strong> {calculatedScore.total}</p>
-        <p><strong>Remark:</strong> {remark}</p>
       </div>
 
       <button className="review-button" onClick={handleReviewAnswers}>
@@ -79,10 +84,9 @@ function ResultPage() {
       >
         Start New Test
       </button>
-
-      
     </div>
   );
 }
 
 export default ResultPage;
+

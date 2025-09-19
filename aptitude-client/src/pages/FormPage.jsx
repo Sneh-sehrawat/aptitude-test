@@ -49,16 +49,25 @@ function FormPage() {
     }
 
   
+// Validation
 if (!percentageRegex.test(highmarks)) {
   alert('10th marks must be a number between 0 and 100');
   return;
 }
-
+if (parseFloat(highmarks) < 3.3) {
+  alert('10th marks must be at least 3.3');
+  return;
+}
 
 if (!percentageRegex.test(intermarks)) {
   alert('12th marks must be a number between 0 and 100');
   return;
 }
+if (parseFloat(intermarks) < 3.3) {
+  alert('12th marks must be at least 3.3');
+  return;
+}
+
 
 
 if (!nameRegex.test(college)) {
@@ -83,6 +92,11 @@ if (!enrollmentRegex.test(enrollment)) {
   return;
 }
 
+if(enrollment==='0'||enrollment==='00'|enrollment==='000'|enrollment==='0000'|enrollment==='00000'|enrollment==='000000'|enrollment==='0000000'|enrollment==='00000000'|enrollment==='000000000'|enrollment==='0000000000'|enrollment==='00000000000'|enrollment==='000000000000'|enrollment==='0000000000000'|enrollment==='00000000000000'|enrollment==='000000000000000'){
+  alert('Invalid Enrollment Number');
+  return;
+}
+
     try {
       // Save user info
       localStorage.setItem('userInfo', JSON.stringify(formData));
@@ -94,7 +108,7 @@ if (!enrollmentRegex.test(enrollment)) {
       localStorage.setItem('questions', JSON.stringify(res.data));
 
       // Navigate to quiz page
-      navigate('/quiz');
+      navigate("/quiz", { replace: true });
     } catch (err) {
       console.error("Error fetching questions:", err.response?.data || err.message);
       alert('❌ Error fetching questions. Please try again.');
@@ -111,14 +125,16 @@ if (!enrollmentRegex.test(enrollment)) {
         />
 
         <div className="form-left">
-          <h2>Welcome to the Aptitude Test</h2>
+          <h2>Welcome to CLEAR = The Certiedge Litmus for Engineering Aptitude & Readiness</h2>
           <p>This test is designed to evaluate your aptitude, reasoning, and communication skills. Please ensure the following before you start:</p>
           <ul>
             <li>📌 Complete the test in one sitting (50 minutes duration)</li>
             <li>📌 Do not switch tabs or minimize the window</li>
             <li>📌 Keep your internet connection stable</li>
             <li>📌 You can flag questions to revisit later</li>
-            <li>📌 Once submitted, the test cannot be restarted</li>
+            <li>📌 You have only one chance to select the  answer,once selected will not be able to change it </li>
+            <li>📌 Please ensure all details are filled correctly. Once submitted, you will not be allowed to make changes.</li>
+             <li>📌 Once submitted, the test cannot be restarted</li>
           </ul>
           <p className="disclaimer">✅ By checking the box, you agree to follow all the test rules and conduct honestly.</p>
         </div>
