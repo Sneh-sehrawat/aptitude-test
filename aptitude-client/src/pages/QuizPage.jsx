@@ -7,9 +7,8 @@ function QuizPage() {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [lockedAnswers, setLockedAnswers] = useState(() => {
-    return JSON.parse(localStorage.getItem("lockedAnswers")) || {};
-  });
+  
+  
   const [skipped, setSkipped] = useState([]);
   const [flagged, setFlagged] = useState([]);
   const [timeLeft, setTimeLeft] = useState(50 * 60); // 50 mins
@@ -75,6 +74,61 @@ function QuizPage() {
       window.removeEventListener("popstate", handlePopState);
     };
   }, [reviewMode]);
+useEffect(() => {
+  if (reviewMode || quizFinished) return;
+
+  const enterFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.warn("Fullscreen request failed:", err);
+      });
+    }
+  };
+
+  const clearAndLeave = () => {
+    // Clear all quiz data
+    ["answers", "flagged", "quizTimeLeft", "jumpTo", "reviewMode", "questions"].forEach(k => localStorage.removeItem(k));
+    navigate("/signup", { replace: true });
+  };
+
+  enterFullscreen();
+
+  const handleFullscreenChange = () => {
+    if (!document.fullscreenElement) {
+      const leave = window.confirm(
+        "⚠️ You pressed ESC or tried to exit fullscreen.\nDo you want to leave the test?"
+      );
+      if (leave) {
+        clearAndLeave();
+      } else {
+        enterFullscreen();
+      }
+    }
+  };
+
+  const handlePopState = () => {
+    const leave = window.confirm(
+      "⚠️ You tried to leave using the back button.\nDo you want to exit the test?"
+    );
+    if (leave) {
+      clearAndLeave();
+    } else {
+      window.history.pushState(null, "", window.location.href); // cancel back
+      enterFullscreen();
+    }
+  };
+
+  // Prevent back button from leaving
+  window.history.pushState(null, "", window.location.href);
+
+  document.addEventListener("fullscreenchange", handleFullscreenChange);
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, [reviewMode, quizFinished]);
 
   // --- Load questions & state ---
   useEffect(() => {
@@ -83,7 +137,8 @@ function QuizPage() {
 
     const loadState = () => {
       setAnswers(JSON.parse(localStorage.getItem("answers")) || {});
-      setLockedAnswers(JSON.parse(localStorage.getItem("lockedAnswers")) || {});
+      
+      
       setFlagged(JSON.parse(localStorage.getItem("flagged")) || []);
       const jumpIndex = parseInt(localStorage.getItem("jumpTo"), 10);
       if (!isNaN(jumpIndex)) {
@@ -142,18 +197,14 @@ function QuizPage() {
     if (reviewMode || quizFinished) return;
 
     const id = questions[currentIndex]._id;
-    if (lockedAnswers[id]) return; // Only one change allowed
+    // Only one change allowed
 
     setAnswers((prev) => {
       const newAns = { ...prev };
       newAns[id] = selected;
 
       // Lock the answer after first change
-      setLockedAnswers((prevLocks) => {
-        const newLocks = { ...prevLocks, [id]: true };
-        localStorage.setItem("lockedAnswers", JSON.stringify(newLocks));
-        return newLocks;
-      });
+      
 
       localStorage.setItem("answers", JSON.stringify(newAns));
       return newAns;
@@ -239,8 +290,8 @@ function QuizPage() {
 
   const currentQ = questions[currentIndex];
   const selectedAnswer = answers[currentQ?._id];
-  const isLocked = lockedAnswers[currentQ?._id];
-
+  
+  
   if (!questions.length) return <p>Loading...</p>;
 
   return (
@@ -263,13 +314,25 @@ function QuizPage() {
           {(currentIndex === questions.length - 1 ||
             localStorage.getItem("canReview") === "true") && (
             <div className="submit-wrapper">
-              <button
-                className={`submit-button ${reviewMode ? "locked" : "ready"}`}
-                onClick={finishQuiz}
-                disabled={reviewMode || quizFinished}
-              >
-                Review Test
-              </button>
+              {!reviewMode ? (
+                <button
+                  className={`submit-button ${quizFinished ? "locked" : "ready"}`}
+                  onClick={finishQuiz}
+                  disabled={quizFinished}
+                >
+                  Review Test
+                </button>
+              ) : (
+                <button
+                  className="submit-button finish-review"
+                  onClick={() => {
+                    localStorage.setItem("reviewMode", "false");
+                    navigate("/result", { replace: true });
+                  }}
+                >
+                  Finish Review
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -292,7 +355,7 @@ function QuizPage() {
                   key={idx}
                   className={`option-button ${resultClass}`}
                   onClick={() => handleOptionClick(opt)}
-                  disabled={reviewMode || quizFinished || isLocked}
+                  disabled={reviewMode || quizFinished }
                 >
                   {opt}
                 </button>
@@ -361,9 +424,11 @@ function QuizPage() {
       )}
     </div>
   );
+
 }
 
 export default QuizPage;
+
 
 
 

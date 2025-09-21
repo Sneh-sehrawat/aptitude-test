@@ -17,7 +17,7 @@ const app = express();
 
 // CORS Middleware
 app.use(cors({
-  origin: ["https://cleartest.thecertiedge.com","http://localhost:5173"],
+  origin: ["https://cleartest.thecertiedge.com","http://localhost:5173", "https://react.edvancecube.com"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
