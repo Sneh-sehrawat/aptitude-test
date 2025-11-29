@@ -7,42 +7,41 @@ const cors = require('cors');
 
 
 
-// ROUTES (All CommonJS style)
+
 const questionRoutes = require('./routes/questionRoutes');
 const authRoutes = require('./routes/auth');
-const adminRoutes = require('./routes/admin');  // ✅ FIXED: CommonJS require
+const adminRoutes = require('./routes/admin');  
 const testRoutes = require('./routes/test');
 
 const app = express();
 
-// CORS Middleware
+
 app.use(cors({
-  origin: ["https://cleartest.thecertiedge.com","http://localhost:5173", "https://react.edvancecube.com"],
+  origin: ["https://cleartest.thecertiedge.com","http://localhost:5173", "https://react.edvancecube.com","https://test.edvancecube.com/"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// JSON Body Parser Middleware
+
 app.use(express.json());
 
-// ROUTES MOUNTING
-           // Example: /api/submit
+
            
 
-app.use('/api/auth', authRoutes);         // Example: /api/auth/login
-app.use('/api/questions', questionRoutes);// Example: /api/questions/fetch
+app.use('/api/auth', authRoutes);         
+app.use('/api/questions', questionRoutes);
 app.use('/api/admin', adminRoutes);  
 app.use('/api', testRoutes);   
 app.use("/api/gemini", require("./routes/gemini")); 
-// In your Express app (e.g., index.js or app.js)
+
 app.get('/health', (req, res) => {
   res.status(200).send('Server is alive!');
 });
 
  
 
-// DATABASE CONNECTION & SERVER START
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB Connected');
