@@ -29,8 +29,8 @@ function LoginPage() {
       });
 
       if (data.success) {
-        if (data.token) localStorage.setItem("token", data.token);
-        if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
+        if (data.token) sessionStorage.setItem("token", data.token);
+        if (data.user) sessionStorage.setItem("user", JSON.stringify(data.user));
 
         // ✅ replace so back button won’t return to login
         if (data.role === "admin") {

@@ -43,6 +43,7 @@ router.post('/submit-test', verifyToken, async (req, res) => {
         English: score.English || 0,
         MathsReasoning: score.MathsReasoning || 0,
         Aptitude: score.Aptitude || 0,
+        computerFundamentals: score.computerFundamentals || 0,
         totalScore: score.total
       },
       timeTaken: timeTaken || '',

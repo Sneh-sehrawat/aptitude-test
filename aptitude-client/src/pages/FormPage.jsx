@@ -18,8 +18,6 @@ function FormPage() {
   });
 
   const navigate = useNavigate();
-
-  // ✅ Use environment variable or fallback to Render backend
   const API_BASE = import.meta.env.VITE_API_BASE || "https://aptitude-test-r4l2.onrender.com";
 
   const handleChange = (e) => {
@@ -33,131 +31,113 @@ function FormPage() {
   const handleSubmit = async () => {
     const { stream, enrollment, college, highmarks, intermarks, cgpa, agree } = formData;
 
-    // Required fields check
     if (!college || !stream || !enrollment || !highmarks || !intermarks || !cgpa || !agree) {
       alert('⚠️ Please fill all details and accept the terms.');
       return;
     }
+
     const nameRegex = /^[a-zA-Z\s]{1,50}$/;
     const enrollmentRegex = /^[a-zA-Z0-9]{1,15}$/;
-    const percentageRegex = /^(100(\.0+)?|[0-9]{1,2}(\.[0-9]+)?)$/; // 0-100
-    const cgpaRegex = /^(10(\.0+)?|[0-9](\.[0-9]+)?)$/; // 0-10 scale
+    const percentageRegex = /^(100(\.0+)?|[0-9]{1,2}(\.[0-9]+)?)$/;
+    const cgpaRegex = /^(10(\.0+)?|[0-9](\.[0-9]+)?)$/;
 
-    if (!college || !stream || !enrollment || !highmarks || !intermarks || !cgpa || !agree) {
-      alert('⚠️ Please fill all required details and accept the terms.');
+    if (!percentageRegex.test(highmarks) || parseFloat(highmarks) < 3.3) {
+      alert('10th marks must be between 3.3 and 100');
+      return;
+    }
+    if (!percentageRegex.test(intermarks) || parseFloat(intermarks) < 3.3) {
+      alert('12th marks must be between 3.3 and 100');
+      return;
+    }
+    if (!nameRegex.test(college)) {
+      alert('College name should contain only letters and spaces (max 50 chars)');
+      return;
+    }
+    if (!cgpaRegex.test(cgpa)) {
+      alert('College CGPA must be between 0 and 10');
+      return;
+    }
+    if (!nameRegex.test(stream)) {
+      alert('Stream should contain only letters and spaces (max 50 chars)');
+      return;
+    }
+    if (!enrollmentRegex.test(enrollment)) {
+      alert('Enrollment should be alphanumeric (max 15 chars)');
       return;
     }
 
-  
-// Validation
-if (!percentageRegex.test(highmarks)) {
-  alert('10th marks must be a number between 0 and 100');
-  return;
-}
-if (parseFloat(highmarks) < 3.3) {
-  alert('10th marks must be at least 3.3');
-  return;
-}
-
-if (!percentageRegex.test(intermarks)) {
-  alert('12th marks must be a number between 0 and 100');
-  return;
-}
-if (parseFloat(intermarks) < 3.3) {
-  alert('12th marks must be at least 3.3');
-  return;
-}
-
-
-
-if (!nameRegex.test(college)) {
-  alert('College name should contain only letters and spaces, max 50 chars');
-  return;
-}
-
-if (!cgpaRegex.test(cgpa)) {
-  alert('College CGPA must be a number between 0 and 10');
-  return;
-}
-
-
-if (!nameRegex.test(stream)) {
-  alert('Stream should contain only letters and spaces, max 50 chars');
-  return;
-}
-
-
-if (!enrollmentRegex.test(enrollment)) {
-  alert('Enrollment should be alphanumeric and max 15 characters');
-  return;
-}
-
-if(enrollment==='0'||enrollment==='00'|enrollment==='000'|enrollment==='0000'|enrollment==='00000'|enrollment==='000000'|enrollment==='0000000'|enrollment==='00000000'|enrollment==='000000000'|enrollment==='0000000000'|enrollment==='00000000000'|enrollment==='000000000000'|enrollment==='0000000000000'|enrollment==='00000000000000'|enrollment==='000000000000000'){
-  alert('Invalid Enrollment Number');
-  return;
-}
-
     try {
-      // Save user info
-      localStorage.setItem('userInfo', JSON.stringify(formData));
-
-      // Fetch questions from backend
+      sessionStorage.setItem('userInfo', JSON.stringify(formData));
       const res = await axios.get(`${API_BASE}/api/questions/generate-set`);
-
-      // Save questions locally
-      localStorage.setItem('questions', JSON.stringify(res.data));
-
-      // Navigate to quiz page
+      sessionStorage.setItem('questions', JSON.stringify(res.data));
       navigate("/quiz", { replace: true });
     } catch (err) {
-      console.error("Error fetching questions:", err.response?.data || err.message);
+      console.error(err);
       alert('❌ Error fetching questions. Please try again.');
     }
   };
 
   return (
-    <div>
-      <div className="form-split-container">
-        <img
-          src={certiEdgeLogo}
-          alt="CertiEdge Logo"
-          className='logo-img1'
-        />
+    <div className="form-split-container">
+      <img src={certiEdgeLogo} alt="CertiEdge Logo" className="logo-img1" />
 
-        <div className="form-left">
-          <h2>Welcome to CLEAR = The Certiedge Litmus for Engineering Aptitude & Readiness</h2>
-          <p>This test is designed to evaluate your aptitude, reasoning, and communication skills. Please ensure the following before you start:</p>
-          <ul>
-            <li>📌 Complete the test in one sitting (50 minutes duration)</li>
-            <li>📌 Do not switch tabs or minimize the window</li>
-            <li>📌 Keep your internet connection stable</li>
-            <li>📌 You can flag questions to revisit later</li>
-            <li>📌 You have only one chance to select the  answer,once selected will not be able to change it </li>
-            <li>📌 Please ensure all details are filled correctly. Once submitted, you will not be allowed to make changes.</li>
-             <li>📌 Once submitted, the test cannot be restarted</li>
-          </ul>
-          <p className="disclaimer">✅ By checking the box, you agree to follow all the test rules and conduct honestly.</p>
+      <div className="form-left">
+        <h2>Welcome to CLEAR = The Certiedge Litmus for Engineering Aptitude & Readiness</h2>
+        <p>This test is designed to evaluate your aptitude, reasoning, and communication skills. Please ensure the following before you start:</p>
+        <ul>
+          <li>Complete the test in one sitting (50 minutes)</li>
+          <li>Do not switch tabs or minimize the window</li>
+          <li>Keep your internet connection stable</li>
+          <li>You can flag questions to revisit later</li>
+          <li>Only one chance to select the answer</li>
+          <li>Ensure all details are correct before submission</li>
+          <li>Test cannot be restarted once submitted</li>
+        </ul>
+        <p className="disclaimer">✅ By checking the box, you agree to follow all test rules honestly.</p>
+      </div>
+
+      <div className="form-right">
+        <h3>Enter Your Details</h3>
+
+        <div className="form-group">
+          <label>10th Percentage / CGPA</label>
+          <input type="text" name="highmarks" placeholder="Enter 10th marks" onChange={handleChange} />
         </div>
 
-        <div className="form-right">
-          <h3>Enter Your Details</h3>
-
-          <input type="text" name="highmarks" placeholder="📊 10th Percentage/cgpa" onChange={handleChange} />
-          <input type="text" name="intermarks" placeholder="📊 12th Percentage/cgpa" onChange={handleChange} />
-          <input type="text" name="college" placeholder="🏫 College" onChange={handleChange} />
-          <input type="text" name="cgpa" placeholder="📊 College CGPA" onChange={handleChange} />
-          <input type="text" name="stream" placeholder="📚 Stream" onChange={handleChange} />
-          <input type="text" name="enrollment" placeholder="🆔 Enrollment Number" onChange={handleChange} />
-
-          <label className="checkbox-label">
-            <input type="checkbox" name="agree" onChange={handleChange} /> I accept all terms and agree to proceed
-          </label>
-
-          <button onClick={handleSubmit}>🚀 Start Test</button>
+        <div className="form-group">
+          <label>12th Percentage / CGPA</label>
+          <input type="text" name="intermarks" placeholder="Enter 12th marks" onChange={handleChange} />
         </div>
+
+        <div className="form-group">
+          <label>College Name</label>
+          <input type="text" name="college" placeholder="Enter your college" onChange={handleChange} />
+        </div>
+
+        <div className="form-group">
+          <label>College CGPA</label>
+          <input type="text" name="cgpa" placeholder="Enter your CGPA" onChange={handleChange} />
+        </div>
+
+        <div className="form-group">
+          <label>Stream</label>
+          <input type="text" name="stream" placeholder="Enter your stream" onChange={handleChange} />
+        </div>
+
+        <div className="form-group">
+          <label>Enrollment Number</label>
+          <input type="text" name="enrollment" placeholder="Enter enrollment number" onChange={handleChange} />
+        </div>
+
+        <label className="checkbox-label">
+          <input type="checkbox" name="agree" onChange={handleChange} /> I accept all terms and agree to proceed
+        </label>
+
+        <button onClick={handleSubmit}>🚀 Start Test</button>
       </div>
     </div>
   );
 }
 
 export default FormPage;
+

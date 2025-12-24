@@ -14,7 +14,7 @@ function ResultPage() {
   });
 
   useEffect(() => {
-    const savedScore = JSON.parse(localStorage.getItem("score"));
+    const savedScore = JSON.parse(sessionStorage.getItem("score"));
     if (savedScore) {
       setCalculatedScore(savedScore);
     }
@@ -41,13 +41,13 @@ function ResultPage() {
   }, []);
 
   const handleReviewAnswers = () => {
-    localStorage.setItem('reviewMode', 'true');
-    localStorage.setItem('jumpTo', '0');
+    sessionStorage.setItem('reviewMode', 'true');
+    sessionStorage.setItem('jumpTo', '0');
     navigate('/quiz');
   };
 
   const handleStartNewTest = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     navigate('/');
   };
 

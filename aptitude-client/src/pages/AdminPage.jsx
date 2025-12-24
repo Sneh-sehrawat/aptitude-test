@@ -211,7 +211,7 @@ const AdminPage = () => {
                                     20
                                   )}
                                 >
-                                  English: {sectionScores.English || 0}/20
+                                  English: {sectionScores.English || 0}
                                 </li>
                                 <li
                                   className={getColorClass(
@@ -219,8 +219,8 @@ const AdminPage = () => {
                                     40
                                   )}
                                 >
-                                  Computer Fundamentals:{" "}
-                                  {sectionScores.MathsReasoning || 0}/40
+                                  Maths & Reasoning:{" "}
+                                  {sectionScores.MathsReasoning || 0}
                                 </li>
                                 <li
                                   className={getColorClass(
@@ -228,7 +228,7 @@ const AdminPage = () => {
                                     40
                                   )}
                                 >
-                                  Aptitude: {sectionScores.Aptitude || 0}/40
+                                  Aptitude: {sectionScores.Aptitude || 0}
                                 </li>
                               </ul>
                             </div>

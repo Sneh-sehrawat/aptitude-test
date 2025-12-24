@@ -24,6 +24,7 @@ const UserTestSchema = new mongoose.Schema({
     English: Number,
     MathsReasoning: Number,
     Aptitude: Number,
+    computerFundamentals: Number,
     totalScore: Number
   },
   timeTaken: { type: String },

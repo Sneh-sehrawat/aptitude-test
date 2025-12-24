@@ -2,44 +2,96 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/QuizPage.css";
 
+
 function QuizPage() {
   const navigate = useNavigate();
+
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  
-  
   const [skipped, setSkipped] = useState([]);
   const [flagged, setFlagged] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(50 * 60); // 50 mins
+  const [timeLeft, setTimeLeft] = useState(2* 60);
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(true);
   const [quizFinished, setQuizFinished] = useState(false);
 
-  const reviewMode = localStorage.getItem("reviewMode") === "true";
+  // FULLSCREEN EXIT MODAL
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  const reviewMode = sessionStorage.getItem("reviewMode") === "true";
   const API_BASE =
     import.meta.env.VITE_API_BASE || "https://aptitude-test-r4l2.onrender.com";
 
-  // --- Hard exit / leave quiz ---
-  const leaveQuiz = () => {
-    if (
-      window.confirm(
-        "⚠️ Are you sure you want to leave the quiz? All progress will be lost."
-      )
-    ) {
-      localStorage.clear();
-      navigate("/signup", { replace: true });
+  /* ---------------- HARD EXIT ---------------- */
+
+  const clearAndExit = () => {
+    [
+      "answers",
+      "flagged",
+      "quizTimeLeft",
+      "jumpTo",
+      "reviewMode",
+      "questions",
+    ].forEach((k) => sessionStorage.removeItem(k));
+    sessionStorage.clear();
+    navigate("/signup", { replace: true });
+  };
+
+  /* ---------------- FULLSCREEN ---------------- */
+
+  const enterFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
     }
   };
 
-  // --- Check token on mount ---
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) leaveQuiz();
-  }, []);
+  if (!questions.length) return;
 
-  // --- Prevent copy/paste/right-click ---
+  const jumpIndex = sessionStorage.getItem("jumpTo");
+
+  if (jumpIndex !== null) {
+    setCurrentIndex(Number(jumpIndex));
+    sessionStorage.removeItem("jumpTo");
+  }
+}, [questions]);
+
+
+  useEffect(() => {
+    if (reviewMode || quizFinished) return;
+
+    enterFullscreen();
+    window.history.pushState(null, "", window.location.href);
+
+    const onFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setShowExitModal(true);
+      }
+    };
+
+    const onPopState = () => {
+      setShowExitModal(true);
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    window.addEventListener("popstate", onPopState);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+      window.removeEventListener("popstate", onPopState);
+    };
+  }, [reviewMode, quizFinished]);
+
+  const resumeTest = () => {
+    setShowExitModal(false);
+    setTimeout(() => enterFullscreen(), 100);
+  };
+
+  /* ---------------- SECURITY ---------------- */
+
   useEffect(() => {
     const prevent = (e) => e.preventDefault();
     document.addEventListener("contextmenu", prevent);
@@ -54,98 +106,21 @@ function QuizPage() {
     };
   }, []);
 
-  // --- Prevent back/refresh during quiz ---
   useEffect(() => {
-    if (reviewMode) return;
+    const token = sessionStorage.getItem("token");
+    if (!token) clearAndExit();
+  }, []);
 
-    const handleBeforeUnload = (e) => {
-      e.preventDefault();
-      e.returnValue = "⚠️ You cannot leave or refresh during the test!";
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
+  /* ---------------- LOAD QUESTIONS ---------------- */
 
-    window.history.pushState(null, "", window.location.href);
-    const handlePopState = () =>
-      window.history.pushState(null, "", window.location.href);
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, [reviewMode]);
-useEffect(() => {
-  if (reviewMode || quizFinished) return;
-
-  const enterFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch((err) => {
-        console.warn("Fullscreen request failed:", err);
-      });
-    }
-  };
-
-  const clearAndLeave = () => {
-    // Clear all quiz data
-    ["answers", "flagged", "quizTimeLeft", "jumpTo", "reviewMode", "questions"].forEach(k => localStorage.removeItem(k));
-    navigate("/signup", { replace: true });
-  };
-
-  enterFullscreen();
-
-  const handleFullscreenChange = () => {
-    if (!document.fullscreenElement) {
-      const leave = window.confirm(
-        "⚠️ You pressed ESC or tried to exit fullscreen.\nDo you want to leave the test?"
-      );
-      if (leave) {
-        clearAndLeave();
-      } else {
-        enterFullscreen();
-      }
-    }
-  };
-
-  const handlePopState = () => {
-    const leave = window.confirm(
-      "⚠️ You tried to leave using the back button.\nDo you want to exit the test?"
-    );
-    if (leave) {
-      clearAndLeave();
-    } else {
-      window.history.pushState(null, "", window.location.href); // cancel back
-      enterFullscreen();
-    }
-  };
-
-  // Prevent back button from leaving
-  window.history.pushState(null, "", window.location.href);
-
-  document.addEventListener("fullscreenchange", handleFullscreenChange);
-  window.addEventListener("popstate", handlePopState);
-
-  return () => {
-    document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    window.removeEventListener("popstate", handlePopState);
-  };
-}, [reviewMode, quizFinished]);
-
-  // --- Load questions & state ---
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return leaveQuiz();
+    const token = sessionStorage.getItem("token");
+    if (!token) return clearAndExit();
 
     const loadState = () => {
-      setAnswers(JSON.parse(localStorage.getItem("answers")) || {});
-      
-      
-      setFlagged(JSON.parse(localStorage.getItem("flagged")) || []);
-      const jumpIndex = parseInt(localStorage.getItem("jumpTo"), 10);
-      if (!isNaN(jumpIndex)) {
-        setCurrentIndex(jumpIndex);
-        localStorage.removeItem("jumpTo");
-      }
-      const savedTime = parseInt(localStorage.getItem("quizTimeLeft"), 10);
+      setAnswers(JSON.parse(sessionStorage.getItem("answers")) || {});
+      setFlagged(JSON.parse(sessionStorage.getItem("flagged")) || []);
+      const savedTime = parseInt(sessionStorage.getItem("quizTimeLeft"), 10);
       if (!isNaN(savedTime)) setTimeLeft(savedTime);
     };
 
@@ -155,11 +130,11 @@ useEffect(() => {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
-        if (!data.length) return leaveQuiz();
+        if (!data.length) return clearAndExit();
         setQuestions(data);
-      } catch (err) {
-        console.error("❌ Failed to fetch questions:", err);
-        leaveQuiz();
+        sessionStorage.setItem("questions", JSON.stringify(data));
+      } catch {
+        clearAndExit();
       }
     };
 
@@ -167,7 +142,8 @@ useEffect(() => {
     fetchQuestions();
   }, [API_BASE]);
 
-  // --- Timer ---
+  /* ---------------- TIMER ---------------- */
+
   useEffect(() => {
     if (reviewMode || quizFinished) return;
 
@@ -175,10 +151,10 @@ useEffect(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          finishQuiz();
+          handleFinalSubmit();
           return 0;
         }
-        localStorage.setItem("quizTimeLeft", prev - 1);
+        sessionStorage.setItem("quizTimeLeft", prev - 1);
         return prev - 1;
       });
     }, 1000);
@@ -186,41 +162,36 @@ useEffect(() => {
     return () => clearInterval(timer);
   }, [reviewMode, quizFinished]);
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-  };
+  const formatTime = (s) =>
+    `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(
+      2,
+      "0"
+    )}`;
 
-  // --- Quiz actions ---
-  const handleOptionClick = (selected) => {
+  /* ---------------- QUIZ ACTIONS ---------------- */
+
+  const handleOptionClick = (opt) => {
     if (reviewMode || quizFinished) return;
-
     const id = questions[currentIndex]._id;
-    // Only one change allowed
 
     setAnswers((prev) => {
-      const newAns = { ...prev };
-      newAns[id] = selected;
-
-      // Lock the answer after first change
-      
-
-      localStorage.setItem("answers", JSON.stringify(newAns));
-      return newAns;
+      const updated = { ...prev, [id]: opt };
+      sessionStorage.setItem("answers", JSON.stringify(updated));
+      return updated;
     });
 
-    if (skipped.includes(currentIndex))
-      setSkipped(skipped.filter((i) => i !== currentIndex));
+    setSkipped(skipped.filter((i) => i !== currentIndex));
   };
 
   const skipQuestion = () => {
-    if (!skipped.includes(currentIndex)) setSkipped([...skipped, currentIndex]);
+    if (!skipped.includes(currentIndex))
+      setSkipped([...skipped, currentIndex]);
     nextQuestion();
   };
 
   const nextQuestion = () => {
-    if (currentIndex < questions.length - 1) setCurrentIndex(currentIndex + 1);
+    if (currentIndex < questions.length - 1)
+      setCurrentIndex(currentIndex + 1);
   };
 
   const prevQuestion = () => {
@@ -228,24 +199,131 @@ useEffect(() => {
   };
 
   const toggleFlag = () => {
-    if (flagged.includes(currentIndex))
-      setFlagged(flagged.filter((i) => i !== currentIndex));
-    else setFlagged([...flagged, currentIndex]);
+    flagged.includes(currentIndex)
+      ? setFlagged(flagged.filter((i) => i !== currentIndex))
+      : setFlagged([...flagged, currentIndex]);
   };
 
-  const finishQuiz = () => {
-    localStorage.setItem("answers", JSON.stringify(answers));
-    localStorage.setItem("flagged", JSON.stringify(flagged));
-    localStorage.setItem("questions", JSON.stringify(questions));
-    setQuizFinished(true);
-    navigate("/review", { replace: true });
-  };
+  const mapSectionToScoreKey = (section) => {
+  if (!section) return null;
 
-  // --- AI Chatbot ---
+  const s = section.toLowerCase();
+
+ if (s.includes("english")) return "English";
+
+  if (
+    s.includes("math") ||
+    s.includes("reasoning") ||
+    s.includes("logical")
+  ) {
+    return "MathsReasoning";
+  }
+
+  if (
+    s.includes("aptitude") ||
+    s.includes("analytical") ||
+    s.includes("cognitive")
+  ) {
+    return "Aptitude";
+  }
+
+  if( s.includes("computer") || s.includes("fundamental")|| s.includes("Programming")|| s.includes("Computational")) {
+    return "computerFundamentals";
+  }
+
+  // Computer + Programming → IGNORE
+  return null;
+};
+
+
+ const handleFinalSubmit = async () => {
+  setQuizFinished(true);
+
+  // Get user info
+  const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
+  const { company, phoneno, college, stream, enrollment, highmarks, intermarks, cgpa } = userInfo;
+  const timeTaken = sessionStorage.getItem("timeTaken") || null;
+  const token = sessionStorage.getItem("token");
+
+  try {
+    // Use state if available, otherwise fallback to sessionStorage
+    const questionsToUse = questions.length
+      ? questions
+      : JSON.parse(sessionStorage.getItem("questions") || "[]");
+    const answersToUse = Object.keys(answers).length
+      ? answers
+      : JSON.parse(sessionStorage.getItem("answers") || "{}");
+
+    if (!questionsToUse.length) {
+      alert("Questions not loaded. Cannot submit!");
+      return;
+    }
+
+    // Calculate score
+    const scoreData = { English: 0, MathsReasoning: 0, Aptitude: 0, computerFundamentals: 0, total: 0 };
+
+    
+    questionsToUse.forEach((q) => {
+      const userAnswer = answersToUse[q._id];
+      if (userAnswer) {
+        const isCorrect = userAnswer === q.correctAnswer;
+        const score = isCorrect ? 2 : -1;
+          const bucket = mapSectionToScoreKey(q.section);
+
+  if (bucket) {
+    scoreData[bucket] += score;
+  }
+    scoreData.total += score;
+  
+      }
+    });
+
+    // Save score in localStorage
+    sessionStorage.setItem("score", JSON.stringify(scoreData));
+
+    // Submit final test to server
+    const response = await fetch(`${API_BASE}/api/submit-test`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        company,
+        phoneno,
+        college,
+        stream,
+        enrollment,
+        highmarks,
+        intermarks,
+        cgpa,
+        score: scoreData,
+        timeTaken,
+        type: "quiz",
+      }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Failed to submit test");
+
+    console.log("✅ Test submitted successfully:", data);
+    navigate("/result"); // go to result page
+  } catch (error) {
+    console.error("❌ Error submitting test:", error);
+    alert("Failed to submit test. Please check console for details.");
+  }
+};
+
+
+
+
+  /* ---------------- AI CHAT ---------------- */
+
   const askAI = async (question) => {
     if (!question) return;
     setLoading(true);
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
+
     try {
       const res = await fetch(`${API_BASE}/api/gemini/explain-batch`, {
         method: "POST",
@@ -265,24 +343,25 @@ useEffect(() => {
           ],
         }),
       });
-      const data = await res.json();
-      const explanationData = data.explanations[question._id];
 
-      if (explanationData) {
-        setChatMessages((prev) => [
-          ...prev,
-          { from: "user", text: `Explain Q${currentIndex + 1}: ${question.questionText}` },
-          {
-            from: "ai",
-            text: `AI Picked: ${explanationData.aiCorrectOption}\n\nExplanation: ${explanationData.explanation}`,
-          },
-        ]);
-      } else {
-        setChatMessages((prev) => [...prev, { from: "ai", text: "⚠️ Explanation not found." }]);
-      }
-    } catch (err) {
-      console.error("AI error:", err);
-      setChatMessages((prev) => [...prev, { from: "ai", text: "⚠️ Failed to fetch explanation." }]);
+      const data = await res.json();
+      const exp = data.explanations[question._id];
+
+      setChatMessages((prev) => [
+        ...prev,
+        { from: "user", text: question.questionText },
+        {
+          from: "ai",
+          text: exp
+            ? `AI Picked: ${exp.aiCorrectOption}\n\n${exp.explanation}`
+            : "Explanation not found",
+        },
+      ]);
+    } catch {
+      setChatMessages((prev) => [
+        ...prev,
+        { from: "ai", text: "AI failed to respond" },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -290,13 +369,25 @@ useEffect(() => {
 
   const currentQ = questions[currentIndex];
   const selectedAnswer = answers[currentQ?._id];
-  
-  
+
   if (!questions.length) return <p>Loading...</p>;
 
   return (
     <div className="quiz-page" style={{ userSelect: "none" }}>
-      {!reviewMode && <div className="timer-box">⏰ Time Left: {formatTime(timeLeft)}</div>}
+      {showExitModal && (
+        <div className="fullscreen-overlay">
+          <div className="fullscreen-modal">
+            <h2>Exit Test?</h2>
+            <p>You tried to leave the test.</p>
+            <button onClick={resumeTest}>Resume Test</button>
+            <button onClick={clearAndExit}>Exit Test</button>
+          </div>
+        </div>
+      )}
+
+      {!reviewMode && (
+        <div className="timer-box">⏰ Time Left: {formatTime(timeLeft)}</div>
+      )}
 
       <div className="quiz-header">
         <h1>Aptitude Test</h1>
@@ -312,12 +403,12 @@ useEffect(() => {
           </div>
 
           {(currentIndex === questions.length - 1 ||
-            localStorage.getItem("canReview") === "true") && (
+            sessionStorage.getItem("canReview") === "true") && (
             <div className="submit-wrapper">
               {!reviewMode ? (
                 <button
                   className={`submit-button ${quizFinished ? "locked" : "ready"}`}
-                  onClick={finishQuiz}
+                  onClick={() => navigate("/review")}
                   disabled={quizFinished}
                 >
                   Review Test
@@ -326,7 +417,7 @@ useEffect(() => {
                 <button
                   className="submit-button finish-review"
                   onClick={() => {
-                    localStorage.setItem("reviewMode", "false");
+                    sessionStorage.setItem("reviewMode", "false");
                     navigate("/result", { replace: true });
                   }}
                 >
@@ -428,6 +519,12 @@ useEffect(() => {
 }
 
 export default QuizPage;
+
+
+
+
+
+
 
 
 

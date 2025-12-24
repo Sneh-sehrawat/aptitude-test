@@ -11,9 +11,9 @@ function ReviewPage() {
   const API_BASE = import.meta.env.VITE_API_BASE || "https://aptitude-test-r4l2.onrender.com";
 
   useEffect(() => {
-    const q = JSON.parse(localStorage.getItem('questions')) || [];
-    const a = JSON.parse(localStorage.getItem('answers')) || {};
-    const f = JSON.parse(localStorage.getItem('flagged')) || [];
+    const q = JSON.parse(sessionStorage.getItem('questions')) || [];
+    const a = JSON.parse(sessionStorage.getItem('answers')) || {};
+    const f = JSON.parse(sessionStorage.getItem('flagged')) || [];
 
     if (!q.length) return navigate('/');
 
@@ -35,11 +35,43 @@ function ReviewPage() {
   const flaggedOnlyCount = flagged.filter(i => !answers[questions[i]?._id]).length;
   const skippedCount = questions.length - answeredCount;
 
+  const mapSectionToScoreKey = (section) => {
+  if (!section) return null;
+
+  const s = section.toLowerCase();
+
+  if (s.includes("english")) return "English";
+
+  if (
+    s.includes("math") ||
+    s.includes("reasoning") ||
+    s.includes("logical")
+  ) {
+    return "MathsReasoning";
+  }
+
+  if (
+    s.includes("aptitude") ||
+    s.includes("analytical") ||
+    s.includes("cognitive")
+  ) {
+    return "Aptitude";
+  }
+
+  if( s.includes("computer") || s.includes("fundamental")|| s.includes("Programming")|| s.includes("Computational")) {
+    return "computerFundamentals";
+  }
+
+  // Computer + Programming → IGNORE
+  return null;
+};
+
+
   const handleFinalSubmit = async () => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
+    const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
     const { company, phoneno, college, stream, enrollment, highmarks, intermarks, cgpa } = userInfo;
-    const timeTaken = localStorage.getItem("timeTaken") || null;
-    const token = localStorage.getItem("token");
+    const timeTaken = sessionStorage.getItem("timeTaken") || null;
+    const token = sessionStorage.getItem("token");
 
     try {
       // Fetch full questions to calculate score
@@ -48,19 +80,26 @@ function ReviewPage() {
       });
       const fullQuestions = await resQuestions.json();
 
-      const scoreData = { English: 0, MathsReasoning: 0, Aptitude: 0, total: 0 };
+      const scoreData = { English: 0, MathsReasoning: 0, Aptitude: 0, computerFundamentals: 0, total: 0 };
 
-      fullQuestions.forEach(q => {
-        const userAnswer = answers[q._id];
-        if (userAnswer) {
-          const isCorrect = userAnswer === q.correctAnswer;
-          const score = isCorrect ? 2 : -1;
-          scoreData[q.section] += score;
-          scoreData.total += score;
-        }
-      });
+      fullQuestions.forEach((q) => {
+  const userAnswer = answers[q._id];
+  if (!userAnswer) return;
 
-      localStorage.setItem("score", JSON.stringify(scoreData));
+  const isCorrect = userAnswer === q.correctAnswer;
+  const score = isCorrect ? 2 : -1;
+
+  const bucket = mapSectionToScoreKey(q.section);
+
+  if (bucket) {
+    scoreData[bucket] += score;
+  }
+    scoreData.total += score;
+  
+});
+
+
+      sessionStorage.setItem("score", JSON.stringify(scoreData));
 
       // Submit final test
       const response = await fetch(`${API_BASE}/api/submit-test`, {
@@ -96,8 +135,8 @@ function ReviewPage() {
   };
 
   const jumpToQuestion = (index) => {
-    localStorage.setItem("jumpTo", index);
-    localStorage.setItem("returnToReview", "true");
+    sessionStorage.setItem("jumpTo", index);
+    sessionStorage.setItem("returnToReview", "true");
     navigate("/quiz");
   };
 
