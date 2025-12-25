@@ -21,9 +21,7 @@ function ResultPage() {
   }, []);
 
   // 🚫 Disable browser back button
- useEffect(() => {
-   
-
+  useEffect(() => {
     const handleBeforeUnload = (e) => {
       e.preventDefault();
       e.returnValue = "⚠️ You cannot leave or refresh during the test!";
@@ -31,7 +29,8 @@ function ResultPage() {
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     window.history.pushState(null, "", window.location.href);
-    const handlePopState = () => window.history.pushState(null, "", window.location.href);
+    const handlePopState = () =>
+      window.history.pushState(null, "", window.location.href);
     window.addEventListener("popstate", handlePopState);
 
     return () => {
@@ -40,11 +39,15 @@ function ResultPage() {
     };
   }, []);
 
-  const handleReviewAnswers = () => {
-    sessionStorage.setItem('reviewMode', 'true');
-    sessionStorage.setItem('jumpTo', '0');
-    navigate('/quiz');
-  };
+  // ⏱️ Auto redirect after 15 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      sessionStorage.clear();
+      navigate("/", { replace: true });
+    }, 15000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
   const handleStartNewTest = () => {
     sessionStorage.clear();
@@ -58,11 +61,11 @@ function ResultPage() {
         alt="CertiEdge Logo"
         className='logo-img'
       />
-      
+
       <h2>Your Score Summary</h2>
       <p className="pass-fail">
-        {calculatedScore.total >= 50 
-          ? '🎉 Congratulations, You Passed!' 
+        {calculatedScore.total >= 50
+          ? '🎉 Congratulations, You Passed!'
           : '❌ You Failed'}
       </p>
 
@@ -70,16 +73,13 @@ function ResultPage() {
         <p><strong>English:</strong> {calculatedScore.English}</p>
         <p><strong>Maths Reasoning:</strong> {calculatedScore.MathsReasoning}</p>
         <p><strong>Aptitude:</strong> {calculatedScore.Aptitude}</p>
+        <p><strong>Computer Fundamentals:</strong> {calculatedScore.computerFundamentals}</p>
         <p><strong>Total Score (out of 100):</strong> {calculatedScore.total}</p>
       </div>
 
-      <button className="review-button" onClick={handleReviewAnswers}>
-        Review Your Answers
-      </button>
-
-      <button 
-        className="review-button" 
-        style={{ marginTop: '15px', backgroundColor: '#28a745' }} 
+      <button
+        className="review-button"
+        style={{ marginTop: '15px', backgroundColor: '#28a745' }}
         onClick={handleStartNewTest}
       >
         Start New Test
@@ -89,4 +89,5 @@ function ResultPage() {
 }
 
 export default ResultPage;
+
 

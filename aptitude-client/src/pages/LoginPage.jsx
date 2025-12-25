@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/LoginPage.css";
@@ -10,8 +10,9 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const API_BASE = "https://aptitude-test-r4l2.onrender.com";
+  const API_BASE = "https://aptitude-test-1-4le1.onrender.com";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +33,6 @@ function LoginPage() {
         if (data.token) sessionStorage.setItem("token", data.token);
         if (data.user) sessionStorage.setItem("user", JSON.stringify(data.user));
 
-        // ✅ replace so back button won’t return to login
         if (data.role === "admin") {
           navigate("/admin", { replace: true });
         } else {
@@ -49,11 +49,21 @@ function LoginPage() {
     }
   };
 
+  useEffect(() => {
+  const token = sessionStorage.getItem("token");
+  if (token) {
+    navigate("/form", { replace: true });
+  }
+}, [navigate]);
+
+
   return (
     <div className="container">
       <img src={certiEdgeLogo} alt="CertiEdge Logo" className="logo-img" />
-      <div className="login-container" style={{ maxWidth: 400 }}>
+
+      <div className="login-container">
         <h2>Login</h2>
+
         <form className="login-form" onSubmit={handleSubmit}>
           <label>
             Select Role:
@@ -63,12 +73,40 @@ function LoginPage() {
             </select>
           </label>
 
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <label>Email</label>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <label>Password</label>
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <span
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </span>
+          </div>
 
           <p style={{ textAlign: "center", marginTop: "1rem" }}>
             Don't have an account?{" "}
-            <Link to="/signup" style={{ color: "#16a34a", fontWeight: "bold" }}>Sign up</Link>
+            <Link
+              to="/signup"
+              style={{ color: "#16a34a", fontWeight: "bold" }}
+            >
+              Sign up
+            </Link>
           </p>
 
           <button type="submit" disabled={loading}>
@@ -81,4 +119,5 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
 

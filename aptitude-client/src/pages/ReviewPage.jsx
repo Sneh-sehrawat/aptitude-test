@@ -8,7 +8,7 @@ function ReviewPage() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [flagged, setFlagged] = useState([]);
-  const API_BASE = import.meta.env.VITE_API_BASE || "https://aptitude-test-r4l2.onrender.com";
+  const API_BASE =  "https://aptitude-test-1-4le1.onrender.com";
 
   useEffect(() => {
     const q = JSON.parse(sessionStorage.getItem('questions')) || [];
@@ -22,17 +22,22 @@ function ReviewPage() {
     setFlagged(f); 
   }, [navigate]);
 
-  const getStatus = (index, id) => {
-    const isAnswered = Boolean(answers[id]);
-    const isFlagged = flagged.includes(index);
-    if (isFlagged && !isAnswered) return 'Flagged';
-    if (isFlagged && isAnswered) return 'Answered-Flagged';
-    if (isAnswered) return 'Answered';
-    return 'Skipped';
-  };
+ const getStatus = (id) => {
+  const isAnswered = Boolean(answers[id]);
+  const isFlagged = flagged.includes(id);
+
+  if (isFlagged && isAnswered) return 'Answered-Flagged';
+  if (isFlagged) return 'Flagged';
+  if (isAnswered) return 'Answered';
+  return 'Skipped';
+};
+
 
   const answeredCount = questions.filter(q => answers[q._id]).length;
-  const flaggedOnlyCount = flagged.filter(i => !answers[questions[i]?._id]).length;
+const flaggedOnlyCount = flagged.filter(
+  id => !answers[id]
+).length;
+
   const skippedCount = questions.length - answeredCount;
 
   const mapSectionToScoreKey = (section) => {
@@ -58,7 +63,7 @@ function ReviewPage() {
     return "Aptitude";
   }
 
-  if( s.includes("computer") || s.includes("fundamental")|| s.includes("Programming")|| s.includes("Computational")) {
+  if( s.includes("computer") || s.includes("fundamental")|| s.includes("programming")|| s.includes("computational")) {
     return "computerFundamentals";
   }
 
@@ -151,11 +156,11 @@ function ReviewPage() {
           {questions.map((q, index) => (
             <div
               key={index}
-              className={`review-item ${getStatus(index, q._id).toLowerCase()}`}
+              className={`review-item ${getStatus(q._id).toLowerCase()}`}
               onClick={() => jumpToQuestion(index)}
               style={{ cursor: 'pointer' }}
             >
-              Q{index + 1}: {getStatus(index, q._id).replace('-', ' ')}
+              Q{index + 1}: {getStatus(q._id).replace('-', ' ')}
             </div>
           ))}
         </div>

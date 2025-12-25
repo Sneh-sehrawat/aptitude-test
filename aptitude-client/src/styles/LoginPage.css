@@ -1,95 +1,92 @@
-/* === Page Centering === */
+/* ================= Page Container ================= */
 .container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   align-items: center;
   justify-content: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-  /* ✨ Professional green gradient */
-  background: linear-gradient(135deg, #f8fff9 0%, #e6f9f0 30%, #d1fae5 60%, #16a34a 100%);
+  background: linear-gradient(
+    135deg,
+    #f8fff9 0%,
+    #e6f9f0 30%,
+    #d1fae5 60%,
+    #16a34a 100%
+  );
+  position: relative;
 }
 
-/* === Login Container === */
+/* ================= Login Card ================= */
 .login-container {
-width: 100%;
-  max-width: 480px;
-  padding: 2.5rem;
-  border-radius: 16px;
-  color: #1e293b;
-   background: #ffffff;  /* solid white, not transparent */
-  transition: all 0.3s ease-in-out;
+  width: 100%;
+  max-width: 360px;            /* SMALLER CARD */
+  padding: 1.6rem;
+  background: #ffffff;
+  border-radius: 14px;
   border: 1px solid #cbd5e1;
+  color: #1e293b;
+  transition: all 0.3s ease;
 }
 
 .login-container:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 36px rgb(159, 172, 161);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
 }
 
+/* ================= Heading ================= */
 .login-container h2 {
-  margin-bottom: 1rem;
-  color: #058e3c;
   text-align: center;
+  margin-bottom: 0.9rem;
+  color: #058e3c;
+  font-size: 1.6rem;
   font-weight: 700;
-  font-size: 2rem;
 }
 
-/* === Login Form === */
+/* ================= Form ================= */
 .login-form {
   display: flex;
   flex-direction: column;
-  padding: 25px;
-  border-radius: 12px;
-  gap: 16px;
+  gap: 6px;                    /* COMPACT SPACING */
 }
 
-/* Labels */
+/* ================= Labels ================= */
 .login-form label {
-  text-align: left;
-  margin-bottom: 0.1rem; /* Very small gap */
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 6px;
   color: #374151;
 }
 
-/* Inputs & Select */
-.login-form select,
-.login-form input[type="email"],
-.login-form input[type="password"] {
-  padding: 0.65rem 1rem;
-  margin-bottom: 0.5rem; /* Reduced gap between fields */
-  border-radius: 8px;
+/* ================= Inputs & Select ================= */
+.login-form input,
+.login-form select {
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
   border: 1px solid #cbd5e1;
-  font-size: 1rem;
-  background-color: #ffffff;
+  font-size: 0.9rem;
+  background: #ffffff;
   color: #1e293b;
-  transition: all 0.3s ease;
-  outline: green;
-}
-.login-form select{
-  margin-left: 8px;
+  transition: all 0.25s ease;
 }
 
-.login-form select:focus,
-.login-form input:focus {
+.login-form input:focus,
+.login-form select:focus {
   outline: none;
   border-color: #16a34a;
-  box-shadow: 0 0 8px rgba(22, 163, 74, 0.3);
+  box-shadow: 0 0 6px rgba(22, 163, 74, 0.25);
 }
 
-/* Button */
+/* ================= Button ================= */
 .login-form button {
-  width: 100%;
-  padding: 0.85rem;
-  font-size: 1rem;
+  margin-top: 0.7rem;
+  padding: 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   background: linear-gradient(135deg, #4ade80, #22c55e);
-  color: #fff;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
   transition: all 0.3s ease;
-  margin-top: 0.8rem;
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
@@ -98,48 +95,94 @@ width: 100%;
   box-shadow: 0 6px 16px rgba(22, 163, 74, 0.4);
 }
 
-/* === Responsive Styles === */
-@media (max-width: 480px) {
-  .login-container {
-    padding: 1.5rem;
-    margin: 1rem;
-    max-width: 95%;
-  }
-  .login-form {
-    padding: 15px;
-  }
-  .login-container h2 {
-    font-size: 1.5rem;
-  }
+.login-form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
+
+/* ================= Text Links ================= */
+.login-form p {
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+  text-align: center;
+}
+
+.login-form a {
+  color: #16a34a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-form a:hover {
+  text-decoration: underline;
+}
+
+/* ================= Logo ================= */
 .logo-img {
-  position: absolute;     /* stick to top-left */
-  top: 20px;              /* spacing from top */
-  left: 20px;             /* spacing from left */
-  height: 80px;           /* adjust size to match certiedge.com logo */
-  width: auto;            /* keep aspect ratio */
-  object-fit: contain;    /* prevent distortion */
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 65px;
+  width: auto;
+  object-fit: contain;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
 }
 
 .logo-img:hover {
-  transform: scale(1.05); /* subtle zoom on hover */
+  transform: scale(1.05);
 }
 
-/* 📱 Responsive Adjustments */
+/* ================= Tablet ================= */
 @media (max-width: 768px) {
   .logo-img {
-    height: 50px;   /* slightly smaller on tablets */
+    height: 50px;
     top: 15px;
     left: 15px;
   }
 }
 
+/* ================= Mobile ================= */
 @media (max-width: 480px) {
+  .login-container {
+    max-width: 92%;
+    padding: 1.3rem;
+  }
+
+  .login-container h2 {
+    font-size: 1.4rem;
+  }
+
   .logo-img {
-    height: 40px;   /* smaller for mobile */
+    height: 40px;
     top: 10px;
     left: 10px;
   }
+}
+
+
+/* ================= Password Show / Hide ================= */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 60px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #16a34a;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-password:hover {
+  text-decoration: underline;
 }

@@ -18,7 +18,7 @@ const AdminQuestionPage = () => {
   // ✅ Fetch all questions
   const fetchQuestions = async () => {
     try {
-      const res = await fetch("https://aptitude-test-r4l2.onrender.com/api/questions");
+      const res = await fetch("https://aptitude-test-1-4le1.onrender.com/api/questions");
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       setQuestions(data);

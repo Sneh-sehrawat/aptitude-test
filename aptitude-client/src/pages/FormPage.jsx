@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import "./FormPage.css";
@@ -6,7 +6,7 @@ import certiEdgeLogo from "../assets/certiedge-removebg-preview.png";
 
 function FormPage() {
   const [formData, setFormData] = useState({
-    college: '',
+    college: 'RATHINAM INSTITUTE OF TECHNOLOGY',
     stream: '',
     phoneno: '',
     company: '',
@@ -18,7 +18,7 @@ function FormPage() {
   });
 
   const navigate = useNavigate();
-  const API_BASE = import.meta.env.VITE_API_BASE || "https://aptitude-test-r4l2.onrender.com";
+  const API_BASE = "https://aptitude-test-1-4le1.onrender.com";
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,17 +29,17 @@ function FormPage() {
   };
 
   const handleSubmit = async () => {
-    const { stream, enrollment, college, highmarks, intermarks, cgpa, agree } = formData;
+    const { stream, enrollment, highmarks, intermarks, cgpa, agree } = formData;
 
-    if (!college || !stream || !enrollment || !highmarks || !intermarks || !cgpa || !agree) {
+    if (!stream || !enrollment || !highmarks || !intermarks || !cgpa || !agree) {
       alert('⚠️ Please fill all details and accept the terms.');
       return;
     }
 
-    const nameRegex = /^[a-zA-Z\s]{1,50}$/;
     const enrollmentRegex = /^[a-zA-Z0-9]{1,15}$/;
     const percentageRegex = /^(100(\.0+)?|[0-9]{1,2}(\.[0-9]+)?)$/;
     const cgpaRegex = /^(10(\.0+)?|[0-9](\.[0-9]+)?)$/;
+    const nameRegex = /^[a-zA-Z\s]{1,50}$/;
 
     if (!percentageRegex.test(highmarks) || parseFloat(highmarks) < 3.3) {
       alert('10th marks must be between 3.3 and 100');
@@ -49,16 +49,12 @@ function FormPage() {
       alert('12th marks must be between 3.3 and 100');
       return;
     }
-    if (!nameRegex.test(college)) {
-      alert('College name should contain only letters and spaces (max 50 chars)');
-      return;
-    }
     if (!cgpaRegex.test(cgpa)) {
       alert('College CGPA must be between 0 and 10');
       return;
     }
     if (!nameRegex.test(stream)) {
-      alert('Stream should contain only letters and spaces (max 50 chars)');
+      alert('Stream should contain only letters and spaces');
       return;
     }
     if (!enrollmentRegex.test(enrollment)) {
@@ -76,6 +72,19 @@ function FormPage() {
       alert('❌ Error fetching questions. Please try again.');
     }
   };
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    const info = sessionStorage.getItem("userInfo");
+    if (info) {
+      navigate("/quiz", { replace: true });
+    }
+  }, [navigate]);
 
   return (
     <div className="form-split-container">
@@ -111,7 +120,11 @@ function FormPage() {
 
         <div className="form-group">
           <label>College Name</label>
-          <input type="text" name="college" placeholder="Enter your college" onChange={handleChange} />
+          <input
+            type="text"
+            value="RATHINAM INSTITUTE OF TECHNOLOGY"
+            disabled
+          />
         </div>
 
         <div className="form-group">
@@ -140,4 +153,5 @@ function FormPage() {
 }
 
 export default FormPage;
+
 

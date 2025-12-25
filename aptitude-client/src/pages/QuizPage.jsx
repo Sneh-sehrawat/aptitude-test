@@ -11,7 +11,7 @@ function QuizPage() {
   const [answers, setAnswers] = useState({});
   const [skipped, setSkipped] = useState([]);
   const [flagged, setFlagged] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(2* 60);
+  const [timeLeft, setTimeLeft] = useState(50* 60);
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(true);
@@ -22,7 +22,7 @@ function QuizPage() {
 
   const reviewMode = sessionStorage.getItem("reviewMode") === "true";
   const API_BASE =
-    import.meta.env.VITE_API_BASE || "https://aptitude-test-r4l2.onrender.com";
+     "https://aptitude-test-1-4le1.onrender.com";
 
   /* ---------------- HARD EXIT ---------------- */
 
@@ -46,6 +46,18 @@ function QuizPage() {
       document.documentElement.requestFullscreen().catch(() => {});
     }
   };
+
+  useEffect(() => {
+  const token = sessionStorage.getItem("token");
+  const info = sessionStorage.getItem("userInfo");
+
+  if (!token) {
+    navigate("/login", { replace: true });
+  } else if (!info) {
+    navigate("/form", { replace: true });
+  }
+}, [navigate]);
+
 
   useEffect(() => {
   if (!questions.length) return;
@@ -199,10 +211,21 @@ function QuizPage() {
   };
 
   const toggleFlag = () => {
-    flagged.includes(currentIndex)
-      ? setFlagged(flagged.filter((i) => i !== currentIndex))
-      : setFlagged([...flagged, currentIndex]);
-  };
+  const qId = questions[currentIndex]._id;
+
+  setFlagged((prev) => {
+    let updated;
+    if (prev.includes(qId)) {
+      updated = prev.filter((id) => id !== qId);
+    } else {
+      updated = [...prev, qId];
+    }
+
+    sessionStorage.setItem("flagged", JSON.stringify(updated));
+    return updated;
+  });
+};
+
 
   const mapSectionToScoreKey = (section) => {
   if (!section) return null;
@@ -227,7 +250,7 @@ function QuizPage() {
     return "Aptitude";
   }
 
-  if( s.includes("computer") || s.includes("fundamental")|| s.includes("Programming")|| s.includes("Computational")) {
+  if( s.includes("computer") || s.includes("fundamental")|| s.includes("programming")|| s.includes("computational")) {
     return "computerFundamentals";
   }
 
@@ -468,11 +491,11 @@ function QuizPage() {
               Next
             </button>
             <button
-              className={`flag-button ${flagged.includes(currentIndex) ? "flagged" : ""}`}
+              className={`flag-button ${flagged.includes(questions[currentIndex]._id) ? "flagged" : ""}`}
               onClick={toggleFlag}
               disabled={reviewMode || quizFinished}
             >
-              🚩 {flagged.includes(currentIndex) ? "Flagged" : "Mark Flag"}
+              🚩 {flagged.includes(questions[currentIndex]._id) ? "Flagged" : "Mark Flag"}
             </button>
           </div>
         </div>

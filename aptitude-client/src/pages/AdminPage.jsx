@@ -13,7 +13,7 @@ const AdminPage = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const res = await axios.get("https://aptitude-test-r4l2.onrender.com/api/admin/results");
+        const res = await axios.get("https://aptitude-test-1-4le1.onrender.com/api/admin/results");
         console.log("🔍 Submissions received:", res.data);
         setResults(res.data);
       } catch (error) {
@@ -229,6 +229,14 @@ const AdminPage = () => {
                                   )}
                                 >
                                   Aptitude: {sectionScores.Aptitude || 0}
+                                </li>
+                                <li
+                                  className={getColorClass(
+                                    sectionScores.computerFundamentals || 0,
+                                    40
+                                  )}
+                                >
+                                  Computer Fundamentals: {sectionScores.computerFundamentals || 0}
                                 </li>
                               </ul>
                             </div>
