@@ -8,6 +8,7 @@ function ReviewPage() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [flagged, setFlagged] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
   const API_BASE =  "https://aptitude-test-1-4le1.onrender.com";
 
   useEffect(() => {
@@ -73,6 +74,8 @@ const flaggedOnlyCount = flagged.filter(
 
 
   const handleFinalSubmit = async () => {
+    if (submitting) return;
+    setSubmitting(true);
     const userInfo = JSON.parse(sessionStorage.getItem("userInfo") || "{}");
     const { company, phoneno, college, stream, enrollment, highmarks, intermarks, cgpa } = userInfo;
     const timeTaken = sessionStorage.getItem("timeTaken") || null;
@@ -137,6 +140,7 @@ const flaggedOnlyCount = flagged.filter(
       console.error("❌ Error submitting test:", error);
       alert("Failed to submit test. Please check console for details.");
     }
+    setSubmitting(false);
   };
 
   const jumpToQuestion = (index) => {
@@ -171,9 +175,14 @@ const flaggedOnlyCount = flagged.filter(
           <p>⚠️ Skipped: {skippedCount}</p>
         </div>
 
-        <button className="final-submit-btn" onClick={handleFinalSubmit}>
-          Submit Final Test
-        </button>
+       <button
+  className="final-submit-btn"
+  onClick={handleFinalSubmit}
+  disabled={submitting}
+>
+  {submitting ? "Submitting..." : "Submit Final Test"}
+</button>
+
       </div>
     </div>
   );

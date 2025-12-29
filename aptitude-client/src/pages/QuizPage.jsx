@@ -401,9 +401,9 @@ function QuizPage() {
         <div className="fullscreen-overlay">
           <div className="fullscreen-modal">
             <h2>Exit Test?</h2>
-            <p>You tried to leave the test.</p>
+            <p>You tried to leave the test. If you want to exit, your test will be submitted automatically.</p>
             <button onClick={resumeTest}>Resume Test</button>
-            <button onClick={clearAndExit}>Exit Test</button>
+            <button onClick={handleFinalSubmit}>Exit Test</button>
           </div>
         </div>
       )}

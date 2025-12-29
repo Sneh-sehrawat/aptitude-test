@@ -49,10 +49,7 @@ function ResultPage() {
     return () => clearTimeout(timer);
   }, [navigate]);
 
-  const handleStartNewTest = () => {
-    sessionStorage.clear();
-    navigate('/');
-  };
+  
 
   return (
     <div className="result-container">
@@ -77,13 +74,7 @@ function ResultPage() {
         <p><strong>Total Score (out of 100):</strong> {calculatedScore.total}</p>
       </div>
 
-      <button
-        className="review-button"
-        style={{ marginTop: '15px', backgroundColor: '#28a745' }}
-        onClick={handleStartNewTest}
-      >
-        Start New Test
-      </button>
+      
     </div>
   );
 }
