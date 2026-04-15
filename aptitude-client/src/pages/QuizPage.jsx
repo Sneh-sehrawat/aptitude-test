@@ -11,7 +11,7 @@ function QuizPage() {
   const [answers, setAnswers] = useState({});
   const [skipped, setSkipped] = useState([]);
   const [flagged, setFlagged] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(50* 60);
+  const [timeLeft, setTimeLeft] = useState(30* 60);
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isChatMinimized, setIsChatMinimized] = useState(true);
@@ -290,7 +290,7 @@ function QuizPage() {
       const userAnswer = answersToUse[q._id];
       if (userAnswer) {
         const isCorrect = userAnswer === q.correctAnswer;
-        const score = isCorrect ? 2 : -1;
+        const score = isCorrect ? 1 : 0;
           const bucket = mapSectionToScoreKey(q.section);
 
   if (bucket) {
@@ -420,7 +420,6 @@ function QuizPage() {
       <div className="quiz-wrapper">
         <div className="quiz-left">
           <div className="left-top">
-            <h3 className="section-heading">Section: {currentQ.section}</h3>
             <h2>Question {currentIndex + 1}</h2>
             <p className="question-text">{currentQ.questionText}</p>
           </div>

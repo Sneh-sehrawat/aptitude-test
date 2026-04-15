@@ -95,7 +95,7 @@ const flaggedOnlyCount = flagged.filter(
   if (!userAnswer) return;
 
   const isCorrect = userAnswer === q.correctAnswer;
-  const score = isCorrect ? 2 : -1;
+  const score = isCorrect ? 1 : 0;
 
   const bucket = mapSectionToScoreKey(q.section);
 

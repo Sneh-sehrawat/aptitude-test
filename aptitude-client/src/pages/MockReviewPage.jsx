@@ -53,7 +53,7 @@ function MockReviewPage() {
         const userAnswer = answers[q._id];
         if (userAnswer) {
           const isCorrect = userAnswer === q.correctAnswer;
-          const score = isCorrect ? 2 : -1;
+          const score = isCorrect ? 1 : 0;
           scoreData[q.section] += score;
           scoreData.total += score;
         }

@@ -221,7 +221,6 @@ function MockTest() {
       <div className="quiz-wrapper">
         <div className="quiz-left">
           <div className="left-top">
-            <h3 className="section-heading">Section: {currentQ.section}</h3>
             <h2>Question {currentIndex + 1}</h2>
             <p className="question-text">{currentQ.questionText}</p>
 

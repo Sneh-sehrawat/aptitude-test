@@ -61,17 +61,13 @@ function ResultPage() {
 
       <h2>Your Score Summary</h2>
       <p className="pass-fail">
-        {calculatedScore.total >= 50
+        {calculatedScore.total >= 20
           ? '🎉 Congratulations, You Passed!'
           : '❌ You Failed'}
       </p>
 
       <div className="score-breakdown">
-        <p><strong>English:</strong> {calculatedScore.English}</p>
-        <p><strong>Maths Reasoning:</strong> {calculatedScore.MathsReasoning}</p>
-        <p><strong>Aptitude:</strong> {calculatedScore.Aptitude}</p>
-        <p><strong>Computer Fundamentals:</strong> {calculatedScore.computerFundamentals}</p>
-        <p><strong>Total Score (out of 100):</strong> {calculatedScore.total}</p>
+        <p><strong>Total Score:</strong> {calculatedScore.total}</p>
       </div>
 
       

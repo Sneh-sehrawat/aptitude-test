@@ -35,7 +35,7 @@ function MockResultPage() {
     ? "Excellent work!"
     : calculatedScore.total >= 60
     ? "Good job! Keep improving."
-    : calculatedScore.total >= 50
+    : calculatedScore.total >= 20
     ? "You passed. Keep practicing."
     : "Fail - You need more practice.";
 
@@ -45,16 +45,13 @@ function MockResultPage() {
       
       <h2>Mock Test Score Summary</h2>
       <p className="pass-fail">
-        {calculatedScore.total >= 50 
+        {calculatedScore.total >= 20 
           ? '🎉 Congratulations, You Passed!' 
           : '❌ You Failed'}
       </p>
 
       <div className="score-breakdown">
-        <p><strong>English:</strong> {calculatedScore.English}</p>
-        <p><strong>Maths Reasoning:</strong> {calculatedScore.MathsReasoning}</p>
-        <p><strong>Aptitude:</strong> {calculatedScore.Aptitude}</p>
-        <p><strong>Total Score (out of 100):</strong> {calculatedScore.total}</p>
+        <p><strong>Total Score:</strong> {calculatedScore.total}</p>
         <p><strong>Remark:</strong> {remark}</p>
       </div>
 
