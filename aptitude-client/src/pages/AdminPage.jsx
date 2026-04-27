@@ -8,6 +8,7 @@ const AdminPage = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedRow, setExpandedRow] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,6 +86,38 @@ const AdminPage = () => {
     link.click();
   };
 
+  const downloadDateCSV = async () => {
+    if (!selectedDate) {
+      alert('Please select a date');
+      return;
+    }
+    try {
+      const res = await axios.get(`https://aptitude-test-1-4le1.onrender.com/api/admin/results/date/${selectedDate}`);
+      const dateResults = res.data;
+
+      let csvContent = `Name,Email,English,Computer Fundamentals,Aptitude,Total,Result\n`;
+
+      dateResults.forEach((user) => {
+        const { name, email, sectionScores = {} } = user;
+        const total = sectionScores.totalScore || 0;
+        const result = total >= 50 ? "Pass" : "Fail";
+
+        csvContent += `${name || "—"},${email || "—"},${
+          sectionScores.English || 0
+        },${sectionScores.MathsReasoning || 0},${sectionScores.Aptitude || 0},${total},${result}\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `students_results_${selectedDate}.csv`;
+      link.click();
+    } catch (error) {
+      console.error('Error downloading date CSV:', error);
+      alert('Failed to download CSV for selected date');
+    }
+  };
+
   if (loading)
     return <div className="no-submissions">Loading submissions...</div>;
 
@@ -102,6 +135,17 @@ const AdminPage = () => {
           <button onClick={downloadAllCSV} className="main-button1" style={{ marginLeft: '10px' }}>
             Download All CSV
           </button>
+          <div style={{ marginLeft: '20px', display: 'inline-flex', alignItems: 'center' }}>
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              style={{ marginRight: '10px', padding: '5px' }}
+            />
+            <button onClick={downloadDateCSV} className="main-button1">
+              Download CSV by Date
+            </button>
+          </div>
         </div>
         <h1 className="admin-title">📋 Test Submissions</h1>
 

@@ -48,7 +48,21 @@ function SignupPage() {
       });
 
       alert(data.message || 'Signup successful');
-      navigate('/login', { replace: true });
+
+      // Automatically login after signup to get token
+      const loginResponse = await axios.post(`${API_BASE}/api/auth/login`, {
+        email,
+        password,
+        role: 'user'
+      });
+
+      if (loginResponse.data.success) {
+        sessionStorage.setItem('token', loginResponse.data.token);
+        navigate('/form', { replace: true });
+      } else {
+        // If auto-login fails, redirect to login page
+        navigate('/login', { replace: true });
+      }
     } catch (error) {
       alert(error.response?.data?.message || 'Signup failed');
       console.error(error);
