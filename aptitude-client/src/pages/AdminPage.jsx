@@ -14,7 +14,7 @@ const AdminPage = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const res = await axios.get("https://aptitude-test-1-4le1.onrender.com/api/admin/results");
+        const res = await axios.get("http://localhost:5050/api/admin/results");
         console.log("🔍 Submissions received:", res.data);
         setResults(res.data);
       } catch (error) {
@@ -92,19 +92,17 @@ const AdminPage = () => {
       return;
     }
     try {
-      const res = await axios.get(`https://aptitude-test-1-4le1.onrender.com/api/admin/results/date/${selectedDate}`);
+      const res = await axios.get(`http://localhost:5050/api/admin/results/date/${selectedDate}`);
       const dateResults = res.data;
 
-      let csvContent = `Name,Email,English,Computer Fundamentals,Aptitude,Total,Result\n`;
+      let csvContent = `Name,Email,Total,Result\n`;
 
       dateResults.forEach((user) => {
         const { name, email, sectionScores = {} } = user;
         const total = sectionScores.totalScore || 0;
-        const result = total >= 50 ? "Pass" : "Fail";
+        const result = total >= 20 ? "Pass" : "Fail";
 
-        csvContent += `${name || "—"},${email || "—"},${
-          sectionScores.English || 0
-        },${sectionScores.MathsReasoning || 0},${sectionScores.Aptitude || 0},${total},${result}\n`;
+        csvContent += `${name || "—"},${email || "—"},${total},${result}\n`;
       });
 
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });

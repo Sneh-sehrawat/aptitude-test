@@ -17,7 +17,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: ["https://cleartest.thecertiedge.com","http://localhost:5173","https://test.thecertiedge.com"],
+  origin: ["https://cleartest.thecertiedge.com","http://localhost:5173","https://test.thecertiedge.com","https://cleartest1.thecertiedge.com"],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
